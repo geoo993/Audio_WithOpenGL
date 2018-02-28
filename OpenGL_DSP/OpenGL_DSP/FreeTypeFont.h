@@ -1,9 +1,5 @@
 #pragma once
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
-#include "Common.h"
 #include "Texture.h"
 #include "Shaders.h"
 #include "VertexBufferObject.h"
@@ -17,19 +13,18 @@ public:
 	~CFreeTypeFont();
 
 	bool LoadFont(string file, int pixelSize);
-	bool LoadSystemFont(string name, int pixelSize);
+	bool LoadSystemFont(string file, int pixelSize);
 
-	int GetTextWidth(string text, int pixelSize);
+    int GetTextWidth(string text, int pixelSize);
 
-	void Print(string text, int x, int y, int pixelSize = -1);
-	void Render(int x, int y, int pixelSize, char* text, ...);
+    void Print(CShaderProgram* program, string text, int x, int y, int pixelSize = -1);
+    void Render(CShaderProgram* program, int x, int y, int pixelSize, char* text, ...);
+    void Render(CShaderProgram* program, string text, GLfloat x, GLfloat y, GLfloat scale);
+    void ReleaseFont();
 
-	
-	void ReleaseFont();
-
-	void SetShaderProgram(CShaderProgram* shaderProgram);
 
 private:
+
 	void CreateChar(int index);
 
 	CTexture m_charTextures[256];
@@ -38,12 +33,22 @@ private:
 	int m_charWidth[256], m_charHeight[256];
 	int m_loadedPixelSize, m_newLine;
 
-	bool m_isLoaded;
-
-	UINT m_vao;
+    bool m_isLoaded;
+	GLuint m_vao;
 	CVertexBufferObject m_vbo;
 
 	FT_Library m_ftLib;
 	FT_Face m_ftFace;
-	CShaderProgram* m_shaderProgram;
+
+
+
+    // Second way of loading font
+    struct Character {
+        GLuint   TextureID;    // ID handle of the glyph texture
+        glm::ivec2 Size;       // Size of glyph
+        glm::ivec2 Bearing;    // Offset from baseline to left/top of glyph
+        GLuint     Advance;    // Offset to advance to next glyph
+    };
+
+    std::map<GLchar, Character> Characters;
 };

@@ -1,10 +1,8 @@
-#include "Common.h"
 
 #define _USE_MATH_DEFINES
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 #include "Sphere.h"
-#include <math.h>
 
 CSphere::CSphere()
 {}
@@ -99,7 +97,7 @@ void CSphere::Create(string a_sDirectory, string a_sFilename, int slicesIn, int 
 void CSphere::Render()
 {
 	glBindVertexArray(m_vao);
-	m_texture.Bind();
+	m_texture.BindTexture2D();
 	glDrawElements(GL_TRIANGLES, m_numTriangles*3, GL_UNSIGNED_INT, 0);
 
 }

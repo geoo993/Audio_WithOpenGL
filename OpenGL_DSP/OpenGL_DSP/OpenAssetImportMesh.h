@@ -20,15 +20,8 @@
 
 #pragma once
 
-#include <map>
-#include <vector>
-#include "include/gl/glew.h"
-#include <Importer.hpp>      // C++ importer interface
-#include <scene.h>       // Output data structure
-#include <PostProcess.h> // Post processing flags
-
-#include "Common.h"
 #include "Texture.h"
+#include "Transform.h"
 
 #define INVALID_OGL_VALUE 0xFFFFFFFF
 #define SAFE_DELETE(p) if (p) { delete p; p = NULL; }
@@ -39,14 +32,18 @@ struct Vertex
     glm::vec3 m_pos;
     glm::vec2 m_tex;
     glm::vec3 m_normal;
+    glm::vec3 m_tangent;
+    glm::vec3 m_bitangent;
 
     Vertex() {}
 
-    Vertex(const glm::vec3& pos, const glm::vec2& tex, const glm::vec3& normal)
+    Vertex(const glm::vec3& pos, const glm::vec2& tex, const glm::vec3& normal, const glm::vec3& tangent, const glm::vec3& bitangent)
     {
         m_pos    = pos;
         m_tex    = tex;
         m_normal = normal;
+        m_tangent = tangent;
+        m_bitangent = bitangent;
     }
 };
 
@@ -57,7 +54,14 @@ public:
     COpenAssetImportMesh();
     ~COpenAssetImportMesh();
     bool Load(const std::string& Filename);
+    bool LoadWithInstances(const std::string& Filename,
+                           const bool &withIntances = false,
+                           const GLuint &instanceCount = 0,
+                           const glm::vec3 &center = glm::vec3(0.0f),
+                           const float &scale = 0.0f);
     void Render();
+
+    CTransform transform;
 
 private:
     bool InitFromScene(const aiScene* pScene, const std::string& Filename);
@@ -74,16 +78,33 @@ private:
         ~MeshEntry();
 
         void Init(const std::vector<Vertex>& Vertices,
-                  const std::vector<unsigned int>& Indices);
+                  const std::vector<GLuint>& Indices,
+                  const std::vector<glm::mat4> &mMatrices);
         GLuint vbo;
+        GLuint mbo;
         GLuint ibo;
-        unsigned int NumIndices;
-        unsigned int MaterialIndex;
+        GLuint m_NumIndices;
+        GLuint m_MaterialIndex;
     };
 
-    std::vector<MeshEntry> m_Entries;
-    std::vector<CTexture*> m_Textures;
-	GLuint m_vao;
+    vector<MeshEntry> m_Meshes; // meshes of the current model
+    vector<CTexture*> m_Textures; // mesh textures of the current model
+    vector<glm::mat4> m_ModelMatrixInstances; // number of instances of this model
+    GLuint m_vao;
+
+    CTexture* LoadMaterialTextures(const aiMaterial *pMaterial,
+                                   const aiTextureType &type,
+                                   const std::string &directory);
+    CTexture* CreateColorTexture(const char* pMatKey,
+                                 GLuint pType,
+                                 GLuint pIndex,
+                                 const aiMaterial* pMaterial);
+
+    bool m_UseInstances;
+    GLuint m_InstanceCount;
+    glm::vec3 m_Center;
+    float m_Scale;
+    vector<glm::mat4> GetModelMatrixInstancesData();
 };
 
 

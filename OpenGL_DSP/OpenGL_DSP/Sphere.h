@@ -2,6 +2,7 @@
 
 #include "Texture.h"
 #include "VertexBufferObjectIndexed.h"
+#include "Transform.h"
 
 // Class for generating a unit sphere
 class CSphere
@@ -12,6 +13,8 @@ public:
 	void Create(string directory, string front, int slicesIn, int stacksIn);
 	void Render();
 	void Release();
+
+    CTransform transform;
 private:
 	GLuint m_vao;
 	CVertexBufferObjectIndexed m_vbo;

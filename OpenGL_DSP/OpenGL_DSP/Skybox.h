@@ -1,22 +1,23 @@
 #pragma once
 
-#include "Texture.h"
-#include "VertexBufferObject.h"
+#include "Transform.h"
 #include "Cubemap.h"
 
 // This is a class for creating and rendering a skybox
 class CSkybox
 {
 public:
-	CSkybox();
-	~CSkybox();
-	void Create(float size);
-	void Render(int textureUnit);
-	void Release();
+    CSkybox();
+    ~CSkybox();
+    void Create(const float &size, const std::string &path, const unsigned int &skyboxNumber);
+    void Render(const int &textureUnit);
+    void BindSkybox(const int &textureUnit);
+    void Release();
+
+    CTransform transform;
 
 private:
-	GLuint m_vao;
-	CVertexBufferObject m_vbo;
-	CCubemap m_cubemapTexture;
-	
+    GLuint m_vao;
+    CVertexBufferObject m_vbo;
+    CCubemap m_cubemapTexture;
 };

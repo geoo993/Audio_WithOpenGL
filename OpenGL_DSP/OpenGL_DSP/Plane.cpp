@@ -1,4 +1,4 @@
-#include "Common.h"
+
 #include "Plane.h"
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -7,7 +7,9 @@ CPlane::CPlane()
 {}
 
 CPlane::~CPlane()
-{}
+{
+    Release();
+}
 
 
 // Create the plane, including its geometry, texture mapping, normal, and colour
@@ -89,10 +91,12 @@ void CPlane::Create(string directory, string filename, float width, float height
 }
 
 // Render the plane as a triangle strip
-void CPlane::Render()
+void CPlane::Render(const bool &useTexture)
 {
 	glBindVertexArray(m_vao);
-	m_texture.Bind();
+    if (useTexture) {
+        m_texture.BindTexture2D();
+    }
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
 }

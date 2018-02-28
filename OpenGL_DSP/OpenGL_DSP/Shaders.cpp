@@ -1,6 +1,5 @@
-#include "Common.h"
-#include "shaders.h"
 
+#include "Shaders.h"
 
 
 CShader::CShader()
@@ -17,8 +16,7 @@ bool CShader::LoadShader(string sFile, int iType)
 
 	if(!GetLinesFromFile(sFile, false, &sLines)) {
 		char message[1024];
-		sprintf_s(message, "Cannot load shader\n%s\n", sFile.c_str());
-		MessageBox(NULL, message, "Error", MB_ICONERROR);
+		sprintf(message, "Cannot load shader\n%s\n", sFile.c_str());
 		return false;
 	}
 
@@ -44,21 +42,20 @@ bool CShader::LoadShader(string sFile, int iType)
 		glGetShaderInfoLog(m_uiShader, 1024, &iLogLength, sInfoLog);
 		char sShaderType[64];
 		if (iType == GL_VERTEX_SHADER)
-			sprintf_s(sShaderType, "vertex shader");
+			sprintf(sShaderType, "vertex shader");
 		else if (iType == GL_FRAGMENT_SHADER)
-			sprintf_s(sShaderType, "fragment shader");
+			sprintf(sShaderType, "fragment shader");
 		else if (iType == GL_GEOMETRY_SHADER)
-			sprintf_s(sShaderType, "geometry shader");
+			sprintf(sShaderType, "geometry shader");
 		else if (iType == GL_TESS_CONTROL_SHADER)
-			sprintf_s(sShaderType, "tesselation control shader");
+			sprintf(sShaderType, "tesselation control shader");
 		else if (iType == GL_TESS_EVALUATION_SHADER)
-			sprintf_s(sShaderType, "tesselation evaluation shader");
+			sprintf(sShaderType, "tesselation evaluation shader");
 		else
-			sprintf_s(sShaderType, "unknown shader type");
+			sprintf(sShaderType, "unknown shader type");
 
-		sprintf_s(sFinalMessage, "Error in %s!\n%s\nShader file not compiled.  The compiler returned:\n\n%s", sShaderType, sFile.c_str(), sInfoLog);
+		sprintf(sFinalMessage, "Error in %s!\n%s\nShader file not compiled.  The compiler returned:\n\n%s", sShaderType, sFile.c_str(), sInfoLog);
 
-		MessageBox(NULL, sFinalMessage, "Error", MB_ICONERROR);
 		return false;
 	}
 	m_iType = iType;
@@ -71,9 +68,8 @@ bool CShader::LoadShader(string sFile, int iType)
 // Loads a file into a vector of strings (vResult)
 bool CShader::GetLinesFromFile(string sFile, bool bIncludePart, vector<string>* vResult)
 {
-	FILE* fp;
-	fopen_s(&fp, sFile.c_str(), "rt");
-	if(!fp)return false;
+	FILE* fp = fopen(sFile.c_str(), "rt");
+    if(!fp){ printf("Image could not be opened\n"); return false; }
 
 	string sDirectory;
 	int slashIndex = -1;
@@ -130,7 +126,7 @@ bool CShader::IsLoaded()
 }
 
 // Returns the ID of the shader
-UINT CShader::GetShaderID()
+GLuint CShader::GetShaderID()
 {
 	return m_uiShader;
 }
@@ -148,6 +144,9 @@ CShaderProgram::CShaderProgram()
 {
 	m_bLinked = false;
 }
+
+CShaderProgram::~CShaderProgram()
+{}
 
 // Creates a new shader program
 void CShaderProgram::CreateProgram()
@@ -179,8 +178,7 @@ bool CShaderProgram::LinkProgram()
 		char sFinalMessage[1536];
 		int iLogLength;
 		glGetProgramInfoLog(m_uiProgram, 1024, &iLogLength, sInfoLog);
-		sprintf_s(sFinalMessage, "Error! Shader program wasn't linked! The linker returned:\n\n%s", sInfoLog);
-		MessageBox(NULL, sFinalMessage, "Error", MB_ICONERROR);
+		sprintf(sFinalMessage, "Error! Shader program wasn't linked! The linker returned:\n\n%s", sInfoLog);
 		return false;
 	}
 
@@ -205,12 +203,22 @@ void CShaderProgram::UseProgram()
 }
 
 // Returns the OpenGL program ID
-UINT CShaderProgram::GetProgramID()
+GLuint CShaderProgram::GetProgramID()
 {
 	return m_uiProgram;
 }
 
 // A collection of functions to set uniform variables inside shaders
+
+// Setting Uniform Buffer Objects
+
+void CShaderProgram::SetUniformBlock(std::string uniformName, const int &bindingPoint)
+{
+    //    unsigned int iLoc = glGetUniformBlockIndex(GetProgramID(), uniformName.c_str());
+    //    glUniformBlockBinding(GetProgramID(), iLoc, bindingPoint);
+    int iLoc = glGetUniformBlockIndex(m_uiProgram, uniformName.c_str());
+    glUniformBlockBinding(m_uiProgram, iLoc, bindingPoint);
+}
 
 // Setting floats
 

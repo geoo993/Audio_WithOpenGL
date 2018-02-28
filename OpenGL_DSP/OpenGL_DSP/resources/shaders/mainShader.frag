@@ -11,14 +11,11 @@ uniform bool bUseTexture;    // A flag indicating if texture-mapping should be a
 uniform bool renderSkybox;
 in vec3 worldPosition;
 
-
 void main()
 {
 
-
 	if (renderSkybox) {
 		vOutputColour = texture(CubeMapTex, worldPosition);
-
 	} else {
 
 		// Get the texel colour from the texture sampler

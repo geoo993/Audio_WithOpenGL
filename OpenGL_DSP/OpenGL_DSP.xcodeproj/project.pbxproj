@@ -7,6 +7,41 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C705B0742045FD9D00F0E13D /* SkyBoxShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C705B0722045FD9D00F0E13D /* SkyBoxShader.frag */; };
+		C705B0752045FD9D00F0E13D /* SkyBoxShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C705B0732045FD9D00F0E13D /* SkyBoxShader.vert */; };
+		C705B08420460E1700F0E13D /* _ft.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C705B07720460E1700F0E13D /* _ft.jpg */; };
+		C705B08520460E1700F0E13D /* _dn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C705B07820460E1700F0E13D /* _dn.jpg */; };
+		C705B08620460E1700F0E13D /* _rt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C705B07920460E1700F0E13D /* _rt.jpg */; };
+		C705B08720460E1700F0E13D /* _bk.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C705B07A20460E1700F0E13D /* _bk.jpg */; };
+		C705B08820460E1700F0E13D /* _ft.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C705B07C20460E1700F0E13D /* _ft.jpg */; };
+		C705B08920460E1700F0E13D /* _dn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C705B07D20460E1700F0E13D /* _dn.jpg */; };
+		C705B08A20460E1700F0E13D /* _rt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C705B07E20460E1700F0E13D /* _rt.jpg */; };
+		C705B08B20460E1700F0E13D /* _bk.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C705B07F20460E1700F0E13D /* _bk.jpg */; };
+		C705B08C20460E1700F0E13D /* _lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C705B08020460E1700F0E13D /* _lf.jpg */; };
+		C705B08D20460E1700F0E13D /* _up.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C705B08120460E1700F0E13D /* _up.jpg */; };
+		C705B08E20460E1700F0E13D /* _lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C705B08220460E1700F0E13D /* _lf.jpg */; };
+		C705B08F20460E1700F0E13D /* _up.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C705B08320460E1700F0E13D /* _up.jpg */; };
+		C705B091204622CD00F0E13D /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C705B090204622CD00F0E13D /* Transform.cpp */; };
+		C705B09320462E5000F0E13D /* Arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C705B09220462E5000F0E13D /* Arial.ttf */; };
+		C71466122046BC6E008BBBAA /* Candy Script.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C71466112046BC6E008BBBAA /* Candy Script.ttf */; };
+		C71466152046D694008BBBAA /* fontShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C71466132046D694008BBBAA /* fontShader.vert */; };
+		C71466162046D694008BBBAA /* fontShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C71466142046D694008BBBAA /* fontShader.frag */; };
+		C71D16842045C650002E2A43 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C77367752045A39000230B98 /* Cocoa.framework */; };
+		C71D16882045C9BF002E2A43 /* HighResolutionTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C71D16872045C9BF002E2A43 /* HighResolutionTimer.cpp */; };
+		C71D16892045CE48002E2A43 /* GameWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED3C2045AC5D0038F48F /* GameWindow.cpp */; };
+		C71D168A2045CE9E002E2A43 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED3B2045AC5D0038F48F /* Game.cpp */; };
+		C71D168D2045EBAC002E2A43 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C71D168B2045EBAC002E2A43 /* GameManager.cpp */; };
+		C71D168E2045F554002E2A43 /* libstb.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773678F2045AB3900230B98 /* libstb.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D168F2045F554002E2A43 /* libfmod.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773678C2045AA1100230B98 /* libfmod.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16902045F554002E2A43 /* libfmodL.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773678B2045AA1100230B98 /* libfmodL.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16912045F554002E2A43 /* libfmodstudio.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C77367872045A94800230B98 /* libfmodstudio.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16922045F554002E2A43 /* libfmodstudioL.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C77367882045A94800230B98 /* libfmodstudioL.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16932045F554002E2A43 /* libassimp.4.1.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677C2045A72B00230B98 /* libassimp.4.1.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16942045F554002E2A43 /* libfreeimage.3.17.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677A2045A72B00230B98 /* libfreeimage.3.17.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16952045F554002E2A43 /* libfreeimageplus.3.17.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677D2045A72B00230B98 /* libfreeimageplus.3.17.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16962045F554002E2A43 /* libfreetype.6.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677B2045A72B00230B98 /* libfreetype.6.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16972045F554002E2A43 /* libGLEW.2.1.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C77367792045A72B00230B98 /* libGLEW.2.1.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16982045F554002E2A43 /* libglfw.3.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677E2045A72B00230B98 /* libglfw.3.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C77367782045A39000230B98 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C77367762045A39000230B98 /* OpenGL.framework */; };
 		C773677F2045A72B00230B98 /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C77367792045A72B00230B98 /* libGLEW.2.1.0.dylib */; };
 		C77367802045A72B00230B98 /* libfreeimage.3.17.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773677A2045A72B00230B98 /* libfreeimage.3.17.0.dylib */; };
@@ -21,6 +56,7 @@
 		C773678E2045AA1100230B98 /* libfmod.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773678C2045AA1100230B98 /* libfmod.dylib */; };
 		C77367902045AB3900230B98 /* libstb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773678F2045AB3900230B98 /* libstb.dylib */; };
 		C77CCE5D2045A03800F3C942 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C77CCE5C2045A03800F3C942 /* main.cpp */; };
+		C79B915E2046392200648C5F /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C79B915D2046392200648C5F /* GLUT.framework */; };
 		C7F6ED3F2045AC5E0038F48F /* Shaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED012045AC5B0038F48F /* Shaders.cpp */; };
 		C7F6ED402045AC5E0038F48F /* OpenAssetImportMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED022045AC5B0038F48F /* OpenAssetImportMesh.cpp */; };
 		C7F6ED412045AC5E0038F48F /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED032045AC5B0038F48F /* Texture.cpp */; };
@@ -30,26 +66,59 @@
 		C7F6ED452045AC5E0038F48F /* Cubemap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED092045AC5C0038F48F /* Cubemap.cpp */; };
 		C7F6ED462045AC5E0038F48F /* VertexBufferObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED0A2045AC5C0038F48F /* VertexBufferObject.cpp */; };
 		C7F6ED472045AC5E0038F48F /* VertexBufferObjectIndexed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED0D2045AC5C0038F48F /* VertexBufferObjectIndexed.cpp */; };
-		C7F6ED482045AC5E0038F48F /* MatrixStack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED0E2045AC5C0038F48F /* MatrixStack.cpp */; };
 		C7F6ED492045AC5E0038F48F /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED112045AC5C0038F48F /* Audio.cpp */; };
 		C7F6ED4A2045AC5E0038F48F /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED142045AC5D0038F48F /* Camera.cpp */; };
-		C7F6ED4B2045AC5E0038F48F /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED3B2045AC5D0038F48F /* Game.cpp */; };
 		C7F6ED4D2045AC5E0038F48F /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED3E2045AC5D0038F48F /* Sphere.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		C77CCE572045A03800F3C942 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 11;
 			files = (
+				C71D168E2045F554002E2A43 /* libstb.dylib in CopyFiles */,
+				C71D168F2045F554002E2A43 /* libfmod.dylib in CopyFiles */,
+				C71D16902045F554002E2A43 /* libfmodL.dylib in CopyFiles */,
+				C71D16912045F554002E2A43 /* libfmodstudio.dylib in CopyFiles */,
+				C71D16922045F554002E2A43 /* libfmodstudioL.dylib in CopyFiles */,
+				C71D16932045F554002E2A43 /* libassimp.4.1.0.dylib in CopyFiles */,
+				C71D16942045F554002E2A43 /* libfreeimage.3.17.0.dylib in CopyFiles */,
+				C71D16952045F554002E2A43 /* libfreeimageplus.3.17.0.dylib in CopyFiles */,
+				C71D16962045F554002E2A43 /* libfreetype.6.dylib in CopyFiles */,
+				C71D16972045F554002E2A43 /* libGLEW.2.1.0.dylib in CopyFiles */,
+				C71D16982045F554002E2A43 /* libglfw.3.2.dylib in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C705B0712045FC4200F0E13D /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
+		C705B0722045FD9D00F0E13D /* SkyBoxShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SkyBoxShader.frag; sourceTree = "<group>"; };
+		C705B0732045FD9D00F0E13D /* SkyBoxShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SkyBoxShader.vert; sourceTree = "<group>"; };
+		C705B07720460E1700F0E13D /* _ft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _ft.jpg; sourceTree = "<group>"; };
+		C705B07820460E1700F0E13D /* _dn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _dn.jpg; sourceTree = "<group>"; };
+		C705B07920460E1700F0E13D /* _rt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _rt.jpg; sourceTree = "<group>"; };
+		C705B07A20460E1700F0E13D /* _bk.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _bk.jpg; sourceTree = "<group>"; };
+		C705B07C20460E1700F0E13D /* _ft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _ft.jpg; sourceTree = "<group>"; };
+		C705B07D20460E1700F0E13D /* _dn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _dn.jpg; sourceTree = "<group>"; };
+		C705B07E20460E1700F0E13D /* _rt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _rt.jpg; sourceTree = "<group>"; };
+		C705B07F20460E1700F0E13D /* _bk.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _bk.jpg; sourceTree = "<group>"; };
+		C705B08020460E1700F0E13D /* _lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _lf.jpg; sourceTree = "<group>"; };
+		C705B08120460E1700F0E13D /* _up.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _up.jpg; sourceTree = "<group>"; };
+		C705B08220460E1700F0E13D /* _lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _lf.jpg; sourceTree = "<group>"; };
+		C705B08320460E1700F0E13D /* _up.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _up.jpg; sourceTree = "<group>"; };
+		C705B090204622CD00F0E13D /* Transform.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
+		C705B09220462E5000F0E13D /* Arial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Arial.ttf; sourceTree = "<group>"; };
+		C71466112046BC6E008BBBAA /* Candy Script.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Candy Script.ttf"; sourceTree = "<group>"; };
+		C71466132046D694008BBBAA /* fontShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = fontShader.vert; sourceTree = "<group>"; };
+		C71466142046D694008BBBAA /* fontShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = fontShader.frag; sourceTree = "<group>"; };
+		C71D16862045C9BF002E2A43 /* HighResolutionTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighResolutionTimer.h; sourceTree = "<group>"; };
+		C71D16872045C9BF002E2A43 /* HighResolutionTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HighResolutionTimer.cpp; sourceTree = "<group>"; };
+		C71D168B2045EBAC002E2A43 /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameManager.cpp; sourceTree = "<group>"; };
+		C71D168C2045EBAC002E2A43 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
 		C77367752045A39000230B98 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		C77367762045A39000230B98 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		C77367792045A72B00230B98 /* libGLEW.2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.1.0.dylib; path = Libraries/libGLEW.2.1.0.dylib; sourceTree = "<group>"; };
@@ -66,9 +135,9 @@
 		C773678F2045AB3900230B98 /* libstb.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libstb.dylib; path = Libraries/libstb.dylib; sourceTree = "<group>"; };
 		C77CCE592045A03800F3C942 /* OpenGL_DSP */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGL_DSP; sourceTree = BUILT_PRODUCTS_DIR; };
 		C77CCE5C2045A03800F3C942 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		C79B915D2046392200648C5F /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		C7F6ECFB2045AC5B0038F48F /* Cubemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cubemap.h; sourceTree = "<group>"; };
 		C7F6ECFC2045AC5B0038F48F /* Skybox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skybox.h; sourceTree = "<group>"; };
-		C7F6ECFD2045AC5B0038F48F /* MatrixStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixStack.h; sourceTree = "<group>"; };
 		C7F6ECFE2045AC5B0038F48F /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		C7F6ECFF2045AC5B0038F48F /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
 		C7F6ED002045AC5B0038F48F /* GameWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameWindow.h; sourceTree = "<group>"; };
@@ -85,7 +154,6 @@
 		C7F6ED0B2045AC5C0038F48F /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		C7F6ED0C2045AC5C0038F48F /* FreeTypeFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FreeTypeFont.h; sourceTree = "<group>"; };
 		C7F6ED0D2045AC5C0038F48F /* VertexBufferObjectIndexed.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexBufferObjectIndexed.cpp; sourceTree = "<group>"; };
-		C7F6ED0E2045AC5C0038F48F /* MatrixStack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MatrixStack.cpp; sourceTree = "<group>"; };
 		C7F6ED0F2045AC5C0038F48F /* VertexBufferObjectIndexed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBufferObjectIndexed.h; sourceTree = "<group>"; };
 		C7F6ED102045AC5C0038F48F /* VertexBufferObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBufferObject.h; sourceTree = "<group>"; };
 		C7F6ED112045AC5C0038F48F /* Audio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cpp; sourceTree = "<group>"; };
@@ -107,18 +175,6 @@
 		C7F6ED282045AC5D0038F48F /* mainShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = mainShader.frag; sourceTree = "<group>"; };
 		C7F6ED292045AC5D0038F48F /* mainShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = mainShader.vert; sourceTree = "<group>"; };
 		C7F6ED2A2045AC5D0038F48F /* textShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = textShader.vert; sourceTree = "<group>"; };
-		C7F6ED2D2045AC5D0038F48F /* jajdarkland1_rt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jajdarkland1_rt.jpg; sourceTree = "<group>"; };
-		C7F6ED2E2045AC5D0038F48F /* jajdarkland1_dn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jajdarkland1_dn.jpg; sourceTree = "<group>"; };
-		C7F6ED2F2045AC5D0038F48F /* jajdarkland1_ft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jajdarkland1_ft.jpg; sourceTree = "<group>"; };
-		C7F6ED302045AC5D0038F48F /* jajdarkland1_up.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jajdarkland1_up.jpg; sourceTree = "<group>"; };
-		C7F6ED312045AC5D0038F48F /* jajdarkland1_lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jajdarkland1_lf.jpg; sourceTree = "<group>"; };
-		C7F6ED322045AC5D0038F48F /* jajdarkland1_bk.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jajdarkland1_bk.jpg; sourceTree = "<group>"; };
-		C7F6ED342045AC5D0038F48F /* jajdarkland1_rt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jajdarkland1_rt.jpg; sourceTree = "<group>"; };
-		C7F6ED352045AC5D0038F48F /* jajdarkland1_dn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jajdarkland1_dn.jpg; sourceTree = "<group>"; };
-		C7F6ED362045AC5D0038F48F /* jajdarkland1_ft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jajdarkland1_ft.jpg; sourceTree = "<group>"; };
-		C7F6ED372045AC5D0038F48F /* jajdarkland1_up.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jajdarkland1_up.jpg; sourceTree = "<group>"; };
-		C7F6ED382045AC5D0038F48F /* jajdarkland1_lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jajdarkland1_lf.jpg; sourceTree = "<group>"; };
-		C7F6ED392045AC5D0038F48F /* jajdarkland1_bk.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jajdarkland1_bk.jpg; sourceTree = "<group>"; };
 		C7F6ED3B2045AC5D0038F48F /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
 		C7F6ED3C2045AC5D0038F48F /* GameWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameWindow.cpp; sourceTree = "<group>"; };
 		C7F6ED3D2045AC5D0038F48F /* Audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Audio.h; sourceTree = "<group>"; };
@@ -141,6 +197,8 @@
 				C77367822045A72B00230B98 /* libassimp.4.1.0.dylib in Frameworks */,
 				C77367832045A72B00230B98 /* libfreeimageplus.3.17.0.dylib in Frameworks */,
 				C77367842045A72B00230B98 /* libglfw.3.2.dylib in Frameworks */,
+				C71D16842045C650002E2A43 /* Cocoa.framework in Frameworks */,
+				C79B915E2046392200648C5F /* GLUT.framework in Frameworks */,
 				C77367782045A39000230B98 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,9 +206,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C705B07620460E1700F0E13D /* darkland */ = {
+			isa = PBXGroup;
+			children = (
+				C705B07720460E1700F0E13D /* _ft.jpg */,
+				C705B07820460E1700F0E13D /* _dn.jpg */,
+				C705B07920460E1700F0E13D /* _rt.jpg */,
+				C705B07A20460E1700F0E13D /* _bk.jpg */,
+				C705B07B20460E1700F0E13D /* flipped */,
+				C705B08220460E1700F0E13D /* _lf.jpg */,
+				C705B08320460E1700F0E13D /* _up.jpg */,
+			);
+			path = darkland;
+			sourceTree = "<group>";
+		};
+		C705B07B20460E1700F0E13D /* flipped */ = {
+			isa = PBXGroup;
+			children = (
+				C705B07C20460E1700F0E13D /* _ft.jpg */,
+				C705B07D20460E1700F0E13D /* _dn.jpg */,
+				C705B07E20460E1700F0E13D /* _rt.jpg */,
+				C705B07F20460E1700F0E13D /* _bk.jpg */,
+				C705B08020460E1700F0E13D /* _lf.jpg */,
+				C705B08120460E1700F0E13D /* _up.jpg */,
+			);
+			path = flipped;
+			sourceTree = "<group>";
+		};
 		C77367742045A39000230B98 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C79B915D2046392200648C5F /* GLUT.framework */,
 				C773678F2045AB3900230B98 /* libstb.dylib */,
 				C773678C2045AA1100230B98 /* libfmod.dylib */,
 				C773678B2045AA1100230B98 /* libfmodL.dylib */,
@@ -188,6 +274,12 @@
 		C77CCE5B2045A03800F3C942 /* OpenGL_DSP */ = {
 			isa = PBXGroup;
 			children = (
+				C705B090204622CD00F0E13D /* Transform.cpp */,
+				C705B0712045FC4200F0E13D /* Transform.h */,
+				C71D168B2045EBAC002E2A43 /* GameManager.cpp */,
+				C71D168C2045EBAC002E2A43 /* GameManager.h */,
+				C71D16872045C9BF002E2A43 /* HighResolutionTimer.cpp */,
+				C71D16862045C9BF002E2A43 /* HighResolutionTimer.h */,
 				C7F6ED112045AC5C0038F48F /* Audio.cpp */,
 				C7F6ED3D2045AC5D0038F48F /* Audio.h */,
 				C7F6ED142045AC5D0038F48F /* Camera.cpp */,
@@ -200,8 +292,6 @@
 				C7F6ECFE2045AC5B0038F48F /* Game.h */,
 				C7F6ED3C2045AC5D0038F48F /* GameWindow.cpp */,
 				C7F6ED002045AC5B0038F48F /* GameWindow.h */,
-				C7F6ED0E2045AC5C0038F48F /* MatrixStack.cpp */,
-				C7F6ECFD2045AC5B0038F48F /* MatrixStack.h */,
 				C7F6ED022045AC5B0038F48F /* OpenAssetImportMesh.cpp */,
 				C7F6ED132045AC5D0038F48F /* OpenAssetImportMesh.h */,
 				C7F6ED042045AC5B0038F48F /* Plane.cpp */,
@@ -289,9 +379,13 @@
 		C7F6ED262045AC5D0038F48F /* shaders */ = {
 			isa = PBXGroup;
 			children = (
-				C7F6ED272045AC5D0038F48F /* textShader.frag */,
+				C71466142046D694008BBBAA /* fontShader.frag */,
+				C71466132046D694008BBBAA /* fontShader.vert */,
+				C705B0722045FD9D00F0E13D /* SkyBoxShader.frag */,
+				C705B0732045FD9D00F0E13D /* SkyBoxShader.vert */,
 				C7F6ED282045AC5D0038F48F /* mainShader.frag */,
 				C7F6ED292045AC5D0038F48F /* mainShader.vert */,
+				C7F6ED272045AC5D0038F48F /* textShader.frag */,
 				C7F6ED2A2045AC5D0038F48F /* textShader.vert */,
 			);
 			path = shaders;
@@ -300,41 +394,16 @@
 		C7F6ED2B2045AC5D0038F48F /* skyboxes */ = {
 			isa = PBXGroup;
 			children = (
-				C7F6ED2C2045AC5D0038F48F /* jajdarkland1 */,
+				C705B07620460E1700F0E13D /* darkland */,
 			);
 			path = skyboxes;
-			sourceTree = "<group>";
-		};
-		C7F6ED2C2045AC5D0038F48F /* jajdarkland1 */ = {
-			isa = PBXGroup;
-			children = (
-				C7F6ED2D2045AC5D0038F48F /* jajdarkland1_rt.jpg */,
-				C7F6ED2E2045AC5D0038F48F /* jajdarkland1_dn.jpg */,
-				C7F6ED2F2045AC5D0038F48F /* jajdarkland1_ft.jpg */,
-				C7F6ED302045AC5D0038F48F /* jajdarkland1_up.jpg */,
-				C7F6ED312045AC5D0038F48F /* jajdarkland1_lf.jpg */,
-				C7F6ED322045AC5D0038F48F /* jajdarkland1_bk.jpg */,
-				C7F6ED332045AC5D0038F48F /* flipped */,
-			);
-			path = jajdarkland1;
-			sourceTree = "<group>";
-		};
-		C7F6ED332045AC5D0038F48F /* flipped */ = {
-			isa = PBXGroup;
-			children = (
-				C7F6ED342045AC5D0038F48F /* jajdarkland1_rt.jpg */,
-				C7F6ED352045AC5D0038F48F /* jajdarkland1_dn.jpg */,
-				C7F6ED362045AC5D0038F48F /* jajdarkland1_ft.jpg */,
-				C7F6ED372045AC5D0038F48F /* jajdarkland1_up.jpg */,
-				C7F6ED382045AC5D0038F48F /* jajdarkland1_lf.jpg */,
-				C7F6ED392045AC5D0038F48F /* jajdarkland1_bk.jpg */,
-			);
-			path = flipped;
 			sourceTree = "<group>";
 		};
 		C7F6ED3A2045AC5D0038F48F /* fonts */ = {
 			isa = PBXGroup;
 			children = (
+				C71466112046BC6E008BBBAA /* Candy Script.ttf */,
+				C705B09220462E5000F0E13D /* Arial.ttf */,
 			);
 			path = fonts;
 			sourceTree = "<group>";
@@ -349,6 +418,7 @@
 				C77CCE552045A03800F3C942 /* Sources */,
 				C77CCE562045A03800F3C942 /* Frameworks */,
 				C77CCE572045A03800F3C942 /* CopyFiles */,
+				C71D16852045C70F002E2A43 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -391,27 +461,58 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		C71D16852045C70F002E2A43 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C71466122046BC6E008BBBAA /* Candy Script.ttf in Resources */,
+				C705B08720460E1700F0E13D /* _bk.jpg in Resources */,
+				C705B08420460E1700F0E13D /* _ft.jpg in Resources */,
+				C705B09320462E5000F0E13D /* Arial.ttf in Resources */,
+				C705B08F20460E1700F0E13D /* _up.jpg in Resources */,
+				C71466162046D694008BBBAA /* fontShader.frag in Resources */,
+				C705B0742045FD9D00F0E13D /* SkyBoxShader.frag in Resources */,
+				C705B08A20460E1700F0E13D /* _rt.jpg in Resources */,
+				C705B08820460E1700F0E13D /* _ft.jpg in Resources */,
+				C705B08620460E1700F0E13D /* _rt.jpg in Resources */,
+				C705B08D20460E1700F0E13D /* _up.jpg in Resources */,
+				C705B0752045FD9D00F0E13D /* SkyBoxShader.vert in Resources */,
+				C705B08520460E1700F0E13D /* _dn.jpg in Resources */,
+				C705B08B20460E1700F0E13D /* _bk.jpg in Resources */,
+				C705B08E20460E1700F0E13D /* _lf.jpg in Resources */,
+				C705B08920460E1700F0E13D /* _dn.jpg in Resources */,
+				C705B08C20460E1700F0E13D /* _lf.jpg in Resources */,
+				C71466152046D694008BBBAA /* fontShader.vert in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C77CCE552045A03800F3C942 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C71D16882045C9BF002E2A43 /* HighResolutionTimer.cpp in Sources */,
 				C7F6ED422045AC5E0038F48F /* Plane.cpp in Sources */,
 				C7F6ED412045AC5E0038F48F /* Texture.cpp in Sources */,
 				C7F6ED4A2045AC5E0038F48F /* Camera.cpp in Sources */,
 				C7F6ED3F2045AC5E0038F48F /* Shaders.cpp in Sources */,
 				C7F6ED442045AC5E0038F48F /* Skybox.cpp in Sources */,
 				C7F6ED452045AC5E0038F48F /* Cubemap.cpp in Sources */,
+				C71D16892045CE48002E2A43 /* GameWindow.cpp in Sources */,
+				C705B091204622CD00F0E13D /* Transform.cpp in Sources */,
 				C7F6ED4D2045AC5E0038F48F /* Sphere.cpp in Sources */,
+				C71D168A2045CE9E002E2A43 /* Game.cpp in Sources */,
 				C7F6ED492045AC5E0038F48F /* Audio.cpp in Sources */,
 				C77367862045A7A700230B98 /* Common.h in Sources */,
 				C7F6ED462045AC5E0038F48F /* VertexBufferObject.cpp in Sources */,
-				C7F6ED4B2045AC5E0038F48F /* Game.cpp in Sources */,
 				C7F6ED432045AC5E0038F48F /* FreeTypeFont.cpp in Sources */,
 				C7F6ED402045AC5E0038F48F /* OpenAssetImportMesh.cpp in Sources */,
 				C7F6ED472045AC5E0038F48F /* VertexBufferObjectIndexed.cpp in Sources */,
 				C77CCE5D2045A03800F3C942 /* main.cpp in Sources */,
-				C7F6ED482045AC5E0038F48F /* MatrixStack.cpp in Sources */,
+				C71D168D2045EBAC002E2A43 /* GameManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -531,8 +632,9 @@
 					Includes/freetype2,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					/Libraries,
+					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
+					/Libraries,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -548,8 +650,9 @@
 					Includes/freetype2,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					/Libraries,
+					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
+					/Libraries,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

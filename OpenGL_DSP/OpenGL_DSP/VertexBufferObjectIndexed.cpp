@@ -50,14 +50,14 @@ void CVertexBufferObjectIndexed::UploadDataToGPU(int iUsageHint)
 }
 
 // Adds data to the VBO.  
-void CVertexBufferObjectIndexed::AddVertexData(void* ptrVertexData, UINT uiVertexDataSize)
+void CVertexBufferObjectIndexed::AddVertexData(void* ptrVertexData, GLuint uiVertexDataSize)
 {
 	m_vertexData.insert(m_vertexData.end(), (BYTE*)ptrVertexData, (BYTE*)ptrVertexData+uiVertexDataSize);
 }
 
 
 // Adds data to the VBO.  
-void CVertexBufferObjectIndexed::AddIndexData(void* ptrIndexData, UINT uiIndexDataSize)
+void CVertexBufferObjectIndexed::AddIndexData(void* ptrIndexData, GLuint uiIndexDataSize)
 {
 	m_indexData.insert(m_indexData.end(), (BYTE*)ptrIndexData, (BYTE*)ptrIndexData+uiIndexDataSize);
 }

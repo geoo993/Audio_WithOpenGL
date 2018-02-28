@@ -1,7 +1,5 @@
 #include "Audio.h"
 
-#pragma comment(lib, "lib/fmod_vc.lib")
-
 CAudio::CAudio()
 {}
 
@@ -23,11 +21,10 @@ bool CAudio::Initialise()
 		return false;
 
 	return true;
-	
 }
 
 // Load an event sound
-bool CAudio::LoadEventSound(char *filename)
+bool CAudio::LoadEventSound(const char *filename)
 {
 	result = m_FmodSystem->createSound(filename, NULL, 0, &m_eventSound);
 	FmodErrorCheck(result);
@@ -35,8 +32,6 @@ bool CAudio::LoadEventSound(char *filename)
 		return false;
 
 	return true;
-	
-
 }
 
 // Play an event sound
@@ -51,7 +46,7 @@ bool CAudio::PlayEventSound()
 
 
 // Load a music stream
-bool CAudio::LoadMusicStream(char *filename)
+bool CAudio::LoadMusicStream(const char *filename)
 {
 	result = m_FmodSystem->createStream(filename, NULL | FMOD_LOOP_NORMAL, 0, &m_music);
 	FmodErrorCheck(result);

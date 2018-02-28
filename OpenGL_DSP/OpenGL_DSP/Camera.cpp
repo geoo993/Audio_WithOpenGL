@@ -1,129 +1,283 @@
 #include "Camera.h"
-#include "Gamewindow.h"
 
 // Constructor for camera -- initialise with some default values
-CCamera::CCamera()
-{
-	m_position = glm::vec3(0.0f, 10.0f, 100.0f);
-	m_view = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_upVector = glm::vec3(0.0f, 1.0f, 0.0f);
-	m_speed = 0.025f;
-}
+
 CCamera::~CCamera()
 {}
+
+CCamera::CCamera(const glm::vec3 &position,
+                 const glm::vec3 &worldUp,
+                 const GLfloat &pitch,
+                 const GLfloat &yaw,
+                 const GLfloat &fieldOfView,
+                 const GLfloat &width,
+                 const GLfloat &height,
+                 const GLfloat &zNear,
+                 const GLfloat &zFar,
+                 const GLfloat &speed,
+                 const GLfloat &speedRatio,
+                 const GLfloat &sensitivity) {
+
+    this->m_position = position;
+    this->m_worldUp = worldUp;
+    this->m_front = glm::vec3(0.0f, 0.0f, -1.0f);
+    this->m_up = glm::vec3(0.0f, 1.0f, 0.0f);
+    this->m_fieldOfView = fieldOfView;
+    this->m_pitch = pitch;
+    this->m_yaw = yaw;
+    this->m_movementSpeed = speed;
+    this->m_speedRatio = speedRatio;
+    this->m_mouseSensitivity = sensitivity;
+    this->m_screenWidth = width;
+    this->m_screenHeight = height;
+    this->m_screenRatio = width/height;
+    this->SetPerspectiveProjectionMatrix(fieldOfView, m_screenRatio, zNear, zFar);
+    this->SetOrthographicProjectionMatrix(width, height);
+    this->UpdateCameraVectors();
+}
+
+// Calculates the front vector from the Camera's (updated) Eular Angles
+void CCamera::UpdateCameraVectors( )
+{
+    //this->m_front = glm::normalize( direction );
+    this->m_back = glm::normalize(m_front) * -1.0f;
+
+    // Also re-calculate the Right and Up vector
+    this->m_right = glm::normalize( glm::cross( this->m_front, this->m_worldUp ) );  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+    this->m_left = glm::normalize(m_right) * -1.0f;
+
+    // Up vector : perpendicular to both direction and right
+    this->m_up = glm::normalize( glm::cross( this->m_right, this->m_front ) );
+    this->m_down = glm::normalize(m_up) * -1.0f;
+
+    this->m_view = m_position + m_front;
+    this->m_viewMatrix = glm::lookAt(
+                                     m_position, // what position you want the camera to be at when looking at something in World Space
+                                     m_view, // // what position you want the camera to be  looking at in World Space, meaning look at what(using vec3) ?  // meaning the camera view point
+                                     m_up  //which direction is up, you can set to (0,-1,0) to look upside-down
+                                     );
+}
  
 // Set the camera at a specific position, looking at the view point, with a given up vector
 void CCamera::Set(glm::vec3 &position, glm::vec3 &viewpoint, glm::vec3 &upVector)
 {
-	m_position = position;
-	m_view = viewpoint;
-	m_upVector = upVector;
+    m_position = position;
+    m_front = glm::normalize(viewpoint - position); // finding front vector
+    m_up = upVector;
+    m_worldUp = glm::vec3( 0.0f, 1.0f, 0.0f );
+
+    UpdateCameraVectors();
+}
+
+// Respond to mouse movement
+void CCamera::SetViewByMouse(const GLfloat &mouseX, const GLfloat &mouseY, const GLboolean &constrainPitch, const bool &enableMouse)
+{
+    if (enableMouse) {
+        GLfloat lastX = m_screenWidth / 2.0f;
+        GLfloat lastY = m_screenHeight / 2.0f;
+
+        if( m_firstMouse )
+        {
+            lastX = mouseX;
+            lastY = mouseY;
+            m_firstMouse = false;
+        }
+
+        GLfloat xOffset = mouseX - lastX;
+        GLfloat yOffset = lastY - mouseY;  // Reversed since y-coordinates go from bottom to left
+
+        lastX = mouseX;
+        lastY = mouseY;
+
+        xOffset *= this->m_mouseSensitivity;
+        yOffset *= this->m_mouseSensitivity;
+
+        this->m_pitch += yOffset; // up down
+        this->m_yaw   += xOffset; //left right
+
+        // Make sure that when pitch is out of bounds, screen doesn't get flipped
+        if ( constrainPitch )
+        {
+            if ( this->m_pitch > 89.0f )
+            {
+                this->m_pitch = 89.0f;
+            }
+
+            if ( this->m_pitch < -89.0f )
+            {
+                this->m_pitch = -89.0f;
+            }
+        }
+
+        // Update Front, Right and Up Vectors using the updated Eular angles
+        this->UpdateCameraVectors( );
+    }
 
 }
 
 // Respond to mouse movement
-void CCamera::SetViewByMouse()
-{  
-	int middle_x = GameWindow::SCREEN_WIDTH >> 1;
-	int middle_y = GameWindow::SCREEN_HEIGHT >> 1;
+void CCamera::SetViewByMouse(GLFWwindow *window, const bool &enableMouse)
+{
 
-	float angle_y = 0.0f;
-	float angle_z = 0.0f;
-	static float rotation_x = 0.0f;
+    if (enableMouse) {
+        double middle_x = (int)m_screenWidth >> 1;
+        double middle_y = (int)m_screenHeight >> 1;
 
-	POINT mouse;
-	GetCursorPos(&mouse);
+        static float rotation_x = 0.0f;
 
-	if (mouse.x == middle_x && mouse.y == middle_y) {
-		return;
-	}
+        double mouse_x, mouse_y;
+        glfwGetCursorPos(window, &mouse_x, &mouse_y);
 
-	SetCursorPos(middle_x, middle_y);
+        if (mouse_x == middle_x && mouse_y == middle_y) {
+            return;
+        }
 
-	angle_y = (float) (middle_x - mouse.x) / 1000.0f;
-	angle_z = (float) (middle_y - mouse.y) / 1000.0f;
+        glfwSetCursorPos(window, (double)middle_x, (double)middle_y);
 
-	rotation_x -= angle_z;
+        m_verticalAngle = (float) (middle_x - mouse_x) / 1000.0f;
+        m_horizontalAngle = (float) (middle_y - mouse_y) / 1000.0f;
 
-	float maxAngle = 1.56f; // Just a little bit below PI / 2
+        rotation_x -= m_horizontalAngle;
 
-	if (rotation_x > maxAngle) {
-		rotation_x = maxAngle;
-	} else if (rotation_x < -maxAngle) {
-		rotation_x = -maxAngle;
-	} else {
-		glm::vec3 cross = glm::cross(m_view - m_position, m_upVector);
-		glm::vec3 axis = glm::normalize(cross);
+        float maxAngle = 1.56f; // Just a little bit below PI / 2
 
-		RotateViewPoint(angle_z, axis);
-	}
+        if (rotation_x > maxAngle) {
+            rotation_x = maxAngle;
+        } else if (rotation_x < -maxAngle) {
+            rotation_x = -maxAngle;
+        } else {
+            glm::vec3 cross = glm::cross(m_view - m_position, m_up);
+            glm::vec3 axis = glm::normalize(cross);
 
-	RotateViewPoint(angle_y, glm::vec3(0, 1, 0));
+            RotateViewPoint(m_horizontalAngle, axis);
+        }
+
+        glm::vec3 viewPoint = m_worldUp;
+        RotateViewPoint(m_verticalAngle, viewPoint);
+
+    }
 }
 
 // Rotate the camera view point -- this effectively rotates the camera since it is looking at the view point
 void CCamera::RotateViewPoint(float fAngle, glm::vec3 &vPoint)
 {
-	glm::vec3 vView = m_view - m_position;
+	glm::vec3 vView = m_view - m_position; // direction vector
 	
 	glm::mat4 R = glm::rotate(glm::mat4(1), fAngle * 180.0f / (float) M_PI, vPoint);
 	glm::vec4 newView = R * glm::vec4(vView, 1);
 
-	m_view = m_position + glm::vec3(newView);
+    m_front = glm::normalize(glm::vec3(newView));
+
+    UpdateCameraVectors();
 }
 
-// Strafe the camera (side to side motion)
+void CCamera::RotateAroundPoint(const float &distance, const glm::vec3 &viewpoint, const float &angle, const float &y){
+
+    // https://stackoverflow.com/questions/19990146/orbiting-object-around-orbiting-object
+
+    float radian = glm::radians(angle);
+
+    float camX = viewpoint.x + (distance * cosf(radian));
+    float camY = y;
+    float camZ = viewpoint.z + (distance * sinf(radian));
+
+    // Set the camera position and lookat point
+    glm::vec3 position = glm::vec3(camX, camY, camZ);   // Camera position
+    glm::vec3 look = viewpoint; // Look at point
+    glm::vec3 upV = glm::vec3(0.0f, 1.0f, 0.0f); // Up vector
+
+    Set(position, look, upV);
+
+}
+
+glm::vec3 CCamera::PositionInFrontOfCamera( const GLfloat &distance){
+    return GetPosition() + (GetForward() * distance);
+}
+
+// Strafe the camera (side to side motion) (Left - Right Motion)
 void CCamera::Strafe(double direction)
 {
-	float speed = (float) (m_speed * direction);
+    float speed = (float) (m_speedRatio * direction);
 
-	m_position.x = m_position.x + m_strafeVector.x * speed;
-	m_position.z = m_position.z + m_strafeVector.z * speed;
+    m_position.x = m_position.x + m_strafeVector.x * speed;
+    m_position.z = m_position.z + m_strafeVector.z * speed;
 
-	m_view.x = m_view.x + m_strafeVector.x * speed;
-	m_view.z = m_view.z + m_strafeVector.z * speed;
+    UpdateCameraVectors();
 }
 
 // Advance the camera (forward / backward motion)
 void CCamera::Advance(double direction)
 {
-	float speed = (float) (m_speed * direction);
+    float speed = (float) (m_speedRatio * direction);
 
-	glm::vec3 view = glm::normalize(m_view - m_position);
-	m_position = m_position + view * speed;
-	m_view = m_view + view * speed;
+    glm::vec3 view = glm::normalize(m_view - m_position);
+    m_position = m_position + view * speed;
 
+    UpdateCameraVectors();
 }
 
 // Update the camera to respond to mouse motion for rotations and keyboard for translation
-void CCamera::Update(double dt)
+void CCamera::Update(GLFWwindow *window, const double &dt, const int &key, const bool &moveCamera, const bool &enableMouse)
 {
-	glm::vec3 vector = glm::cross(m_view - m_position, m_upVector);
-	m_strafeVector = glm::normalize(vector);
+    glm::vec3 vector = glm::cross(m_view - m_position, m_up);
+    m_strafeVector = glm::normalize(vector);
 
-	SetViewByMouse();
-	TranslateByKeyboard(dt);
+    if (moveCamera){
+        SetViewByMouse(window, enableMouse);
+        TranslateByKeyboard(dt, key);
+    }
 }
 
 // Update the camera to respond to key presses for translation
-void CCamera::TranslateByKeyboard(double dt)
+void CCamera::TranslateByKeyboard(const double &dt, const int &keyPressed)
 {
-	if (GetKeyState(VK_UP) & 0x80 || GetKeyState('W') & 0x80) {
-		Advance(1.0*dt);
-	}
+    if (keyPressed != -1){
 
-	if (GetKeyState(VK_DOWN) & 0x80 || GetKeyState('S') & 0x80) {
-		Advance(-1.0*dt);
-	}
+        // FORWARD
+        if (keyPressed == GLFW_KEY_UP || keyPressed == GLFW_KEY_W ) {
+            Advance(m_movementSpeed * dt);
+        }
 
-	if (GetKeyState(VK_LEFT) & 0x80 || GetKeyState('A') & 0x80) {
-		Strafe(-1.0*dt);
-	}
+        // BACKWARD
+        if (keyPressed == GLFW_KEY_DOWN || keyPressed == GLFW_KEY_S ) {
+            Advance(-m_movementSpeed * dt);
+        }
 
-	if (GetKeyState(VK_RIGHT) & 0x80 || GetKeyState('D') & 0x80) {
-		Strafe(1.0*dt);
-	}
+        // LEFT
+        if (keyPressed == GLFW_KEY_LEFT || keyPressed == GLFW_KEY_A ) {
+            Strafe(-m_movementSpeed * dt);
+        }
+
+        //RIGHT
+        if (keyPressed == GLFW_KEY_RIGHT || keyPressed == GLFW_KEY_D ) {
+            Strafe(m_movementSpeed * dt);
+        }
+    }
 }
+
+// Set the camera perspective projection matrix to produce a view frustum with a specific field of view, aspect ratio,
+// and near / far clipping planes
+
+void CCamera::SetPerspectiveProjectionMatrix(const GLfloat &fieldOfView, const GLfloat &aspectRatio, const GLfloat &nearClippingPlane, const GLfloat &farClippingPlane){
+    this->m_fieldOfView = fieldOfView;
+    this->m_perspectiveProjectionMatrix = glm::perspective(fieldOfView, aspectRatio, nearClippingPlane, farClippingPlane);
+}
+
+// The the camera orthographic projection matrix to match the width and height passed in
+void CCamera::SetOrthographicProjectionMatrix(const GLfloat &width, const GLfloat height, const GLfloat &zNear, const GLfloat &zFar){
+    this->m_orthographicProjectionMatrix = glm::ortho(0.0f, width, 0.0f, height, zNear, zFar);
+}
+
+void CCamera::SetOrthographicProjectionMatrix(float value, float zNear, float zFar)
+{
+    m_orthographicProjectionMatrix = glm::ortho(-value, value, -value, value, zNear, zFar);
+}
+
+void CCamera::SetOrthographicProjectionMatrix(int width, int height)
+{
+    m_orthographicProjectionMatrix = glm::ortho(0.0f, float(width), 0.0f, float(height));
+}
+
 // Return the camera position
 glm::vec3 CCamera::GetPosition() const
 {
@@ -134,12 +288,6 @@ glm::vec3 CCamera::GetPosition() const
 glm::vec3 CCamera::GetView() const
 {
 	return m_view;
-}
-
-// Return the camera up vector
-glm::vec3 CCamera::GetUpVector() const
-{
-	return m_upVector;
 }
 
 // Return the camera strafe vector
@@ -160,23 +308,14 @@ glm::mat4* CCamera::GetOrthographicProjectionMatrix()
 	return &m_orthographicProjectionMatrix;
 }
 
-// Set the camera perspective projection matrix to produce a view frustum with a specific field of view, aspect ratio, 
-// and near / far clipping planes
-void CCamera::SetPerspectiveProjectionMatrix(float fov, float aspectRatio, float nearClippingPlane, float farClippingPlane)
-{
-	m_perspectiveProjectionMatrix = glm::perspective(fov, aspectRatio, nearClippingPlane, farClippingPlane);
-}
-
-// The the camera orthographic projection matrix to match the width and height passed in
-void CCamera::SetOrthographicProjectionMatrix(int width, int height)
-{
-	m_orthographicProjectionMatrix = glm::ortho(0.0f, float(width), 0.0f, float(height));
-}
-
 // Get the camera view matrix
 glm::mat4 CCamera::GetViewMatrix()
 {
-	return glm::lookAt(m_position, m_view, m_upVector);
+	return m_viewMatrix;
+}
+
+glm::mat4 CCamera::GetViewProjection() const {
+    return this->m_perspectiveProjectionMatrix * this->m_viewMatrix;
 }
 
 // The normal matrix is used to transform normals to eye coordinates -- part of lighting calculations
@@ -184,4 +323,47 @@ glm::mat3 CCamera::ComputeNormalMatrix(const glm::mat4 &modelViewMatrix)
 {
 	return glm::transpose(glm::inverse(glm::mat3(modelViewMatrix)));
 }
+
+// http://roy-t.nl/2010/03/04/getting-the-left-forward-and-back-vectors-from-a-view-matrix-directly.html
+// Because a ViewMatrix is an inverse transposed matrix, viewMatrix.Left is not the real left
+// These methods returns the real .Left, .Right, .Up, .Down, .Forward, .Backward
+// See: http://forums.xna.com/forums/t/48799.aspx
+
+// Return the camera left vector
+glm::vec3 CCamera::GetLeft()
+{
+    return m_left;
+}
+
+// Return the camera right vector
+glm::vec3 CCamera::GetRight()
+{
+    return m_right;
+}
+
+// Return the camera up vector
+glm::vec3 CCamera::GetUp()
+{
+    return m_up;
+}
+
+// Return the camera down vector
+glm::vec3 CCamera::GetDown()
+{
+    return m_down;
+}
+
+// Return the camera forward vector
+glm::vec3 CCamera::GetForward()
+{
+    return m_front;
+}
+
+// Return the camera backward vector
+glm::vec3 CCamera::GetBackward()
+{
+    return m_back;
+}
+
+
 

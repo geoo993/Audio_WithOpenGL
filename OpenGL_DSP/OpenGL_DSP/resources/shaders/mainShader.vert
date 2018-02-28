@@ -3,10 +3,13 @@
 // Structure for matrices
 uniform struct Matrices
 {
-	mat4 projMatrix;
-	mat4 modelViewMatrix; 
-	mat3 normalMatrix;
+    mat4 projMatrix;
+    mat4 modelMatrix;
+    mat4 viewMatrix;
+    mat3 normalMatrix;
+    mat4 inverseViewMatrix;
 } matrices;
+
 
 // Structure holding light information:  its position as well as ambient, diffuse, and specular colours
 struct LightInfo
@@ -67,15 +70,17 @@ vec3 PhongModel(vec4 eyePosition, vec3 eyeNorm)
 void main()
 {	
 
+    vec4 position = vec4(inPosition, 1.0f);
+
 // Save the world position for rendering the skybox
 	worldPosition = inPosition;
 
-	// Transform the vertex spatial position using 
-	gl_Position = matrices.projMatrix * matrices.modelViewMatrix * vec4(inPosition, 1.0f);
+	// Transform the vertex spatial position using
+    gl_Position = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
 	
 	// Get the vertex normal and vertex position in eye coordinates
 	vec3 vEyeNorm = normalize(matrices.normalMatrix * inNormal);
-	vec4 vEyePosition = matrices.modelViewMatrix * vec4(inPosition, 1.0f);
+	vec4 vEyePosition = matrices.viewMatrix * matrices.modelMatrix * position;
 		
 	// Apply the Phong model to compute the vertex colour
 	vColour = PhongModel(vEyePosition, vEyeNorm);

@@ -1,7 +1,5 @@
-#include "Common.h"
 
-#include "skybox.h"
-
+#include "Skybox.h"
 
 CSkybox::CSkybox()
 {}
@@ -9,17 +7,24 @@ CSkybox::CSkybox()
 CSkybox::~CSkybox()
 {}
 
-
 // Create a skybox of a given size with six textures
-void CSkybox::Create(float size)
+void CSkybox::Create(const float &size, const std::string &path, const unsigned int &skyboxNumber)
 {
 
-	m_cubemapTexture.Create("resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_rt.jpg", "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_lf.jpg",
-		"resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_up.jpg", "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_dn.jpg",
-		"resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_bk.jpg", "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_ft.jpg");
+    std::vector<std::string> names = {
+        "darkland"
+    };
 
-	
-	
+    unsigned int ind = skyboxNumber % names.size();
+
+    m_cubemapTexture.Create(
+                            path+"/skyboxes/"+names[ind]+"/flipped/_rt.jpg", //right
+                            path+"/skyboxes/"+names[ind]+"/flipped/_lf.jpg", //left
+                            path+"/skyboxes/"+names[ind]+"/flipped/_up.jpg", //up
+                            path+"/skyboxes/"+names[ind]+"/flipped/_dn.jpg", //down
+                            path+"/skyboxes/"+names[ind]+"/flipped/_bk.jpg", //back
+                            path+"/skyboxes/"+names[ind]+"/flipped/_ft.jpg"); //front
+
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
 
@@ -82,16 +87,20 @@ void CSkybox::Create(float size)
 }
 
 // Render the skybox
-void CSkybox::Render(int textureUnit)
+void CSkybox::Render(const int &textureUnit)
 {
-	glDepthMask(0);
+	glDepthMask(GL_FALSE);
 	glBindVertexArray(m_vao);
 	m_cubemapTexture.Bind(textureUnit);
 	for (int i = 0; i < 6; i++) {
 		//m_textures[i].Bind();
 		glDrawArrays(GL_TRIANGLE_STRIP, i*4, 4);
 	}
-	glDepthMask(1);
+	glDepthMask(GL_TRUE);
+}
+
+void CSkybox::BindSkybox(const int &textureUnit){
+    m_cubemapTexture.Bind(textureUnit);
 }
 
 // Release the storage assocaited with the skybox

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Texture.h"
-#include "vertexBufferObject.h"
+#include "VertexBufferObject.h"
 
 class CCubemap
 {
@@ -10,7 +10,6 @@ public:
 	void Release();
 	bool LoadTexture(string filename, BYTE **bmpBytes, int &iWidth, int &iHeight);
 	void Bind(int iTextureUnit = 0);
-
 
 private:
 	GLuint m_uiVAO;

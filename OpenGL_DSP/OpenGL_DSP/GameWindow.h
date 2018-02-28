@@ -1,52 +1,52 @@
 #pragma once
 
-//#include <windows.h>
 #include "Common.h"
 
-LRESULT CALLBACK WinProc(HWND hWnd,UINT uMsg, WPARAM wParam, LPARAM lParam);
-
-class GameWindow {
+class CGameWindow {
 public:
-	static GameWindow& GetInstance();
-	GameWindow();
 
-	enum {
-		SCREEN_WIDTH = 800,
-		SCREEN_HEIGHT = 600,
-	};
+	CGameWindow();
+    ~CGameWindow();
 
-	HDC Init(HINSTANCE hinstance);
-	void Deinit();
+    void Init(const string &appName = "OpenGL Window",
+              const int &w = SCREEN_WIDTH,
+              const int &h = SCREEN_HEIGHT,
+              const bool &fullscreen = false);
 
-	void SetDimensions(RECT dimensions) {m_dimensions = dimensions;}
-	RECT GetDimensions() {return m_dimensions;}
+    void CreateGameWindow(const string &appName);
+    bool InitGLEW();
+    bool InitOpenGL();
 
-	bool Fullscreen() const { return m_fullscreen; }
+    void Set(const string &appName, const int &w, const int &h, const bool &fullscreen);
 
-	HDC Hdc() const { return m_hdc; }
-	HINSTANCE Hinstance() const { return m_hinstance; }
-	HGLRC Hrc() const { return m_hrc; }
-	HWND  Hwnd() const { return m_hwnd; }
+	bool IsFullscreen() const { return m_fullscreen; }
+    float Ratio() { return (float)m_width / m_height; }
+    int Width() const { return m_width; }
+    int Height()  const { return m_height; }
+    GLFWwindow * Window() const { return m_window; }
 
+    void SetInputs(const GLFWkeyfun &cbfunKey, const GLFWmousebuttonfun &cbfunMouse);
+    void SetCursorVisible( const bool &isVisible );
+    void CenterTheWindow();
+    void PreRendering();
+    void PostRendering();
+    void SetViewport();
+    void SetViewport(const int & width, const int & height);
+    bool ShouldClose();
+    void ClearBuffers();
+    void SwapBuffers();
+    void DestroyWindow();
+    
 private:
 	
-	GameWindow(const GameWindow&);
-	void operator=(const GameWindow&);
-
-	void CreateGameWindow(string title);
-	void InitOpenGL();
-	bool InitGLEW();
-	void RegisterSimpleOpenGLClass(HINSTANCE hInstance);
+    CGameWindow(const CGameWindow &other);
+    CGameWindow &operator=(const CGameWindow &other);
 
 	bool  m_fullscreen;
 
-	HDC   m_hdc;
-	HINSTANCE m_hinstance;
-	HGLRC m_hrc;
-	HWND  m_hwnd;
+    int m_width, m_height;
 
-	LPSTR m_class;
-	RECT  m_dimensions;
+    GLFWwindow * m_window = nullptr;
 
 	string m_appName;
 

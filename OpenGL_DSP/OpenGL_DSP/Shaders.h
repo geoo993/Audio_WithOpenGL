@@ -2,7 +2,6 @@
 
 #include "Common.h"
 
-
 // A class that provides a wrapper around an OpenGL shader
 class CShader
 {
@@ -16,11 +15,11 @@ public:
 	bool GetLinesFromFile(string sFile, bool bIncludePart, vector<string>* vResult);
 
 	bool IsLoaded();
-	UINT GetShaderID();
+	GLuint GetShaderID();
 
 
 private:
-	UINT m_uiShader; // ID of shader
+	GLuint m_uiShader; // ID of shader
 	int m_iType; // GL_VERTEX_SHADER, GL_FRAGMENT_SHADER...
 	bool m_bLoaded; // Whether shader was loaded and compiled
 };
@@ -31,6 +30,7 @@ class CShaderProgram
 {
 public:
 	CShaderProgram();
+    ~CShaderProgram();
 
 	void CreateProgram();
 	void DeleteProgram();
@@ -40,8 +40,11 @@ public:
 
 	void UseProgram();
 
-	UINT GetProgramID();
+	GLuint GetProgramID();
 
+    // Setting Uniform Buffer Objects
+    void SetUniformBlock(std::string uniformName, const int &bindingPoint);
+    
 	// Setting vectors
 	void SetUniform(string sName, glm::vec2* vVectors, int iCount = 1);
 	void SetUniform(string sName, const glm::vec2 vVector);
@@ -68,6 +71,6 @@ public:
 
 
 private:
-	UINT m_uiProgram; // ID of program
+	GLuint m_uiProgram; // ID of program
 	bool m_bLinked; // Whether program was linked and is ready to use
 };
