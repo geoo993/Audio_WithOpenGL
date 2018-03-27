@@ -42,6 +42,10 @@
 		C71D16962045F554002E2A43 /* libfreetype.6.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677B2045A72B00230B98 /* libfreetype.6.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C71D16972045F554002E2A43 /* libGLEW.2.1.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C77367792045A72B00230B98 /* libGLEW.2.1.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C71D16982045F554002E2A43 /* libglfw.3.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677E2045A72B00230B98 /* libglfw.3.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C73EE4442069AF4C003CD8EC /* Horse.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4422069AF4B003CD8EC /* Horse.wav */; };
+		C73EE4492069C349003CD8EC /* cw_amen12_137.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4462069C348003CD8EC /* cw_amen12_137.wav */; };
+		C73EE44A2069C349003CD8EC /* drone.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4472069C348003CD8EC /* drone.wav */; };
+		C73EE44B2069C349003CD8EC /* Helicopter.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4482069C349003CD8EC /* Helicopter.wav */; };
 		C77367782045A39000230B98 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C77367762045A39000230B98 /* OpenGL.framework */; };
 		C773677F2045A72B00230B98 /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C77367792045A72B00230B98 /* libGLEW.2.1.0.dylib */; };
 		C77367802045A72B00230B98 /* libfreeimage.3.17.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773677A2045A72B00230B98 /* libfreeimage.3.17.0.dylib */; };
@@ -119,6 +123,11 @@
 		C71D16872045C9BF002E2A43 /* HighResolutionTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HighResolutionTimer.cpp; sourceTree = "<group>"; };
 		C71D168B2045EBAC002E2A43 /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameManager.cpp; sourceTree = "<group>"; };
 		C71D168C2045EBAC002E2A43 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
+		C73EE4422069AF4B003CD8EC /* Horse.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Horse.wav; sourceTree = "<group>"; };
+		C73EE4462069C348003CD8EC /* cw_amen12_137.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cw_amen12_137.wav; sourceTree = "<group>"; };
+		C73EE4472069C348003CD8EC /* drone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = drone.wav; sourceTree = "<group>"; };
+		C73EE4482069C349003CD8EC /* Helicopter.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Helicopter.wav; sourceTree = "<group>"; };
+		C73EE44C2069CCF3003CD8EC /* Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Extensions.h; sourceTree = "<group>"; };
 		C77367752045A39000230B98 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		C77367762045A39000230B98 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		C77367792045A72B00230B98 /* libGLEW.2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.1.0.dylib; path = Libraries/libGLEW.2.1.0.dylib; sourceTree = "<group>"; };
@@ -163,12 +172,6 @@
 		C7F6ED172045AC5D0038F48F /* dirtpile01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dirtpile01.jpg; sourceTree = "<group>"; };
 		C7F6ED182045AC5D0038F48F /* Tile41a.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Tile41a.jpg; sourceTree = "<group>"; };
 		C7F6ED192045AC5D0038F48F /* grassfloor01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = grassfloor01.jpg; sourceTree = "<group>"; };
-		C7F6ED1C2045AC5D0038F48F /* barrel02.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = barrel02.jpg; sourceTree = "<group>"; };
-		C7F6ED1D2045AC5D0038F48F /* barrel02.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = barrel02.obj; sourceTree = "<group>"; };
-		C7F6ED1E2045AC5D0038F48F /* barrel02.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = barrel02.mtl; sourceTree = "<group>"; };
-		C7F6ED202045AC5D0038F48F /* horse2.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = horse2.mtl; sourceTree = "<group>"; };
-		C7F6ED212045AC5D0038F48F /* horse2.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = horse2.obj; sourceTree = "<group>"; };
-		C7F6ED222045AC5D0038F48F /* horse.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = horse.bmp; sourceTree = "<group>"; };
 		C7F6ED242045AC5D0038F48F /* Boing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Boing.wav; sourceTree = "<group>"; };
 		C7F6ED252045AC5D0038F48F /* DST-Garote.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "DST-Garote.mp3"; sourceTree = "<group>"; };
 		C7F6ED272045AC5D0038F48F /* textShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = textShader.frag; sourceTree = "<group>"; };
@@ -274,6 +277,7 @@
 		C77CCE5B2045A03800F3C942 /* OpenGL_DSP */ = {
 			isa = PBXGroup;
 			children = (
+				C73EE44C2069CCF3003CD8EC /* Extensions.h */,
 				C705B090204622CD00F0E13D /* Transform.cpp */,
 				C705B0712045FC4200F0E13D /* Transform.h */,
 				C71D168B2045EBAC002E2A43 /* GameManager.cpp */,
@@ -341,35 +345,17 @@
 		C7F6ED1A2045AC5D0038F48F /* models */ = {
 			isa = PBXGroup;
 			children = (
-				C7F6ED1B2045AC5D0038F48F /* Barrel */,
-				C7F6ED1F2045AC5D0038F48F /* Horse */,
 			);
 			path = models;
-			sourceTree = "<group>";
-		};
-		C7F6ED1B2045AC5D0038F48F /* Barrel */ = {
-			isa = PBXGroup;
-			children = (
-				C7F6ED1C2045AC5D0038F48F /* barrel02.jpg */,
-				C7F6ED1D2045AC5D0038F48F /* barrel02.obj */,
-				C7F6ED1E2045AC5D0038F48F /* barrel02.mtl */,
-			);
-			path = Barrel;
-			sourceTree = "<group>";
-		};
-		C7F6ED1F2045AC5D0038F48F /* Horse */ = {
-			isa = PBXGroup;
-			children = (
-				C7F6ED202045AC5D0038F48F /* horse2.mtl */,
-				C7F6ED212045AC5D0038F48F /* horse2.obj */,
-				C7F6ED222045AC5D0038F48F /* horse.bmp */,
-			);
-			path = Horse;
 			sourceTree = "<group>";
 		};
 		C7F6ED232045AC5D0038F48F /* audio */ = {
 			isa = PBXGroup;
 			children = (
+				C73EE4462069C348003CD8EC /* cw_amen12_137.wav */,
+				C73EE4472069C348003CD8EC /* drone.wav */,
+				C73EE4482069C349003CD8EC /* Helicopter.wav */,
+				C73EE4422069AF4B003CD8EC /* Horse.wav */,
 				C7F6ED242045AC5D0038F48F /* Boing.wav */,
 				C7F6ED252045AC5D0038F48F /* DST-Garote.mp3 */,
 			);
@@ -471,9 +457,12 @@
 				C705B08420460E1700F0E13D /* _ft.jpg in Resources */,
 				C705B09320462E5000F0E13D /* Arial.ttf in Resources */,
 				C705B08F20460E1700F0E13D /* _up.jpg in Resources */,
+				C73EE4442069AF4C003CD8EC /* Horse.wav in Resources */,
 				C71466162046D694008BBBAA /* fontShader.frag in Resources */,
+				C73EE4492069C349003CD8EC /* cw_amen12_137.wav in Resources */,
 				C705B0742045FD9D00F0E13D /* SkyBoxShader.frag in Resources */,
 				C705B08A20460E1700F0E13D /* _rt.jpg in Resources */,
+				C73EE44A2069C349003CD8EC /* drone.wav in Resources */,
 				C705B08820460E1700F0E13D /* _ft.jpg in Resources */,
 				C705B08620460E1700F0E13D /* _rt.jpg in Resources */,
 				C705B08D20460E1700F0E13D /* _up.jpg in Resources */,
@@ -484,6 +473,7 @@
 				C705B08920460E1700F0E13D /* _dn.jpg in Resources */,
 				C705B08C20460E1700F0E13D /* _lf.jpg in Resources */,
 				C71466152046D694008BBBAA /* fontShader.vert in Resources */,
+				C73EE44B2069C349003CD8EC /* Helicopter.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,6 +22,8 @@
 
 #include "Texture.h"
 #include "Transform.h"
+#include "Shaders.h"
+#include "Camera.h"
 
 #define INVALID_OGL_VALUE 0xFFFFFFFF
 #define SAFE_DELETE(p) if (p) { delete p; p = NULL; }
@@ -48,6 +50,22 @@ struct Vertex
 };
 
 
+struct MeshEntry {
+
+    MeshEntry();
+
+    ~MeshEntry();
+
+    void Init(const std::vector<Vertex>& Vertices,
+              const std::vector<GLuint>& Indices,
+              const std::vector<glm::mat4> &mMatrices);
+    GLuint vbo;
+    GLuint mbo;
+    GLuint ibo;
+    GLuint m_NumIndices;
+    GLuint m_MaterialIndex;
+};
+
 class COpenAssetImportMesh
 {
 public:
@@ -59,7 +77,7 @@ public:
                            const GLuint &instanceCount = 0,
                            const glm::vec3 &center = glm::vec3(0.0f),
                            const float &scale = 0.0f);
-    void Render();
+    void Render(CShaderProgram *pProgram, CCamera *pCamera, GLfloat rotation, GLint helicopterRotor);
 
     CTransform transform;
 
@@ -72,21 +90,8 @@ private:
 
 #define INVALID_MATERIAL 0xFFFFFFFF
 
-    struct MeshEntry {
-        MeshEntry();
 
-        ~MeshEntry();
-
-        void Init(const std::vector<Vertex>& Vertices,
-                  const std::vector<GLuint>& Indices,
-                  const std::vector<glm::mat4> &mMatrices);
-        GLuint vbo;
-        GLuint mbo;
-        GLuint ibo;
-        GLuint m_NumIndices;
-        GLuint m_MaterialIndex;
-    };
-
+private:
     vector<MeshEntry> m_Meshes; // meshes of the current model
     vector<CTexture*> m_Textures; // mesh textures of the current model
     vector<glm::mat4> m_ModelMatrixInstances; // number of instances of this model

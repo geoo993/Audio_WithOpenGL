@@ -274,25 +274,25 @@ void CGameWindow::PreRendering(){
 
     // Clear the buffers and enable depth testing (z-buffering)
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f); // Set background color to black
-    glClear (GL_COLOR_BUFFER_BIT);// | GL_DEPTH_BUFFER_BIT);
 
-    //glEnable(GL_MULTISAMPLE);
+
+    glEnable(GL_MULTISAMPLE);
 
     // https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_Examples.html
-    //glClearDepth(1.0f);          // Set background depth to farthest
-    //glShadeModel(GL_SMOOTH);   // Enable smooth shading
+    glClearDepth(1.0f);          // Set background depth to farthest
+    glShadeModel(GL_SMOOTH);   // Enable smooth shading
 
-    //glEnable(GL_DEPTH_TEST);
-    //glDepthFunc(GL_LESS);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
     glEnable(GL_CULL_FACE);
-    //glPolygonOffset(1.0f, 0.0f);
+    glPolygonOffset(1.0f, 0.0f);
 
-    //glCullFace(GL_BACK);
-    //glFrontFace(GL_CCW);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
 
 }
 
@@ -306,7 +306,7 @@ void CGameWindow::ClearBuffers(){
     // Clear the buffers and enable depth testing (z-buffering) or stencil testing
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     //// CLEAR Buffers, The default clear value for the depth is 1.0f, which is equal to the depth of your far clipping plane
-    glClear(GL_COLOR_BUFFER_BIT);// | GL_DEPTH_BUFFER_BIT);// | GL_STENCIL_BUFFER_BIT); ////<-- CLEAR WINDOW
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);// | GL_STENCIL_BUFFER_BIT); ////<-- CLEAR WINDOW
     //glClearDepth(1.0f); // same as glClear, we are simply specificaly clearing the depthbuffer
 
 }

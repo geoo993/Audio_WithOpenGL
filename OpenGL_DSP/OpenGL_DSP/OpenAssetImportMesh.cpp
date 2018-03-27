@@ -22,7 +22,7 @@
 
 #include "OpenAssetImportMesh.h"
 
-COpenAssetImportMesh::MeshEntry::MeshEntry()
+MeshEntry::MeshEntry()
 {
     vbo = INVALID_OGL_VALUE;
     mbo = INVALID_OGL_VALUE;
@@ -31,7 +31,7 @@ COpenAssetImportMesh::MeshEntry::MeshEntry()
     m_MaterialIndex = INVALID_MATERIAL;
 };
 
-COpenAssetImportMesh::MeshEntry::~MeshEntry()
+MeshEntry::~MeshEntry()
 {
     if (vbo != INVALID_OGL_VALUE)
         glDeleteBuffers(1, &vbo);
@@ -44,7 +44,7 @@ COpenAssetImportMesh::MeshEntry::~MeshEntry()
 
 }
 
-void COpenAssetImportMesh::MeshEntry::Init(
+void MeshEntry::Init(
                                            const std::vector<Vertex>& Vertices,
                                            const std::vector<GLuint>& Indices,
                                            const std::vector<glm::mat4> &mMatrices)
@@ -246,7 +246,7 @@ void COpenAssetImportMesh::InitMesh(GLuint Index, const aiMesh* paiMesh)
 
     for (unsigned int i = 0 ; i < paiMesh->mNumFaces ; i++) {
         const aiFace& Face = paiMesh->mFaces[i];
-        //assert(Face.mNumIndices == 3);
+        //sassert(Face.mNumIndices == 3);
         Indices.push_back(Face.mIndices[0]);
         Indices.push_back(Face.mIndices[1]);
         Indices.push_back(Face.mIndices[2]);
@@ -291,7 +291,6 @@ bool COpenAssetImportMesh::InitMaterials(const aiScene* pScene, const std::strin
             Ret = false;
             m_Textures[i] = CreateColorTexture(AI_MATKEY_COLOR_DIFFUSE, pMaterial);
         }
-
     }
 
     return Ret;
@@ -377,9 +376,11 @@ std::vector<glm::mat4> COpenAssetImportMesh::GetModelMatrixInstancesData(){
     return m;
 }
 
-void COpenAssetImportMesh::Render()
+void COpenAssetImportMesh::Render(CShaderProgram *pProgram, CCamera *pCamera, GLfloat rotation, GLint helicopterRotor)
 {
 
+
+    //cout << m_Meshes.size() << " " << helicopterRotor << endl;
 
     for (unsigned int i = 0 ; i < m_Meshes.size() ; i++) {
         glBindVertexArray(m_vao);
@@ -435,6 +436,20 @@ void COpenAssetImportMesh::Render()
         glEnableVertexAttribArray(4);
         glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)44);//(void*)(sizeof(glm::vec3)+sizeof(glm::vec2)+sizeof(glm::vec3)+sizeof(glm::vec3)));
 
+        CTransform transform;
+        transform.SetIdentity();
+        transform.Translate(glm::vec3(0.0f, 20.0f, 0.0f));
+
+        if (i == 3 ){
+            transform.Rotate(glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(rotation));
+        }
+
+        transform.Scale(0.5f);
+
+        glm::mat4 helicopterPart = transform.GetModel();
+        pProgram->SetUniform("matrices.modelMatrix", helicopterPart);
+        pProgram->SetUniform("matrices.normalMatrix", pCamera->ComputeNormalMatrix
+                                 (helicopterPart));
 
         glBindBuffer(GL_ARRAY_BUFFER, m_Meshes[i].mbo);
 
@@ -457,7 +472,6 @@ void COpenAssetImportMesh::Render()
         glVertexAttribDivisor(6, 1);
         glVertexAttribDivisor(7, 1);
         glVertexAttribDivisor(8, 1);
-
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Meshes[i].ibo);
 

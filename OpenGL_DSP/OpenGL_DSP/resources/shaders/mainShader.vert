@@ -42,8 +42,6 @@ layout (location = 2) in vec3 inNormal;
 out vec3 vColour;	// Colour computed using reflectance model
 out vec2 vTexCoord;	// Texture coordinate
 
-out vec3 worldPosition;	// used for skybox
-
 // This function implements the Phong shading model
 // The code is based on the OpenGL 4.0 Shading Language Cookbook, Chapter 2, pp. 62 - 63, with a few tweaks. 
 // Please see Chapter 2 of the book for a detailed discussion.
@@ -72,20 +70,17 @@ void main()
 
     vec4 position = vec4(inPosition, 1.0f);
 
-// Save the world position for rendering the skybox
-	worldPosition = inPosition;
+    // Get the vertex normal and vertex position in eye coordinates
+    vec3 vEyeNorm = normalize(matrices.normalMatrix * inNormal);
+    vec4 vEyePosition = matrices.viewMatrix * matrices.modelMatrix * position;
 
-	// Transform the vertex spatial position using
+    // Apply the Phong model to compute the vertex colour
+    vColour = PhongModel(vEyePosition, vEyeNorm);
+
+    // Pass through the texture coordinate
+    vTexCoord = inCoord;
+
+    // Transform the vertex spatial position using
     gl_Position = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
-	
-	// Get the vertex normal and vertex position in eye coordinates
-	vec3 vEyeNorm = normalize(matrices.normalMatrix * inNormal);
-	vec4 vEyePosition = matrices.viewMatrix * matrices.modelMatrix * position;
-		
-	// Apply the Phong model to compute the vertex colour
-	vColour = PhongModel(vEyePosition, vEyeNorm);
-	
-	// Pass through the texture coordinate
-	vTexCoord = inCoord;
 } 
 	

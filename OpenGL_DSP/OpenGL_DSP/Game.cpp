@@ -36,9 +36,7 @@ Game::Game()
 	m_pCamera = nullptr;
 	m_pPlanarTerrain = nullptr;
 	m_pFtFont = nullptr;
-	m_pBarrelMesh = nullptr;
-	m_pHorseMesh = nullptr;
-	m_pSphere = nullptr;
+    m_pHelicopter = nullptr;
 	m_pAudio = nullptr;
     m_audioFiles.reserve(5);
 
@@ -71,9 +69,7 @@ Game::~Game()
 	delete m_pSkybox;
 	delete m_pPlanarTerrain;
 	delete m_pFtFont;
-	delete m_pBarrelMesh;
-	delete m_pHorseMesh;
-	delete m_pSphere;
+    delete m_pHelicopter;
 	delete m_pAudio;
 
 	if (m_pShaderPrograms != nullptr) {
@@ -95,9 +91,7 @@ void Game::Initialise()
 	m_pShaderPrograms = new vector <CShaderProgram *>;
 	m_pPlanarTerrain = new CPlane;
 	m_pFtFont = new CFreeTypeFont;
-	m_pBarrelMesh = new COpenAssetImportMesh;
-	m_pHorseMesh = new COpenAssetImportMesh;
-	m_pSphere = new CSphere;
+	m_pHelicopter = new COpenAssetImportMesh;
 	m_pAudio = new CAudio;
 
     // Set the orthographic and perspective projection matrices based on the image size
@@ -192,23 +186,20 @@ void Game::LoadFromResources(const std::string &path)
     //m_pFtFont->LoadSystemFont(path+"/fonts/Candy Script.ttf", 48);
     m_pFtFont->LoadFont(path+"/fonts/Candy Script.ttf", 48);
 
-	// Load some meshes in OBJ format
-	m_pBarrelMesh->Load(path+"/models/Barrel/Barrel02.obj");  // Downloaded from http://www.psionicgames.com/?page_id=24 on 24 Jan 2013
-	m_pHorseMesh->Load(path+"/models/Horse/Horse2.obj");  // Downloaded from http://opengameart.org/content/horse-lowpoly on 24 Jan 2013
+    m_pHelicopter->Load(path+"/models/Mi-28N_Havoc_BF3/havoc.obj");
 
-	// Create a sphere
-	m_pSphere->Create(path+"/textures/", "dirtpile01.jpg", 25, 25);  // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
-
-    m_audioFiles.push_back("Kai_Engel_-_03_-_Brooks.mp3");
-    m_audioFiles.push_back("Boing.wav"); // Royalty free sound from //freesound.org
+    m_audioFiles.push_back("cw_amen12_137.wav");
+    m_audioFiles.push_back("Boing.wav"); // Royalty free sound from //freesound.org // Custom DSP
     m_audioFiles.push_back("DST-Garote.mp3"); // Royalty free music from http://www.nosoapradio.us/
+    m_audioFiles.push_back("Horse.wav"); // 3D Audio
+    m_audioFiles.push_back("drone.wav");
+    m_audioFiles.push_back("Helicopter.wav");
 
     //// Initialise audio and play background music
     m_pAudio->Initialise();
-    string audio = path+"/audio/"+m_audioFiles[rand() % 3];
-    m_pAudio->LoadMusicStream(audio.c_str());
-    m_pAudio->PlayMusicStream();
-
+    m_pAudio->LoadEventSound((path+"/audio/"+m_audioFiles[3]).c_str());
+    m_pAudio->LoadMusicStreamUsingLowPassFilter((path+"/audio/"+m_audioFiles[5]).c_str());
+    m_pAudio->PlayMusicStreamUsingFilter();
 }
 
 void Game::DisplayFrameRate() {
@@ -257,6 +248,8 @@ void Game::DisplayFrameRate() {
         m_pFtFont->Render(pFontProgram, 20, height - 40, 20, "FPS: %d", m_framesPerSecond);
         //m_pFtFont->Render(pFontProgram, "FPS: " + std::to_string(m_framesPerSecond), 20, height - 40, 0.5f);
 
+
+        glEnable(GL_DEPTH_TEST);
     }
 }
 
@@ -286,25 +279,20 @@ void Game::Render()
     glDepthFunc(GL_LESS);
 
 
-
-	// Use the main shader program 
+	// Use the main shader program
 	CShaderProgram *pMainProgram = (*m_pShaderPrograms)[0];
 	pMainProgram->UseProgram();
 	pMainProgram->SetUniform("bUseTexture", true);
 	pMainProgram->SetUniform("sampler0", 0);
-	// Note: cubemap and non-cubemap textures should not be mixed in the same texture unit.  Setting unit 10 to be a cubemap texture.
-	pMainProgram->SetUniform("CubeMapTex", CUBEMAPTEXTUREUNIT);
-
-    glm::mat4 viewMatrix = m_pCamera->GetViewMatrix();
 
 	// Set the projection matrix
 	pMainProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
-    pMainProgram->SetUniform("matrices.viewMatrix", viewMatrix);
+    pMainProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
 
 	
 	// Set light and materials in main shader program
 	glm::vec4 lightPosition1 = glm::vec4(-100, 100, -100, 1); // Position of light source *in world coordinates*
-	pMainProgram->SetUniform("light1.position", viewMatrix * lightPosition1); // Position of light source *in eye coordinates*
+	pMainProgram->SetUniform("light1.position", m_pCamera->GetViewMatrix() * lightPosition1); // Position of light source *in eye coordinates*
 	pMainProgram->SetUniform("light1.La", glm::vec3(1.0f));		// Ambient colour of light
 	pMainProgram->SetUniform("light1.Ld", glm::vec3(1.0f));		// Diffuse colour of light
 	pMainProgram->SetUniform("light1.Ls", glm::vec3(1.0f));		// Specular colour of light
@@ -329,41 +317,12 @@ void Game::Render()
 	pMainProgram->SetUniform("material1.Ms", glm::vec3(1.0f));	// Specular material reflectance	
 
 
-	// Render the horse
-    m_pHorseMesh->transform.SetIdentity();
-    m_pHorseMesh->transform.Translate(glm::vec3(1.0f, 0.0f, 0.0f));
-    m_pHorseMesh->transform.Rotate(glm::vec3(0.0f, 1.0f, 0.0f), 180.0f);
-    m_pHorseMesh->transform.Scale(2.5f);
-    glm::mat4 horseModel = m_pHorseMesh->transform.GetModel();
-    pMainProgram->SetUniform("matrices.modelMatrix", horseModel);
-    pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix
-                             (horseModel));
-    m_pHorseMesh->Render();
-
-
-	// Render the barrel
-    m_pBarrelMesh->transform.SetIdentity();
-    m_pBarrelMesh->transform.Translate(glm::vec3(100.0f, 50.0f, 0.0f));
-    m_pBarrelMesh->transform.Scale(5.0f);
-    glm::mat4 barrelModel = m_pBarrelMesh->transform.GetModel();
-    pMainProgram->SetUniform("matrices.modelMatrix", barrelModel);
-    pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix
-                             (barrelModel));
-    m_pBarrelMesh->Render();
-	
-
-	// Render the sphere
-    m_pSphere->transform.SetIdentity();
-    m_pSphere->transform.Translate(glm::vec3(1.0f, 3.0f, 150.0f));
-    m_pSphere->transform.Scale(2.0f);
-    glm::mat4 sphereModel = m_pSphere->transform.GetModel();
-    pMainProgram->SetUniform("matrices.modelMatrix", sphereModel);
-    pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix
-                             (sphereModel));
-    // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-    //pMainProgram->SetUniform("bUseTexture", false);
-    m_pSphere->Render();
-
+    rotation += 30.0f;
+    if (rotation > 360 ) {
+        rotation = 0.0f;
+    }
+    // Render the helicopter
+    m_pHelicopter->Render(pMainProgram, m_pCamera, rotation, helicopterRotor);
 
     m_gameWindow.SetViewport();
 
@@ -383,7 +342,8 @@ void Game::Update()
     m_pCamera->Update(m_gameWindow.Window(), m_deltaTime, keyPressedCode, true, m_enableMouseMovement);
     MouseControls(mouseButton, mouseAction);
     KeyBoardControls(keyPressedCode, keyReleasedCode, keyPressedAction);
-	m_pAudio->Update();
+
+	m_pAudio->Update(m_pCamera);
 }
 
 
@@ -534,8 +494,10 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_0:
                 break;
             case GLFW_KEY_COMMA:
+            helicopterRotor -= 1;
                 break;
             case GLFW_KEY_PERIOD:
+            helicopterRotor += 1;
                 break;
             case GLFW_KEY_MINUS:
                 break;
@@ -566,8 +528,10 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_U:
                 break;
             case GLFW_KEY_O:
+            m_pAudio->DecreaseMusicVolume();
                 break;
             case GLFW_KEY_P:
+            m_pAudio->IncreaseMusicVolume();
                 break;
             case GLFW_KEY_I:
                 break;
@@ -588,6 +552,14 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_SLASH:
                 break;
             case GLFW_KEY_APOSTROPHE:
+                break;
+            case GLFW_KEY_UP:
+                break;
+            case GLFW_KEY_DOWN:
+                break;
+            case GLFW_KEY_LEFT:
+                break;
+            case GLFW_KEY_RIGHT:
                 break;
             default:
                 break;

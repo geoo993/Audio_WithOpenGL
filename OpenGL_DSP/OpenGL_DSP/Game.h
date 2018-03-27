@@ -52,9 +52,7 @@ private:
 	CPlane *m_pPlanarTerrain;
     CHighResolutionTimer *m_pGameTimer;
     CFreeTypeFont *m_pFtFont;
-    COpenAssetImportMesh *m_pBarrelMesh;
-    COpenAssetImportMesh *m_pHorseMesh;
-    CSphere *m_pSphere;
+    COpenAssetImportMesh *m_pHelicopter;
     CAudio *m_pAudio;
     vector <string> m_audioFiles;
 
@@ -74,6 +72,14 @@ private:
     double m_lastKeyPressTime;
     int m_lastKeyPress;
     GLboolean m_isKeyPressRestriction;
+
+
+    // audio
+
+
+    // helicopter rotate
+    GLfloat rotation;
+    GLint helicopterRotor = 0;
 
 public:
 
