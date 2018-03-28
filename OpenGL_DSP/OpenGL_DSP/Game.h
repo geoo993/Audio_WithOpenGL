@@ -53,6 +53,7 @@ private:
     CHighResolutionTimer *m_pGameTimer;
     CFreeTypeFont *m_pFtFont;
     COpenAssetImportMesh *m_pHelicopter;
+    COpenAssetImportMesh *m_pBarrel;
     CAudio *m_pAudio;
     vector <string> m_audioFiles;
 
@@ -79,7 +80,9 @@ private:
 
     // helicopter rotate
     GLfloat rotation;
-    GLint helicopterRotor = 0;
+    GLint helicopterRotor;
+    glm::vec3 helicopterPosition;
+    glm::vec3 velocityTraveledAwayFromHelicopter;
 
 public:
 

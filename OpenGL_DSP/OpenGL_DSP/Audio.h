@@ -7,16 +7,19 @@ class CAudio
 public:
 	CAudio();
 	~CAudio();
-	bool Initialise();
     bool InitialiseWithDSPEffect();
-    bool InitialiseWith3DSettings();
+    bool InitialiseWith3DSettings(GLfloat dopplerscale = 0,
+                                  GLfloat distancefactor = 0, GLfloat rolloffscale = 0);
 	bool LoadEventSound(const char *filename);
 	bool PlayEventSound();
-    bool PlayEventSoundUsingEventChannel();
+    bool PlayEventSoundUsingFMOD3DEventChannel(glm::vec3 &objectPosition,
+                                               glm::vec3 &velocity);
 	bool LoadMusicStream(const char *filename);
     bool LoadMusicStreamUsingLowPassFilter(const char *filename);
+    bool LoadMusicStreamUsingOscillatorFilter(const char *filename);
 	bool PlayMusicStreamUsingFilter();
     bool PlayMusicStreamUsingDSP();
+    bool PlayMusicStreamUsingOscillatorFilter();
     void ToggleMusicFilter();
 
     void IncreaseMusicVolume();
@@ -35,6 +38,8 @@ private:
     FMOD::Channel *m_eventChannel;
 
     FMOD::DSP *m_dsp;
+
+    FMOD::DSP *m_osc;
 	
 	FMOD::Sound *m_music;
 
@@ -51,5 +56,9 @@ private:
     FMOD_VECTOR camPos;
     FMOD_VECTOR eventPos;
     FMOD_VECTOR eventVel;
+
+    // 3d object position and velocity
+    FMOD_VECTOR objectSoundPosition;
+    FMOD_VECTOR objectVelocity;
 
 };

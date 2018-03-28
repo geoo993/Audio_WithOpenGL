@@ -41,26 +41,9 @@ FMOD_RESULT F_CALLBACK DSPCallback(FMOD_DSP_STATE *dsp_state,
     return FMOD_OK;
 }
 
-bool CAudio::Initialise()
-{
-	// Create an FMOD system
-	result = FMOD::System_Create(&m_FmodSystem);
-	FmodErrorCheck(result);
-	if (result != FMOD_OK) 
-		return false;
-
-	// Initialise the system
-	result = m_FmodSystem->init(32, FMOD_INIT_NORMAL, 0);
-	FmodErrorCheck(result);
-	if (result != FMOD_OK) 
-		return false;
-
-    return true;
-}
-
 bool CAudio::InitialiseWithDSPEffect() {
 
-    bool initialise = Initialise();
+    bool initialise = InitialiseWith3DSettings(1.0f, 1.0f, 1.0f);
 
     // Create the DSP effect
     {
@@ -82,7 +65,9 @@ bool CAudio::InitialiseWithDSPEffect() {
 	return initialise;
 }
 
-bool CAudio::InitialiseWith3DSettings() {
+bool CAudio::InitialiseWith3DSettings(GLfloat dopplerscale ,
+                                      GLfloat distancefactor,
+                                      GLfloat rolloffscale) {
     // Create an FMOD system
     result = FMOD::System_Create(&m_FmodSystem);
     FmodErrorCheck(result);
@@ -96,7 +81,8 @@ bool CAudio::InitialiseWith3DSettings() {
         return false;
 
     // Set 3D settings
-    result = m_FmodSystem->set3DSettings(1.0f, 1.0f, 1.0f);
+    result = m_FmodSystem->set3DSettings(dopplerscale,
+                                         distancefactor, 1.0f);
     FmodErrorCheck(result);
     if (result != FMOD_OK)
         return false;
@@ -127,16 +113,23 @@ bool CAudio::PlayEventSound()
 }
 
 // Play an event sound
-bool CAudio::PlayEventSoundUsingEventChannel()
+bool CAudio::PlayEventSoundUsingFMOD3DEventChannel(glm::vec3 &objectPosition,
+                                                   glm::vec3 &velocity)
 {
     result = m_FmodSystem->playSound(m_eventSound, NULL, false, &m_eventChannel);
     FmodErrorCheck(result);
     if (result != FMOD_OK)
         return false;
+
     // play through 3D channel
     m_eventChannel->setMode(FMOD_3D);
+
+    // 5) update the listener's position with the object position
+    ToFMODVector(objectPosition, &objectSoundPosition);
+    ToFMODVector(velocity, &objectVelocity);
+
     // set the position to be the horse's position
-    result = m_eventChannel->set3DAttributes(0, 0, 0);
+    result = m_eventChannel->set3DAttributes(&objectSoundPosition, &objectVelocity, 0);
     FmodErrorCheck(result);
     if (result != FMOD_OK)
         return false;
@@ -156,6 +149,25 @@ bool CAudio::LoadMusicStream(const char *filename)
 
     return true;
 }
+
+bool CAudio::LoadMusicStreamUsingOscillatorFilter(const char *filename) {
+
+    bool load = LoadMusicStream(filename);
+
+    // create a low-pass filter DSP object
+    result = m_FmodSystem->createDSPByType(FMOD_DSP_TYPE_OSCILLATOR, &m_osc);
+
+    if (result != FMOD_OK){
+        load = false;
+        return load;
+    }
+
+    // you can start the DSP in an inactive state
+    m_musicFilter->setActive(false);
+
+    return load;
+}
+
 
 bool CAudio::LoadMusicStreamUsingLowPassFilter(const char *filename) {
 
@@ -236,6 +248,37 @@ bool CAudio::PlayMusicStreamUsingFilter()
     m_musicFilter->setActive(true);
     // initially set the cutoff to a high value
     m_musicFilter->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, 22000);
+    // this state is used for toggling
+    m_musicFilterActive = false;
+
+    return true;
+}
+
+
+bool CAudio::PlayMusicStreamUsingOscillatorFilter()
+{
+    result = m_FmodSystem->playSound(m_music, NULL, false, &m_musicChannel);
+    FmodErrorCheck(result);
+
+    if (result != FMOD_OK)
+        return false;
+
+    // Set the volume lower
+    result = m_musicChannel->setVolume(m_musicVolume);
+    FmodErrorCheck(result);
+
+    if (result != FMOD_OK)
+        return false;
+
+    // set the DSP object to be active
+    m_musicFilter->setActive(true);
+    // initially set the cutoff to a high value
+    m_musicFilter->setParameterFloat(FMOD_DSP_OSCILLATOR_RATE, 440);
+
+    // 0 = sine,  1 = square,  2 = sawup
+    // 3 = sawdown,  4 = triangle,  5 = noise
+    m_musicFilter->setParameterFloat(FMOD_DSP_OSCILLATOR_TYPE, 1);
+
     // this state is used for toggling
     m_musicFilterActive = false;
 

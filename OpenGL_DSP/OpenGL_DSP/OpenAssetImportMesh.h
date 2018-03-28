@@ -77,7 +77,7 @@ public:
                            const GLuint &instanceCount = 0,
                            const glm::vec3 &center = glm::vec3(0.0f),
                            const float &scale = 0.0f);
-    void Render(CShaderProgram *pProgram, CCamera *pCamera, GLfloat rotation, GLint helicopterRotor);
+    void Render();
 
     CTransform transform;
 
