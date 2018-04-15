@@ -196,10 +196,10 @@ void Game::LoadFromResources(const std::string &path)
     m_audioFiles.push_back("Helicopter.wav");
 
     //// Initialise audio and play background music
-    m_pAudio->Initialise();
-    m_pAudio->LoadEventSound((path+"/audio/"+m_audioFiles[3]).c_str());
-    m_pAudio->LoadMusicStreamUsingLowPassFilter((path+"/audio/"+m_audioFiles[5]).c_str());
-    m_pAudio->PlayMusicStreamUsingFilter();
+    m_pAudio->InitialiseWithDSPEffect();
+    m_pAudio->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str());
+    m_pAudio->LoadMusicStream((path+"/audio/"+m_audioFiles[0]).c_str());
+    m_pAudio->PlayMusicStreamUsingDSP();
 }
 
 void Game::DisplayFrameRate() {

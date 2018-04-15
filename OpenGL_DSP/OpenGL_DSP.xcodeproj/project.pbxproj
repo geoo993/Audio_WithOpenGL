@@ -59,6 +59,7 @@
 		C773678D2045AA1100230B98 /* libfmodL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773678B2045AA1100230B98 /* libfmodL.dylib */; };
 		C773678E2045AA1100230B98 /* libfmod.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773678C2045AA1100230B98 /* libfmod.dylib */; };
 		C77367902045AB3900230B98 /* libstb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773678F2045AB3900230B98 /* libstb.dylib */; };
+		C77A66C820837DB0003D3BE2 /* CircularBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C77A66C620837DB0003D3BE2 /* CircularBuffer.cpp */; };
 		C77CCE5D2045A03800F3C942 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C77CCE5C2045A03800F3C942 /* main.cpp */; };
 		C79B915E2046392200648C5F /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C79B915D2046392200648C5F /* GLUT.framework */; };
 		C7F6ED3F2045AC5E0038F48F /* Shaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED012045AC5B0038F48F /* Shaders.cpp */; };
@@ -142,6 +143,8 @@
 		C773678B2045AA1100230B98 /* libfmodL.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmodL.dylib; path = Libraries/libfmodL.dylib; sourceTree = "<group>"; };
 		C773678C2045AA1100230B98 /* libfmod.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmod.dylib; path = Libraries/libfmod.dylib; sourceTree = "<group>"; };
 		C773678F2045AB3900230B98 /* libstb.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libstb.dylib; path = Libraries/libstb.dylib; sourceTree = "<group>"; };
+		C77A66C620837DB0003D3BE2 /* CircularBuffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CircularBuffer.cpp; sourceTree = "<group>"; };
+		C77A66C720837DB0003D3BE2 /* CircularBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
 		C77CCE592045A03800F3C942 /* OpenGL_DSP */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGL_DSP; sourceTree = BUILT_PRODUCTS_DIR; };
 		C77CCE5C2045A03800F3C942 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		C79B915D2046392200648C5F /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -284,6 +287,8 @@
 				C71D168C2045EBAC002E2A43 /* GameManager.h */,
 				C71D16872045C9BF002E2A43 /* HighResolutionTimer.cpp */,
 				C71D16862045C9BF002E2A43 /* HighResolutionTimer.h */,
+				C77A66C620837DB0003D3BE2 /* CircularBuffer.cpp */,
+				C77A66C720837DB0003D3BE2 /* CircularBuffer.h */,
 				C7F6ED112045AC5C0038F48F /* Audio.cpp */,
 				C7F6ED3D2045AC5D0038F48F /* Audio.h */,
 				C7F6ED142045AC5D0038F48F /* Camera.cpp */,
@@ -490,6 +495,7 @@
 				C7F6ED4A2045AC5E0038F48F /* Camera.cpp in Sources */,
 				C7F6ED3F2045AC5E0038F48F /* Shaders.cpp in Sources */,
 				C7F6ED442045AC5E0038F48F /* Skybox.cpp in Sources */,
+				C77A66C820837DB0003D3BE2 /* CircularBuffer.cpp in Sources */,
 				C7F6ED452045AC5E0038F48F /* Cubemap.cpp in Sources */,
 				C71D16892045CE48002E2A43 /* GameWindow.cpp in Sources */,
 				C705B091204622CD00F0E13D /* Transform.cpp in Sources */,
@@ -626,6 +632,7 @@
 					"$(PROJECT_DIR)/Libraries",
 					/Libraries,
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -644,6 +651,7 @@
 					"$(PROJECT_DIR)/Libraries",
 					/Libraries,
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

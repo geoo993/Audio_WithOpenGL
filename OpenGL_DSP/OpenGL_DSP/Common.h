@@ -13,6 +13,7 @@
 #include <assert.h>
 #include <cstring>
 #include <vector>
+#include <list>
 #include <sstream>
 #include <stdio.h>
 #include <map>

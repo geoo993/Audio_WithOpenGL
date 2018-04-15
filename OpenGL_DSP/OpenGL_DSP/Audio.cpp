@@ -1,10 +1,35 @@
 #include "Audio.h"
 
+static CCircularBuffer * cb;
+static GLfloat FIRcoefficient[] = { 0.3f, 0.2f, 0.4f, 1.0f };
+
+
 CAudio::CAudio()
-{}
+{
+
+}
 
 CAudio::~CAudio()
-{}
+{
+    delete m_FmodSystem;
+    delete m_eventSound;
+    delete m_eventChannel;
+    delete m_dsp;
+    delete m_dspOSC;
+    delete m_music;
+    delete m_musicFilter;
+    delete m_musicChannel;
+    delete m_musicDSPHead;
+    delete m_musicDSPHeadInput;
+
+}
+
+// Caluclate FIR filter
+GLfloat CAudio::CalculateFIR(GLuint *inputs, GLfloat * coefficients) {
+    GLfloat f;
+
+    return f;
+}
 
 // Check for error
 void CAudio::FmodErrorCheck(FMOD_RESULT result)
@@ -26,15 +51,41 @@ FMOD_RESULT F_CALLBACK DSPCallback(FMOD_DSP_STATE *dsp_state,
 {
     FMOD::DSP *thisdsp = (FMOD::DSP *)dsp_state->instance;
 
+//    std::cout << "Length of array = " << (sizeof(inbuffer)/sizeof(inbuffer[0])) << std::endl;
+//    std::cout << "Length " << length << std::endl;
+//    std::cout << "Length of Coefficients = " << (sizeof(FIRcoefficient)/sizeof(FIRcoefficient[0])) << std::endl;
+
+    // buffer, all x[n] are in this circular buffer
+    if (cb == nullptr) cb = new CCircularBuffer(1024);
+
+    GLfloat scale = 0.2f;
+
     for (unsigned int samp = 0; samp < length; samp++)
     {
         for (int chan = 0; chan < *outchannels; chan++)
         {
+
             /*
              This DSP filter just halves the volume!
              Input is modified, and sent to output.
              */
-            outbuffer[(samp * *outchannels) + chan] = inbuffer[(samp * inchannels) + chan] * 0.2f;
+            GLuint n = ((samp * inchannels) + chan);
+            GLfloat f;
+            if (n < 3) {
+                 f = inbuffer[n];
+            } else {
+                for (int i = 0; i < n; ++i)
+                {
+                    GLfloat currentCoeficient = FIRcoefficient[i % 4];
+                    f += currentCoeficient * inbuffer[n - i];
+                }
+            }
+
+            //cout << "n is " << n << endl;
+
+            //outbuffer[(samp * *outchannels) + chan] = f * scale;
+            outbuffer[(samp * *outchannels) + chan] = inbuffer[(samp * inchannels) + chan];// * scale;
+
         }
     }
 
@@ -126,6 +177,7 @@ bool CAudio::PlayEventSound()
     return true;
 }
 
+/*
 // Play an event sound
 bool CAudio::PlayEventSoundUsingEventChannel()
 {
@@ -143,6 +195,7 @@ bool CAudio::PlayEventSoundUsingEventChannel()
 
     return true;
 }
+ */
 
 
 // Load a music stream
@@ -157,6 +210,7 @@ bool CAudio::LoadMusicStream(const char *filename)
     return true;
 }
 
+/*
 bool CAudio::LoadMusicStreamUsingLowPassFilter(const char *filename) {
 
     bool load = LoadMusicStream(filename);
@@ -174,6 +228,7 @@ bool CAudio::LoadMusicStreamUsingLowPassFilter(const char *filename) {
 
     return load;
 }
+*/
 
 // Play a music stream
 bool CAudio::PlayMusicStreamUsingDSP()
@@ -190,12 +245,21 @@ bool CAudio::PlayMusicStreamUsingDSP()
     result = m_musicChannel->setVolume(m_musicVolume);
     FmodErrorCheck(result);
 
+
+    m_FmodSystem->createDSPByType(FMOD_DSP_TYPE_OSCILLATOR, &m_dspOSC);
+    m_dspOSC->setParameterFloat(FMOD_DSP_OSCILLATOR_RATE, 440);
+    // 0 = sine. 1 = square. 2 = sawup.
+    // 3 = sawdown. 4 = triangle. 5 = noise.
+    m_dspOSC->setParameterInt(FMOD_DSP_OSCILLATOR_TYPE, 4);
+    m_FmodSystem->playDSP(m_dspOSC, NULL, false, &m_musicChannel);
+
     if (result != FMOD_OK)
         return false;
 
     return true;
 }
 
+/*
 // Play a music stream
 bool CAudio::PlayMusicStreamUsingFilter()
 {
@@ -241,6 +305,7 @@ bool CAudio::PlayMusicStreamUsingFilter()
 
     return true;
 }
+ */
 
 void CAudio::Update(const CCamera *camera)
 {
@@ -253,6 +318,7 @@ void CAudio::Update(const CCamera *camera)
     m_FmodSystem->update();
 }
 
+/*
 void CAudio::ToggleMusicFilter()
 {
     // called externally from Game::ProcessEvents
@@ -268,7 +334,7 @@ void CAudio::ToggleMusicFilter()
         m_musicFilter->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, 22000);
     }
 }
-
+*/
 void CAudio::IncreaseMusicVolume()
 {
     // called externally from Game::ProcessEvents
