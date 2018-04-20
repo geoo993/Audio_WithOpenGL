@@ -36,10 +36,6 @@ Game::Game()
 	m_pCamera = nullptr;
 	m_pPlanarTerrain = nullptr;
 	m_pFtFont = nullptr;
-    m_pHelicopter = nullptr;
-    m_pBarrel = nullptr;
-	m_pAudio = nullptr;
-    m_audioFiles.reserve(5);
 
     // game timers
     m_framesPerSecond = 0;
@@ -60,12 +56,16 @@ Game::Game()
     m_lastKeyPress = -1;
     m_isKeyPressRestriction = true;
 
-
     // helicopter
-    helicopterRotor = 0;
-    helicopterPosition = glm::vec3(0.0f, 20.0f, 0.0f);
-    velocityTraveledAwayFromHelicopter = glm::vec3(0,50,0);
+    m_pHelicopter = nullptr;
+    m_helicopteRotor = 0;
+    m_helicopteRotorRotation = 0.0f;
 
+    // audio DSP
+    m_pFIR = nullptr;
+    m_pOscillator = nullptr;
+    m_pFilter = nullptr;
+    m_audioFiles.reserve(6);
 }
 
 // Destructor
@@ -77,8 +77,9 @@ Game::~Game()
 	delete m_pPlanarTerrain;
 	delete m_pFtFont;
     delete m_pHelicopter;
-    delete m_pBarrel;
-	delete m_pAudio;
+	delete m_pFIR;
+    delete m_pOscillator;
+    delete m_pFilter;
 
 	if (m_pShaderPrograms != nullptr) {
 		for (unsigned int i = 0; i < m_pShaderPrograms->size(); i++)
@@ -100,8 +101,9 @@ void Game::Initialise()
 	m_pPlanarTerrain = new CPlane;
 	m_pFtFont = new CFreeTypeFont;
 	m_pHelicopter = new COpenAssetImportMesh;
-    m_pBarrel = new COpenAssetImportMesh;
-	m_pAudio = new CAudio;
+	m_pFIR = new CFIRConvolutionDSP;
+    m_pOscillator = new COscillator;
+    m_pFilter = new CFilterDSP;
 
     // Set the orthographic and perspective projection matrices based on the image size
     m_pCamera = new CCamera(glm::vec3(0.0f, 60.0f, 0.0f),     // position
@@ -196,19 +198,33 @@ void Game::LoadFromResources(const std::string &path)
     m_pFtFont->LoadFont(path+"/fonts/Candy Script.ttf", 48);
 
     m_pHelicopter->Load(path+"/models/Mi-28N_Havoc_BF3/havoc.obj");
-    m_pBarrel->Load(path+"/models/Barrel/barrel02.obj");
+
+}
+
+void Game::LoadDSPFromResources(const std::string &path) {
 
     m_audioFiles.push_back("cw_amen12_137.wav");
     m_audioFiles.push_back("Boing.wav"); // Royalty free sound from //freesound.org // Custom DSP
     m_audioFiles.push_back("DST-Garote.mp3"); // Royalty free music from http://www.nosoapradio.us/
     m_audioFiles.push_back("Horse.wav"); // 3D Audio
+    m_audioFiles.push_back("drone.wav");
     m_audioFiles.push_back("Helicopter.wav");
 
     //// Initialise audio and play background music
-    m_pAudio->InitialiseWith3DSettings(1.0f, 1.0f, 1.0f);
-    m_pAudio->LoadEventSound((path+"/audio/"+m_audioFiles[3]).c_str());
-    m_pAudio->LoadMusicStreamUsingLowPassFilter((path+"/audio/"+m_audioFiles[5]).c_str());
-    m_pAudio->PlayMusicStreamUsingFilter();
+    //m_pFIR->InitialiseWithDSPEffect();
+    //m_pFIR->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str());
+    //m_pFIR->LoadMusicStream((path+"/audio/"+m_audioFiles[0]).c_str());
+    //m_pFIR->PlayMusicStreamUsingDSP();
+
+    //m_pOscillator->Initialise();
+    //m_pOscillator->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
+    //m_pOscillator->PlayMusicStream();
+
+    m_pFilter->Initialise();
+    m_pFilter->LoadEventSound((path+"/audio/"+m_audioFiles[3]).c_str());
+    m_pFilter->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
+    m_pFilter->PlayMusicStream();
+
 }
 
 void Game::DisplayFrameRate() {
@@ -325,21 +341,12 @@ void Game::Render()
 	pMainProgram->SetUniform("material1.Md", glm::vec3(0.5f));	// Diffuse material reflectance
 	pMainProgram->SetUniform("material1.Ms", glm::vec3(1.0f));	// Specular material reflectance	
 
-    m_pBarrel->transform.SetIdentity();
-    m_pBarrel->transform.Translate(glm::vec3(1.0f, 0.0f, 0.0f));
-    glm::mat4 bModel = m_pBarrel->transform.GetModel();
-    pMainProgram->SetUniform("matrices.modelMatrix", bModel);
-    pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix
-                             (bModel));
-    m_pBarrel->Render();
-
-
-    rotation += 30.0f;
-    if (rotation > 360 ) {
-        rotation = 0.0f;
+    m_helicopteRotorRotation += 30.0f;
+    if (m_helicopteRotorRotation > 360 ) {
+        m_helicopteRotorRotation = 0.0f;
     }
     // Render the helicopter
-//    m_pHelicopter->Render(pMainProgram, m_pCamera, rotation, helicopterRotor, helicopterPosition);
+    m_pHelicopter->Render(pMainProgram, m_pCamera, m_helicopteRotorRotation, m_helicopteRotor);
 
     m_gameWindow.SetViewport();
 
@@ -360,8 +367,9 @@ void Game::Update()
     MouseControls(mouseButton, mouseAction);
     KeyBoardControls(keyPressedCode, keyReleasedCode, keyPressedAction);
 
-    //m_pAudio->PlayEventSoundUsingFMOD3DEventChannel(helicopterPosition, velocityTraveledAwayFromHelicopter);
-	m_pAudio->Update(m_pCamera);
+	//m_pFIR->Update(m_pCamera);
+    //m_pOscillator->Update();
+    m_pFilter->Update();
 }
 
 
@@ -485,19 +493,16 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
         switch (keyPressed)
         {
 
-            case GLFW_KEY_MINUS:
-                m_pAudio->DecreaseMusicVolume();
-                break;
-            case GLFW_KEY_EQUAL:
-                m_pAudio->IncreaseMusicVolume();
+            case GLFW_KEY_SPACE:
                 break;
             case GLFW_KEY_F1:
-                m_pAudio->PlayEventSound();
+                m_pFilter->PlayEventSound();
                 break;
             case GLFW_KEY_1 :
-                m_pAudio->PlayEventSound();
+                m_pFilter->PlayEventSound();
                 break;
             case GLFW_KEY_2:
+                m_pFilter->ToggleMusicFilter();
                 break;
             case GLFW_KEY_3:
                 break;
@@ -516,10 +521,12 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_0:
                 break;
             case GLFW_KEY_COMMA:
-            helicopterRotor -= 1;
                 break;
             case GLFW_KEY_PERIOD:
-            helicopterRotor += 1;
+                break;
+            case GLFW_KEY_MINUS:
+                break;
+            case GLFW_KEY_EQUAL:
                 break;
             case GLFW_KEY_GRAVE_ACCENT:
                 break;
@@ -546,8 +553,10 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_U:
                 break;
             case GLFW_KEY_O:
+            m_pFilter->DecreaseMusicVolume();
                 break;
             case GLFW_KEY_P:
+            m_pFilter->IncreaseMusicVolume();
                 break;
             case GLFW_KEY_I:
                 break;
@@ -598,6 +607,7 @@ void Game::Execute(const std::string &filepath)
     Initialise();
     CreateShaderPrograms(filepath);
     LoadFromResources(filepath);
+    LoadDSPFromResources(filepath);
 
     m_gameManager.SetLoaded(true); // everything has loaded
 

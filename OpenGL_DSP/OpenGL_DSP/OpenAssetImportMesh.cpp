@@ -376,7 +376,8 @@ std::vector<glm::mat4> COpenAssetImportMesh::GetModelMatrixInstancesData(){
     return m;
 }
 
-void COpenAssetImportMesh::Render()
+void COpenAssetImportMesh::Render(CShaderProgram *pProgram, CCamera *pCamera,
+                                  GLfloat rotation, GLint helicopterRotor)
 {
 
 
@@ -436,20 +437,22 @@ void COpenAssetImportMesh::Render()
         glEnableVertexAttribArray(4);
         glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)44);//(void*)(sizeof(glm::vec3)+sizeof(glm::vec2)+sizeof(glm::vec3)+sizeof(glm::vec3)));
 
-//        CTransform transform;
-//        transform.SetIdentity();
-//        transform.Translate(position);
-//
-//        if (i == 3){
-//            transform.Rotate(glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(rotation));
-//        }
-//
-//        transform.Scale(0.5f);
-//
-//        glm::mat4 helicopterPart = transform.GetModel();
-//        pProgram->SetUniform("matrices.modelMatrix", helicopterPart);
-//        pProgram->SetUniform("matrices.normalMatrix", pCamera->ComputeNormalMatrix
-//                                 (helicopterPart));
+        if (pCamera != nullptr && pProgram != nullptr) {
+            CTransform transform;
+            transform.SetIdentity();
+            transform.Translate(glm::vec3(0.0f, 20.0f, 0.0f));
+
+            if (i == 3){
+                transform.Rotate(glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(rotation));
+            }
+
+            transform.Scale(0.5f);
+
+            glm::mat4 helicopterPart = transform.GetModel();
+            pProgram->SetUniform("matrices.modelMatrix", helicopterPart);
+            pProgram->SetUniform("matrices.normalMatrix", pCamera->ComputeNormalMatrix
+                                     (helicopterPart));
+        }
 
         glBindBuffer(GL_ARRAY_BUFFER, m_Meshes[i].mbo);
 

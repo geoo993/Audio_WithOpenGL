@@ -26,41 +26,47 @@
 		C71466122046BC6E008BBBAA /* Candy Script.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C71466112046BC6E008BBBAA /* Candy Script.ttf */; };
 		C71466152046D694008BBBAA /* fontShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C71466132046D694008BBBAA /* fontShader.vert */; };
 		C71466162046D694008BBBAA /* fontShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C71466142046D694008BBBAA /* fontShader.frag */; };
+		C71D16842045C650002E2A43 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C77367752045A39000230B98 /* Cocoa.framework */; };
 		C71D16882045C9BF002E2A43 /* HighResolutionTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C71D16872045C9BF002E2A43 /* HighResolutionTimer.cpp */; };
 		C71D16892045CE48002E2A43 /* GameWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED3C2045AC5D0038F48F /* GameWindow.cpp */; };
 		C71D168A2045CE9E002E2A43 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED3B2045AC5D0038F48F /* Game.cpp */; };
 		C71D168D2045EBAC002E2A43 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C71D168B2045EBAC002E2A43 /* GameManager.cpp */; };
+		C71D168E2045F554002E2A43 /* libstb.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773678F2045AB3900230B98 /* libstb.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D168F2045F554002E2A43 /* libfmod.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773678C2045AA1100230B98 /* libfmod.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16902045F554002E2A43 /* libfmodL.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773678B2045AA1100230B98 /* libfmodL.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16912045F554002E2A43 /* libfmodstudio.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C77367872045A94800230B98 /* libfmodstudio.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16922045F554002E2A43 /* libfmodstudioL.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C77367882045A94800230B98 /* libfmodstudioL.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16932045F554002E2A43 /* libassimp.4.1.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677C2045A72B00230B98 /* libassimp.4.1.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16942045F554002E2A43 /* libfreeimage.3.17.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677A2045A72B00230B98 /* libfreeimage.3.17.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16952045F554002E2A43 /* libfreeimageplus.3.17.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677D2045A72B00230B98 /* libfreeimageplus.3.17.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16962045F554002E2A43 /* libfreetype.6.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677B2045A72B00230B98 /* libfreetype.6.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16972045F554002E2A43 /* libGLEW.2.1.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C77367792045A72B00230B98 /* libGLEW.2.1.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C71D16982045F554002E2A43 /* libglfw.3.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677E2045A72B00230B98 /* libglfw.3.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C73BC3F5208A992500DE5457 /* OscillatorDSP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3F3208A992500DE5457 /* OscillatorDSP.cpp */; };
+		C73BC3F8208A99DD00DE5457 /* FilterDSP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3F6208A99DD00DE5457 /* FilterDSP.cpp */; };
+		C73BC3FB208A9A0A00DE5457 /* OcclusionDSP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3F9208A9A0A00DE5457 /* OcclusionDSP.cpp */; };
+		C73BC3FD208A9AF000DE5457 /* DSPHelper.h in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3FC208A9AF000DE5457 /* DSPHelper.h */; };
+		C73BC400208AAF8E00DE5457 /* FIRConvolutionDSP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3FE208AAF8E00DE5457 /* FIRConvolutionDSP.cpp */; };
 		C73EE4442069AF4C003CD8EC /* Horse.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4422069AF4B003CD8EC /* Horse.wav */; };
 		C73EE4492069C349003CD8EC /* cw_amen12_137.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4462069C348003CD8EC /* cw_amen12_137.wav */; };
+		C73EE44A2069C349003CD8EC /* drone.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4472069C348003CD8EC /* drone.wav */; };
 		C73EE44B2069C349003CD8EC /* Helicopter.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4482069C349003CD8EC /* Helicopter.wav */; };
 		C77367782045A39000230B98 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C77367762045A39000230B98 /* OpenGL.framework */; };
+		C773677F2045A72B00230B98 /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C77367792045A72B00230B98 /* libGLEW.2.1.0.dylib */; };
+		C77367802045A72B00230B98 /* libfreeimage.3.17.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773677A2045A72B00230B98 /* libfreeimage.3.17.0.dylib */; };
+		C77367812045A72B00230B98 /* libfreetype.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773677B2045A72B00230B98 /* libfreetype.6.dylib */; };
+		C77367822045A72B00230B98 /* libassimp.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773677C2045A72B00230B98 /* libassimp.4.1.0.dylib */; };
+		C77367832045A72B00230B98 /* libfreeimageplus.3.17.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773677D2045A72B00230B98 /* libfreeimageplus.3.17.0.dylib */; };
+		C77367842045A72B00230B98 /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773677E2045A72B00230B98 /* libglfw.3.2.dylib */; };
 		C77367862045A7A700230B98 /* Common.h in Sources */ = {isa = PBXBuildFile; fileRef = C77367852045A75000230B98 /* Common.h */; };
-		C776BBFD206B1D1300AD4D6A /* barrel02.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C776BBFA206B1D1300AD4D6A /* barrel02.jpg */; };
-		C776BBFE206B1D1300AD4D6A /* barrel02.obj in Resources */ = {isa = PBXBuildFile; fileRef = C776BBFB206B1D1300AD4D6A /* barrel02.obj */; };
-		C776BBFF206B1D1300AD4D6A /* barrel02.mtl in Resources */ = {isa = PBXBuildFile; fileRef = C776BBFC206B1D1300AD4D6A /* barrel02.mtl */; };
+		C77367892045A94800230B98 /* libfmodstudio.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C77367872045A94800230B98 /* libfmodstudio.dylib */; };
+		C773678A2045A94800230B98 /* libfmodstudioL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C77367882045A94800230B98 /* libfmodstudioL.dylib */; };
+		C773678D2045AA1100230B98 /* libfmodL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773678B2045AA1100230B98 /* libfmodL.dylib */; };
+		C773678E2045AA1100230B98 /* libfmod.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773678C2045AA1100230B98 /* libfmod.dylib */; };
+		C77367902045AB3900230B98 /* libstb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C773678F2045AB3900230B98 /* libstb.dylib */; };
+		C77A66C820837DB0003D3BE2 /* CircularBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C77A66C620837DB0003D3BE2 /* CircularBuffer.cpp */; };
 		C77CCE5D2045A03800F3C942 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C77CCE5C2045A03800F3C942 /* main.cpp */; };
-		C7A89B9A207E85B300A8AF1B /* libfmodL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A89B8F207E85B300A8AF1B /* libfmodL.dylib */; };
-		C7A89B9B207E85B400A8AF1B /* libfreeimage.3.17.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A89B90207E85B300A8AF1B /* libfreeimage.3.17.0.dylib */; };
-		C7A89B9C207E85B400A8AF1B /* libfreetype.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A89B91207E85B300A8AF1B /* libfreetype.6.dylib */; };
-		C7A89B9D207E85B400A8AF1B /* libfmodstudioL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A89B92207E85B300A8AF1B /* libfmodstudioL.dylib */; };
-		C7A89B9E207E85B400A8AF1B /* libstb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A89B93207E85B300A8AF1B /* libstb.dylib */; };
-		C7A89B9F207E85B400A8AF1B /* libfmod.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A89B94207E85B300A8AF1B /* libfmod.dylib */; };
-		C7A89BA0207E85B400A8AF1B /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A89B95207E85B300A8AF1B /* libGLEW.2.1.0.dylib */; };
-		C7A89BA1207E85B400A8AF1B /* libassimp.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A89B96207E85B300A8AF1B /* libassimp.4.1.0.dylib */; };
-		C7A89BA2207E85B400A8AF1B /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A89B97207E85B300A8AF1B /* libglfw.3.2.dylib */; };
-		C7A89BA3207E85B400A8AF1B /* libfreeimageplus.3.17.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A89B98207E85B300A8AF1B /* libfreeimageplus.3.17.0.dylib */; };
-		C7A89BA4207E85B400A8AF1B /* libfmodstudio.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A89B99207E85B300A8AF1B /* libfmodstudio.dylib */; };
-		C7A89BA5207E85BF00A8AF1B /* libfmodL.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7A89B8F207E85B300A8AF1B /* libfmodL.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		C7A89BA6207E85BF00A8AF1B /* libfreeimage.3.17.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7A89B90207E85B300A8AF1B /* libfreeimage.3.17.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		C7A89BA7207E85BF00A8AF1B /* libfreetype.6.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7A89B91207E85B300A8AF1B /* libfreetype.6.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		C7A89BA8207E85BF00A8AF1B /* libfmodstudioL.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7A89B92207E85B300A8AF1B /* libfmodstudioL.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		C7A89BA9207E85BF00A8AF1B /* libstb.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7A89B93207E85B300A8AF1B /* libstb.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		C7A89BAA207E85BF00A8AF1B /* libfmod.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7A89B94207E85B300A8AF1B /* libfmod.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		C7A89BAB207E85BF00A8AF1B /* libGLEW.2.1.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7A89B95207E85B300A8AF1B /* libGLEW.2.1.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		C7A89BAC207E85BF00A8AF1B /* libassimp.4.1.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7A89B96207E85B300A8AF1B /* libassimp.4.1.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		C7A89BAD207E85BF00A8AF1B /* libglfw.3.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7A89B97207E85B300A8AF1B /* libglfw.3.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		C7A89BAE207E85BF00A8AF1B /* libfreeimageplus.3.17.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7A89B98207E85B300A8AF1B /* libfreeimageplus.3.17.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		C7A89BAF207E85BF00A8AF1B /* libfmodstudio.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7A89B99207E85B300A8AF1B /* libfmodstudio.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C79B915E2046392200648C5F /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C79B915D2046392200648C5F /* GLUT.framework */; };
 		C7F6ED3F2045AC5E0038F48F /* Shaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED012045AC5B0038F48F /* Shaders.cpp */; };
 		C7F6ED402045AC5E0038F48F /* OpenAssetImportMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED022045AC5B0038F48F /* OpenAssetImportMesh.cpp */; };
 		C7F6ED412045AC5E0038F48F /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED032045AC5B0038F48F /* Texture.cpp */; };
@@ -70,7 +76,6 @@
 		C7F6ED452045AC5E0038F48F /* Cubemap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED092045AC5C0038F48F /* Cubemap.cpp */; };
 		C7F6ED462045AC5E0038F48F /* VertexBufferObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED0A2045AC5C0038F48F /* VertexBufferObject.cpp */; };
 		C7F6ED472045AC5E0038F48F /* VertexBufferObjectIndexed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED0D2045AC5C0038F48F /* VertexBufferObjectIndexed.cpp */; };
-		C7F6ED492045AC5E0038F48F /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED112045AC5C0038F48F /* Audio.cpp */; };
 		C7F6ED4A2045AC5E0038F48F /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED142045AC5D0038F48F /* Camera.cpp */; };
 		C7F6ED4D2045AC5E0038F48F /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED3E2045AC5D0038F48F /* Sphere.cpp */; };
 /* End PBXBuildFile section */
@@ -82,26 +87,17 @@
 			dstPath = "";
 			dstSubfolderSpec = 11;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C7A89B77207E856500A8AF1B /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				C7A89BA5207E85BF00A8AF1B /* libfmodL.dylib in CopyFiles */,
-				C7A89BA6207E85BF00A8AF1B /* libfreeimage.3.17.0.dylib in CopyFiles */,
-				C7A89BA7207E85BF00A8AF1B /* libfreetype.6.dylib in CopyFiles */,
-				C7A89BA8207E85BF00A8AF1B /* libfmodstudioL.dylib in CopyFiles */,
-				C7A89BA9207E85BF00A8AF1B /* libstb.dylib in CopyFiles */,
-				C7A89BAA207E85BF00A8AF1B /* libfmod.dylib in CopyFiles */,
-				C7A89BAB207E85BF00A8AF1B /* libGLEW.2.1.0.dylib in CopyFiles */,
-				C7A89BAC207E85BF00A8AF1B /* libassimp.4.1.0.dylib in CopyFiles */,
-				C7A89BAD207E85BF00A8AF1B /* libglfw.3.2.dylib in CopyFiles */,
-				C7A89BAE207E85BF00A8AF1B /* libfreeimageplus.3.17.0.dylib in CopyFiles */,
-				C7A89BAF207E85BF00A8AF1B /* libfmodstudio.dylib in CopyFiles */,
+				C71D168E2045F554002E2A43 /* libstb.dylib in CopyFiles */,
+				C71D168F2045F554002E2A43 /* libfmod.dylib in CopyFiles */,
+				C71D16902045F554002E2A43 /* libfmodL.dylib in CopyFiles */,
+				C71D16912045F554002E2A43 /* libfmodstudio.dylib in CopyFiles */,
+				C71D16922045F554002E2A43 /* libfmodstudioL.dylib in CopyFiles */,
+				C71D16932045F554002E2A43 /* libassimp.4.1.0.dylib in CopyFiles */,
+				C71D16942045F554002E2A43 /* libfreeimage.3.17.0.dylib in CopyFiles */,
+				C71D16952045F554002E2A43 /* libfreeimageplus.3.17.0.dylib in CopyFiles */,
+				C71D16962045F554002E2A43 /* libfreetype.6.dylib in CopyFiles */,
+				C71D16972045F554002E2A43 /* libGLEW.2.1.0.dylib in CopyFiles */,
+				C71D16982045F554002E2A43 /* libglfw.3.2.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,28 +128,39 @@
 		C71D16872045C9BF002E2A43 /* HighResolutionTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HighResolutionTimer.cpp; sourceTree = "<group>"; };
 		C71D168B2045EBAC002E2A43 /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameManager.cpp; sourceTree = "<group>"; };
 		C71D168C2045EBAC002E2A43 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
+		C73BC3F3208A992500DE5457 /* OscillatorDSP.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OscillatorDSP.cpp; sourceTree = "<group>"; };
+		C73BC3F4208A992500DE5457 /* OscillatorDSP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OscillatorDSP.h; sourceTree = "<group>"; };
+		C73BC3F6208A99DD00DE5457 /* FilterDSP.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FilterDSP.cpp; sourceTree = "<group>"; };
+		C73BC3F7208A99DD00DE5457 /* FilterDSP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FilterDSP.h; sourceTree = "<group>"; };
+		C73BC3F9208A9A0A00DE5457 /* OcclusionDSP.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OcclusionDSP.cpp; sourceTree = "<group>"; };
+		C73BC3FA208A9A0A00DE5457 /* OcclusionDSP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OcclusionDSP.h; sourceTree = "<group>"; };
+		C73BC3FC208A9AF000DE5457 /* DSPHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DSPHelper.h; sourceTree = "<group>"; };
+		C73BC3FE208AAF8E00DE5457 /* FIRConvolutionDSP.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FIRConvolutionDSP.cpp; sourceTree = "<group>"; };
+		C73BC3FF208AAF8E00DE5457 /* FIRConvolutionDSP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FIRConvolutionDSP.h; sourceTree = "<group>"; };
 		C73EE4422069AF4B003CD8EC /* Horse.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Horse.wav; sourceTree = "<group>"; };
 		C73EE4462069C348003CD8EC /* cw_amen12_137.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cw_amen12_137.wav; sourceTree = "<group>"; };
+		C73EE4472069C348003CD8EC /* drone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = drone.wav; sourceTree = "<group>"; };
 		C73EE4482069C349003CD8EC /* Helicopter.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Helicopter.wav; sourceTree = "<group>"; };
 		C73EE44C2069CCF3003CD8EC /* Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Extensions.h; sourceTree = "<group>"; };
+		C77367752045A39000230B98 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		C77367762045A39000230B98 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		C77367792045A72B00230B98 /* libGLEW.2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.1.0.dylib; path = Libraries/libGLEW.2.1.0.dylib; sourceTree = "<group>"; };
+		C773677A2045A72B00230B98 /* libfreeimage.3.17.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreeimage.3.17.0.dylib; path = Libraries/libfreeimage.3.17.0.dylib; sourceTree = "<group>"; };
+		C773677B2045A72B00230B98 /* libfreetype.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreetype.6.dylib; path = Libraries/libfreetype.6.dylib; sourceTree = "<group>"; };
+		C773677C2045A72B00230B98 /* libassimp.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libassimp.4.1.0.dylib; path = Libraries/libassimp.4.1.0.dylib; sourceTree = "<group>"; };
+		C773677D2045A72B00230B98 /* libfreeimageplus.3.17.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreeimageplus.3.17.0.dylib; path = Libraries/libfreeimageplus.3.17.0.dylib; sourceTree = "<group>"; };
+		C773677E2045A72B00230B98 /* libglfw.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.2.dylib; path = Libraries/libglfw.3.2.dylib; sourceTree = "<group>"; };
 		C77367852045A75000230B98 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
-		C776BBFA206B1D1300AD4D6A /* barrel02.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = barrel02.jpg; sourceTree = "<group>"; };
-		C776BBFB206B1D1300AD4D6A /* barrel02.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = barrel02.obj; sourceTree = "<group>"; };
-		C776BBFC206B1D1300AD4D6A /* barrel02.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = barrel02.mtl; sourceTree = "<group>"; };
+		C77367872045A94800230B98 /* libfmodstudio.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmodstudio.dylib; path = Libraries/libfmodstudio.dylib; sourceTree = "<group>"; };
+		C77367882045A94800230B98 /* libfmodstudioL.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmodstudioL.dylib; path = Libraries/libfmodstudioL.dylib; sourceTree = "<group>"; };
+		C773678B2045AA1100230B98 /* libfmodL.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmodL.dylib; path = Libraries/libfmodL.dylib; sourceTree = "<group>"; };
+		C773678C2045AA1100230B98 /* libfmod.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmod.dylib; path = Libraries/libfmod.dylib; sourceTree = "<group>"; };
+		C773678F2045AB3900230B98 /* libstb.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libstb.dylib; path = Libraries/libstb.dylib; sourceTree = "<group>"; };
+		C77A66C620837DB0003D3BE2 /* CircularBuffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CircularBuffer.cpp; sourceTree = "<group>"; };
+		C77A66C720837DB0003D3BE2 /* CircularBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
 		C77CCE592045A03800F3C942 /* OpenGL_DSP */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGL_DSP; sourceTree = BUILT_PRODUCTS_DIR; };
 		C77CCE5C2045A03800F3C942 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		C7A89B8F207E85B300A8AF1B /* libfmodL.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfmodL.dylib; sourceTree = "<group>"; };
-		C7A89B90207E85B300A8AF1B /* libfreeimage.3.17.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreeimage.3.17.0.dylib; sourceTree = "<group>"; };
-		C7A89B91207E85B300A8AF1B /* libfreetype.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreetype.6.dylib; sourceTree = "<group>"; };
-		C7A89B92207E85B300A8AF1B /* libfmodstudioL.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfmodstudioL.dylib; sourceTree = "<group>"; };
-		C7A89B93207E85B300A8AF1B /* libstb.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libstb.dylib; sourceTree = "<group>"; };
-		C7A89B94207E85B300A8AF1B /* libfmod.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfmod.dylib; sourceTree = "<group>"; };
-		C7A89B95207E85B300A8AF1B /* libGLEW.2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGLEW.2.1.0.dylib; sourceTree = "<group>"; };
-		C7A89B96207E85B300A8AF1B /* libassimp.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libassimp.4.1.0.dylib; sourceTree = "<group>"; };
-		C7A89B97207E85B300A8AF1B /* libglfw.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libglfw.3.2.dylib; sourceTree = "<group>"; };
-		C7A89B98207E85B300A8AF1B /* libfreeimageplus.3.17.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreeimageplus.3.17.0.dylib; sourceTree = "<group>"; };
-		C7A89B99207E85B300A8AF1B /* libfmodstudio.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfmodstudio.dylib; sourceTree = "<group>"; };
+		C79B915D2046392200648C5F /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		C7F6ECFB2045AC5B0038F48F /* Cubemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cubemap.h; sourceTree = "<group>"; };
 		C7F6ECFC2045AC5B0038F48F /* Skybox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skybox.h; sourceTree = "<group>"; };
 		C7F6ECFE2045AC5B0038F48F /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
@@ -174,7 +181,6 @@
 		C7F6ED0D2045AC5C0038F48F /* VertexBufferObjectIndexed.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexBufferObjectIndexed.cpp; sourceTree = "<group>"; };
 		C7F6ED0F2045AC5C0038F48F /* VertexBufferObjectIndexed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBufferObjectIndexed.h; sourceTree = "<group>"; };
 		C7F6ED102045AC5C0038F48F /* VertexBufferObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBufferObject.h; sourceTree = "<group>"; };
-		C7F6ED112045AC5C0038F48F /* Audio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cpp; sourceTree = "<group>"; };
 		C7F6ED122045AC5C0038F48F /* Shaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shaders.h; sourceTree = "<group>"; };
 		C7F6ED132045AC5D0038F48F /* OpenAssetImportMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenAssetImportMesh.h; sourceTree = "<group>"; };
 		C7F6ED142045AC5D0038F48F /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
@@ -189,7 +195,6 @@
 		C7F6ED2A2045AC5D0038F48F /* textShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = textShader.vert; sourceTree = "<group>"; };
 		C7F6ED3B2045AC5D0038F48F /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
 		C7F6ED3C2045AC5D0038F48F /* GameWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameWindow.cpp; sourceTree = "<group>"; };
-		C7F6ED3D2045AC5D0038F48F /* Audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Audio.h; sourceTree = "<group>"; };
 		C7F6ED3E2045AC5D0038F48F /* Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sphere.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -198,18 +203,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7A89BA0207E85B400A8AF1B /* libGLEW.2.1.0.dylib in Frameworks */,
-				C7A89B9C207E85B400A8AF1B /* libfreetype.6.dylib in Frameworks */,
-				C7A89BA4207E85B400A8AF1B /* libfmodstudio.dylib in Frameworks */,
+				C77367902045AB3900230B98 /* libstb.dylib in Frameworks */,
+				C773678D2045AA1100230B98 /* libfmodL.dylib in Frameworks */,
+				C773678E2045AA1100230B98 /* libfmod.dylib in Frameworks */,
+				C77367892045A94800230B98 /* libfmodstudio.dylib in Frameworks */,
+				C773678A2045A94800230B98 /* libfmodstudioL.dylib in Frameworks */,
+				C773677F2045A72B00230B98 /* libGLEW.2.1.0.dylib in Frameworks */,
+				C77367802045A72B00230B98 /* libfreeimage.3.17.0.dylib in Frameworks */,
+				C77367812045A72B00230B98 /* libfreetype.6.dylib in Frameworks */,
+				C77367822045A72B00230B98 /* libassimp.4.1.0.dylib in Frameworks */,
+				C77367832045A72B00230B98 /* libfreeimageplus.3.17.0.dylib in Frameworks */,
+				C77367842045A72B00230B98 /* libglfw.3.2.dylib in Frameworks */,
+				C71D16842045C650002E2A43 /* Cocoa.framework in Frameworks */,
+				C79B915E2046392200648C5F /* GLUT.framework in Frameworks */,
 				C77367782045A39000230B98 /* OpenGL.framework in Frameworks */,
-				C7A89BA2207E85B400A8AF1B /* libglfw.3.2.dylib in Frameworks */,
-				C7A89BA3207E85B400A8AF1B /* libfreeimageplus.3.17.0.dylib in Frameworks */,
-				C7A89B9E207E85B400A8AF1B /* libstb.dylib in Frameworks */,
-				C7A89B9A207E85B300A8AF1B /* libfmodL.dylib in Frameworks */,
-				C7A89BA1207E85B400A8AF1B /* libassimp.4.1.0.dylib in Frameworks */,
-				C7A89B9F207E85B400A8AF1B /* libfmod.dylib in Frameworks */,
-				C7A89B9B207E85B400A8AF1B /* libfreeimage.3.17.0.dylib in Frameworks */,
-				C7A89B9D207E85B400A8AF1B /* libfmodstudioL.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,28 +250,46 @@
 			path = flipped;
 			sourceTree = "<group>";
 		};
+		C73BC3F2208A98CB00DE5457 /* DSP */ = {
+			isa = PBXGroup;
+			children = (
+				C73BC3FC208A9AF000DE5457 /* DSPHelper.h */,
+				C73BC3F3208A992500DE5457 /* OscillatorDSP.cpp */,
+				C73BC3F4208A992500DE5457 /* OscillatorDSP.h */,
+				C73BC3F6208A99DD00DE5457 /* FilterDSP.cpp */,
+				C73BC3F7208A99DD00DE5457 /* FilterDSP.h */,
+				C73BC3F9208A9A0A00DE5457 /* OcclusionDSP.cpp */,
+				C73BC3FA208A9A0A00DE5457 /* OcclusionDSP.h */,
+				C73BC3FE208AAF8E00DE5457 /* FIRConvolutionDSP.cpp */,
+				C73BC3FF208AAF8E00DE5457 /* FIRConvolutionDSP.h */,
+			);
+			path = DSP;
+			sourceTree = "<group>";
+		};
 		C77367742045A39000230B98 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C79B915D2046392200648C5F /* GLUT.framework */,
+				C773678F2045AB3900230B98 /* libstb.dylib */,
+				C773678C2045AA1100230B98 /* libfmod.dylib */,
+				C773678B2045AA1100230B98 /* libfmodL.dylib */,
+				C77367872045A94800230B98 /* libfmodstudio.dylib */,
+				C77367882045A94800230B98 /* libfmodstudioL.dylib */,
+				C773677C2045A72B00230B98 /* libassimp.4.1.0.dylib */,
+				C773677A2045A72B00230B98 /* libfreeimage.3.17.0.dylib */,
+				C773677D2045A72B00230B98 /* libfreeimageplus.3.17.0.dylib */,
+				C773677B2045A72B00230B98 /* libfreetype.6.dylib */,
+				C77367792045A72B00230B98 /* libGLEW.2.1.0.dylib */,
+				C773677E2045A72B00230B98 /* libglfw.3.2.dylib */,
+				C77367752045A39000230B98 /* Cocoa.framework */,
 				C77367762045A39000230B98 /* OpenGL.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C776BBF9206B1D1300AD4D6A /* Barrel */ = {
-			isa = PBXGroup;
-			children = (
-				C776BBFA206B1D1300AD4D6A /* barrel02.jpg */,
-				C776BBFB206B1D1300AD4D6A /* barrel02.obj */,
-				C776BBFC206B1D1300AD4D6A /* barrel02.mtl */,
-			);
-			path = Barrel;
-			sourceTree = "<group>";
-		};
 		C77CCE502045A03800F3C942 = {
 			isa = PBXGroup;
 			children = (
-				C7A89B8E207E85B300A8AF1B /* Libraries */,
 				C77CCE5B2045A03800F3C942 /* OpenGL_DSP */,
 				C77CCE5A2045A03800F3C942 /* Products */,
 				C77367742045A39000230B98 /* Frameworks */,
@@ -282,6 +307,7 @@
 		C77CCE5B2045A03800F3C942 /* OpenGL_DSP */ = {
 			isa = PBXGroup;
 			children = (
+				C73BC3F2208A98CB00DE5457 /* DSP */,
 				C73EE44C2069CCF3003CD8EC /* Extensions.h */,
 				C705B090204622CD00F0E13D /* Transform.cpp */,
 				C705B0712045FC4200F0E13D /* Transform.h */,
@@ -289,8 +315,8 @@
 				C71D168C2045EBAC002E2A43 /* GameManager.h */,
 				C71D16872045C9BF002E2A43 /* HighResolutionTimer.cpp */,
 				C71D16862045C9BF002E2A43 /* HighResolutionTimer.h */,
-				C7F6ED112045AC5C0038F48F /* Audio.cpp */,
-				C7F6ED3D2045AC5D0038F48F /* Audio.h */,
+				C77A66C620837DB0003D3BE2 /* CircularBuffer.cpp */,
+				C77A66C720837DB0003D3BE2 /* CircularBuffer.h */,
 				C7F6ED142045AC5D0038F48F /* Camera.cpp */,
 				C7F6ED0B2045AC5C0038F48F /* Camera.h */,
 				C7F6ED092045AC5C0038F48F /* Cubemap.cpp */,
@@ -324,24 +350,6 @@
 			path = OpenGL_DSP;
 			sourceTree = "<group>";
 		};
-		C7A89B8E207E85B300A8AF1B /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				C7A89B8F207E85B300A8AF1B /* libfmodL.dylib */,
-				C7A89B90207E85B300A8AF1B /* libfreeimage.3.17.0.dylib */,
-				C7A89B91207E85B300A8AF1B /* libfreetype.6.dylib */,
-				C7A89B92207E85B300A8AF1B /* libfmodstudioL.dylib */,
-				C7A89B93207E85B300A8AF1B /* libstb.dylib */,
-				C7A89B94207E85B300A8AF1B /* libfmod.dylib */,
-				C7A89B95207E85B300A8AF1B /* libGLEW.2.1.0.dylib */,
-				C7A89B96207E85B300A8AF1B /* libassimp.4.1.0.dylib */,
-				C7A89B97207E85B300A8AF1B /* libglfw.3.2.dylib */,
-				C7A89B98207E85B300A8AF1B /* libfreeimageplus.3.17.0.dylib */,
-				C7A89B99207E85B300A8AF1B /* libfmodstudio.dylib */,
-			);
-			path = Libraries;
-			sourceTree = "<group>";
-		};
 		C7F6ED152045AC5D0038F48F /* resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -368,7 +376,6 @@
 		C7F6ED1A2045AC5D0038F48F /* models */ = {
 			isa = PBXGroup;
 			children = (
-				C776BBF9206B1D1300AD4D6A /* Barrel */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -377,6 +384,7 @@
 			isa = PBXGroup;
 			children = (
 				C73EE4462069C348003CD8EC /* cw_amen12_137.wav */,
+				C73EE4472069C348003CD8EC /* drone.wav */,
 				C73EE4482069C349003CD8EC /* Helicopter.wav */,
 				C73EE4422069AF4B003CD8EC /* Horse.wav */,
 				C7F6ED242045AC5D0038F48F /* Boing.wav */,
@@ -428,7 +436,6 @@
 				C77CCE562045A03800F3C942 /* Frameworks */,
 				C77CCE572045A03800F3C942 /* CopyFiles */,
 				C71D16852045C70F002E2A43 /* Resources */,
-				C7A89B77207E856500A8AF1B /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -483,13 +490,11 @@
 				C705B08F20460E1700F0E13D /* _up.jpg in Resources */,
 				C73EE4442069AF4C003CD8EC /* Horse.wav in Resources */,
 				C71466162046D694008BBBAA /* fontShader.frag in Resources */,
-				C776BBFE206B1D1300AD4D6A /* barrel02.obj in Resources */,
 				C73EE4492069C349003CD8EC /* cw_amen12_137.wav in Resources */,
 				C705B0742045FD9D00F0E13D /* SkyBoxShader.frag in Resources */,
 				C705B08A20460E1700F0E13D /* _rt.jpg in Resources */,
-				C776BBFF206B1D1300AD4D6A /* barrel02.mtl in Resources */,
+				C73EE44A2069C349003CD8EC /* drone.wav in Resources */,
 				C705B08820460E1700F0E13D /* _ft.jpg in Resources */,
-				C776BBFD206B1D1300AD4D6A /* barrel02.jpg in Resources */,
 				C705B08620460E1700F0E13D /* _rt.jpg in Resources */,
 				C705B08D20460E1700F0E13D /* _up.jpg in Resources */,
 				C705B0752045FD9D00F0E13D /* SkyBoxShader.vert in Resources */,
@@ -516,12 +521,16 @@
 				C7F6ED4A2045AC5E0038F48F /* Camera.cpp in Sources */,
 				C7F6ED3F2045AC5E0038F48F /* Shaders.cpp in Sources */,
 				C7F6ED442045AC5E0038F48F /* Skybox.cpp in Sources */,
+				C77A66C820837DB0003D3BE2 /* CircularBuffer.cpp in Sources */,
 				C7F6ED452045AC5E0038F48F /* Cubemap.cpp in Sources */,
 				C71D16892045CE48002E2A43 /* GameWindow.cpp in Sources */,
+				C73BC400208AAF8E00DE5457 /* FIRConvolutionDSP.cpp in Sources */,
 				C705B091204622CD00F0E13D /* Transform.cpp in Sources */,
 				C7F6ED4D2045AC5E0038F48F /* Sphere.cpp in Sources */,
+				C73BC3F8208A99DD00DE5457 /* FilterDSP.cpp in Sources */,
 				C71D168A2045CE9E002E2A43 /* Game.cpp in Sources */,
-				C7F6ED492045AC5E0038F48F /* Audio.cpp in Sources */,
+				C73BC3FD208A9AF000DE5457 /* DSPHelper.h in Sources */,
+				C73BC3F5208A992500DE5457 /* OscillatorDSP.cpp in Sources */,
 				C77367862045A7A700230B98 /* Common.h in Sources */,
 				C7F6ED462045AC5E0038F48F /* VertexBufferObject.cpp in Sources */,
 				C7F6ED432045AC5E0038F48F /* FreeTypeFont.cpp in Sources */,
@@ -529,6 +538,7 @@
 				C7F6ED472045AC5E0038F48F /* VertexBufferObjectIndexed.cpp in Sources */,
 				C77CCE5D2045A03800F3C942 /* main.cpp in Sources */,
 				C71D168D2045EBAC002E2A43 /* GameManager.cpp in Sources */,
+				C73BC3FB208A9A0A00DE5457 /* OcclusionDSP.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -647,7 +657,12 @@
 					Includes/FMOD,
 					Includes/freetype2,
 				);
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libraries",
+					/Libraries,
+				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -661,7 +676,12 @@
 					Includes/FMOD,
 					Includes/freetype2,
 				);
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libraries",
+					/Libraries,
+				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
