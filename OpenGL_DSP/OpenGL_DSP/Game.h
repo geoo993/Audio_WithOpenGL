@@ -13,7 +13,9 @@
 #include "FreeTypeFont.h"
 #include "Sphere.h"
 #include "OpenAssetImportMesh.h"
-#include "Audio.h"
+#include "OscillatorDSP.h"
+#include "FilterDSP.h"
+#include "FIRConvolutionDSP.h"
 
 // Classes used in game.  For a new class, declare it here and provide a pointer to an object of this class below.  Then, in Game.cpp, 
 // include the header.  In the Game constructor, set the pointer to NULL and in Game::Initialise, create a new object.  Don't forget to 
@@ -27,7 +29,9 @@ class CFreeTypeFont;
 class CHighResolutionTimer;
 class CSphere;
 class COpenAssetImportMesh;
-class CAudio;
+class COscillator;
+class CFilterDSP;
+class CFIRConvolutionDSP;
 
 class Game {
 private:
@@ -52,9 +56,6 @@ private:
 	CPlane *m_pPlanarTerrain;
     CHighResolutionTimer *m_pGameTimer;
     CFreeTypeFont *m_pFtFont;
-    COpenAssetImportMesh *m_pHelicopter;
-    CAudio *m_pAudio;
-    vector <string> m_audioFiles;
 
     // game timers
     float m_time;
@@ -73,13 +74,18 @@ private:
     int m_lastKeyPress;
     GLboolean m_isKeyPressRestriction;
 
-
-    // audio
-
-
     // helicopter rotate
-    GLfloat rotation;
-    GLint helicopterRotor = 0;
+    COpenAssetImportMesh *m_pHelicopter;
+    GLfloat m_helicopteRotorRotation;
+    GLint m_helicopteRotor;
+
+    // audio DSP
+    void LoadDSPFromResources(const std::string &path);
+    vector <string> m_audioFiles;
+    CFIRConvolutionDSP *m_pFIR;
+    COscillator *m_pOscillator;
+    CFilterDSP *m_pFilter;
+
 
 public:
 

@@ -6,6 +6,7 @@
 //  Copyright © 2018 Geo Games. All rights reserved.
 //
 
+#pragma once
 #include "Common.h"
 
 #ifndef CircularBuffer_hpp
