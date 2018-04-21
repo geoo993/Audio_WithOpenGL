@@ -58,6 +58,8 @@ Game::Game()
 
     // helicopter
     m_pHelicopter = nullptr;
+    m_helicoptePosition = glm::vec3(200.0f, 0.0f, 100.0f);
+    m_helicopteVelocity = glm::vec3(0.1f, 0.1f, 0.1f);
     m_helicopteRotor = 0;
     m_helicopteRotorRotation = 0.0f;
 
@@ -211,20 +213,19 @@ void Game::LoadDSPFromResources(const std::string &path) {
     m_audioFiles.push_back("Helicopter.wav");
 
     //// Initialise audio and play background music
-    //m_pFIR->InitialiseWithDSPEffect();
-    //m_pFIR->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str());
-    //m_pFIR->LoadMusicStream((path+"/audio/"+m_audioFiles[0]).c_str());
-    //m_pFIR->PlayMusicStreamUsingDSP();
+    m_pFIR->Initialise();
+    m_pFIR->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str());
+    m_pFIR->LoadMusicStream((path+"/audio/"+m_audioFiles[0]).c_str());
+    m_pFIR->PlayMusicStream();
 
     //m_pOscillator->Initialise();
     //m_pOscillator->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
     //m_pOscillator->PlayMusicStream();
 
-    m_pFilter->Initialise();
-    m_pFilter->LoadEventSound((path+"/audio/"+m_audioFiles[3]).c_str());
-    m_pFilter->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
-    m_pFilter->PlayMusicStream();
-
+    //m_pFilter->Initialise();
+    //m_pFilter->LoadEventSound((path+"/audio/"+m_audioFiles[3]).c_str());
+    //m_pFilter->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
+    //m_pFilter->PlayMusicStream();
 }
 
 void Game::DisplayFrameRate() {
@@ -272,7 +273,6 @@ void Game::DisplayFrameRate() {
         pFontProgram->SetUniform("textColor", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
         m_pFtFont->Render(pFontProgram, 20, height - 40, 20, "FPS: %d", m_framesPerSecond);
         //m_pFtFont->Render(pFontProgram, "FPS: " + std::to_string(m_framesPerSecond), 20, height - 40, 0.5f);
-
 
         glEnable(GL_DEPTH_TEST);
     }
@@ -346,6 +346,8 @@ void Game::Render()
         m_helicopteRotorRotation = 0.0f;
     }
     // Render the helicopter
+    m_pHelicopter->transform.SetIdentity();
+    m_pHelicopter->transform.Translate(m_helicoptePosition);
     m_pHelicopter->Render(pMainProgram, m_pCamera, m_helicopteRotorRotation, m_helicopteRotor);
 
     m_gameWindow.SetViewport();
@@ -367,9 +369,10 @@ void Game::Update()
     MouseControls(mouseButton, mouseAction);
     KeyBoardControls(keyPressedCode, keyReleasedCode, keyPressedAction);
 
-	//m_pFIR->Update(m_pCamera);
+	m_pFIR->Update(m_pCamera);
     //m_pOscillator->Update();
-    m_pFilter->Update();
+    //m_pFilter->Update(m_pCamera, m_helicoptePosition, m_helicopteVelocity);
+
 }
 
 
@@ -401,9 +404,7 @@ static void OnMouseDown_callback(GLFWwindow* window, int button, int action, int
     //std::cout << "Mouse Down with button: " << button << " and with action: " << action << std::endl;
     mouseButton = button;
     mouseAction = action;
-
 }
-
 
 static void OnKeyDown_callback( GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -496,13 +497,13 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_SPACE:
                 break;
             case GLFW_KEY_F1:
-                m_pFilter->PlayEventSound();
+                //m_pFilter->PlayEventSound();
                 break;
             case GLFW_KEY_1 :
-                m_pFilter->PlayEventSound();
+                //m_pFilter->PlayEventSound();
                 break;
             case GLFW_KEY_2:
-                m_pFilter->ToggleMusicFilter();
+                //m_pFilter->ToggleMusicFilter();
                 break;
             case GLFW_KEY_3:
                 break;
@@ -525,8 +526,10 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_PERIOD:
                 break;
             case GLFW_KEY_MINUS:
+                //m_pFilter->DecreaseMusicVolume();
                 break;
             case GLFW_KEY_EQUAL:
+                //m_pFilter->IncreaseMusicVolume();
                 break;
             case GLFW_KEY_GRAVE_ACCENT:
                 break;
@@ -553,10 +556,8 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_U:
                 break;
             case GLFW_KEY_O:
-            m_pFilter->DecreaseMusicVolume();
                 break;
             case GLFW_KEY_P:
-            m_pFilter->IncreaseMusicVolume();
                 break;
             case GLFW_KEY_I:
                 break;

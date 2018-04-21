@@ -9,8 +9,8 @@
 #pragma once
 #include "Common.h"
 
-#ifndef CircularBuffer_hpp
-#define CircularBuffer_hpp
+#ifndef CircularBuffer_h
+#define CircularBuffer_h
 
 class CCircularBuffer
 {
@@ -18,6 +18,7 @@ public:
     CCircularBuffer(const GLuint &size);
     ~CCircularBuffer();
     void Put(const GLfloat &value);
+    void PutAt(const GLint &index, const GLfloat &value);
     GLfloat AtPosition(const GLuint &position);
     GLuint GetTail();
     GLuint GetSize();
@@ -25,7 +26,7 @@ public:
 
 private:
     GLuint m_size;
-    GLfloat * m_buffer;
+    GLfloat *m_buffer;
     GLuint m_tail;
     list<GLfloat> m_bufferValues;
 };

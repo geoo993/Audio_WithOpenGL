@@ -8,10 +8,13 @@
 
 #include "FIRConvolutionDSP.h"
 
+static CCircularBuffer * circularBuffer;
 
-static CCircularBuffer * cb;
-static GLfloat FIRcoefficient[] = { 0.3f, 0.2f, 0.4f, 1.0f };
-
+static int sampleCount = 0;
+static GLfloat coefficient[] = { 0.25f, 0.25f, 0.25f, 0.25f };
+static float *buffer = nullptr;
+static const int bufferSize = 1024;
+static const int delay = 512;
 
 CFIRConvolutionDSP::CFIRConvolutionDSP()
 {
@@ -53,15 +56,17 @@ FMOD_RESULT F_CALLBACK FIRConvolutionDSPCallback(FMOD_DSP_STATE *dsp_state,
     //    std::cout << "Length " << length << std::endl;
     //    std::cout << "Length of Coefficients = " << (sizeof(FIRcoefficient)/sizeof(FIRcoefficient[0])) << std::endl;
 
-    // buffer, all x[n] are in this circular buffer
-    if (cb == nullptr) cb = new CCircularBuffer(1024);
+    // TODO: use circular buffer and refer to  vladamir code
+    //if (circularBuffer == nullptr) circularBuffer = new CCircularBuffer(bufferSize * sizeof(float) * inchannels);
+    if (buffer == NULL)
+        buffer = (float*)malloc(bufferSize * sizeof(float) * inchannels);
 
-
+    unsigned int samp, chan;
     GLfloat scale = 0.2f;
 
-    for (unsigned int samp = 0; samp < length; samp++)
+    for (samp = 0; samp < length; samp++)
     {
-        for (int chan = 0; chan < *outchannels; chan++)
+        for (chan = 0; chan < *outchannels; chan++)
         {
 
             /*
@@ -69,20 +74,7 @@ FMOD_RESULT F_CALLBACK FIRConvolutionDSPCallback(FMOD_DSP_STATE *dsp_state,
              Input is modified, and sent to output.
              */
 
-            outbuffer[(samp * *outchannels) + chan] = inbuffer[(samp * inchannels) + chan] * scale;
-
-        }
-    }
-
-    for (unsigned int samp = 0; samp < length; samp++)
-    {
-        for (int chan = 0; chan < *outchannels; chan++)
-        {
-
-            /*
-             This DSP filter just halves the volume!
-             Input is modified, and sent to output.
-             */
+            // TODO: implement fir convolution
             /*
             GLuint n = ((samp * inchannels) + chan);
             GLfloat f;
@@ -95,14 +87,25 @@ FMOD_RESULT F_CALLBACK FIRConvolutionDSPCallback(FMOD_DSP_STATE *dsp_state,
                     f += currentCoeficient * inbuffer[n - i];
                 }
             }
+             //outbuffer[(samp * *outchannels) + chan] = f * scale;
              */
+            //outbuffer[(samp * *outchannels) + chan] = inbuffer[(samp * inchannels) + chan] * scale;
 
-            //cout << "n is " << n << endl;
+            buffer[(sampleCount * inchannels) % bufferSize + chan] = inbuffer[(samp * inchannels) + chan];
 
-            //outbuffer[(samp * *outchannels) + chan] = f * scale;
-            outbuffer[(samp * *outchannels) + chan] = inbuffer[(samp * inchannels) + chan] * scale;
-
+            if (sampleCount < 4) // don't reach before the the start of the buffer with sample_count-3 below
+                outbuffer[(samp * inchannels) + chan] = 0;
+            else {
+                // this is a simple averaging filter with 4 coefficients
+                // TODO: Implemnet delay with the delay variable
+                outbuffer[(samp * inchannels) + chan] = coefficient[0] * buffer[(sampleCount * inchannels) % bufferSize + chan];
+                outbuffer[(samp * inchannels) + chan] += coefficient[1] * buffer[((sampleCount - 1) * inchannels) % bufferSize + chan];
+                outbuffer[(samp * inchannels) + chan] += coefficient[2] * buffer[((sampleCount - 2) * inchannels) % bufferSize + chan];
+                outbuffer[(samp * inchannels) + chan] += coefficient[3] * buffer[((sampleCount - 3) * inchannels) % bufferSize + chan];
+            }
         }
+
+        sampleCount++;
     }
 
     return FMOD_OK;
@@ -119,7 +122,6 @@ bool CFIRConvolutionDSP::Initialise()
     // Initialise the system
     m_result = m_FmodSystem->init(32, FMOD_INIT_NORMAL, 0);
     FmodErrorCheck(m_result);
-
     if (m_result != FMOD_OK)
         return false;
 
@@ -196,8 +198,14 @@ bool CFIRConvolutionDSP::PlayMusicStream()
     return true;
 }
 
-void CFIRConvolutionDSP::Update()
+void CFIRConvolutionDSP::Update(CCamera *camera)
 {
+    glm::vec3 position = camera->GetPosition();
+    // 5) update the listener's position with the camera position
+    DSPHelper::ToFMODVector(position, &m_cameraPosition);
+    m_result = m_FmodSystem->set3DListenerAttributes(0, &m_cameraPosition, NULL, NULL, NULL);
+    FmodErrorCheck(m_result);
+
     m_FmodSystem->update();
 }
 

@@ -28,6 +28,12 @@ void CCircularBuffer::Put(const GLfloat &value) {
     m_tail++;
 }
 
+void CCircularBuffer::PutAt(const GLint &index, const GLfloat &value) {
+    m_buffer[index % m_size] = value;
+    m_bufferValues.push_back(value);
+    m_tail = -1;
+}
+
 GLfloat CCircularBuffer::AtPosition(const GLuint &position) {
     if (position > m_tail || position < 0) {
         return -1;

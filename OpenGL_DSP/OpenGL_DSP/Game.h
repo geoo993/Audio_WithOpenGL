@@ -76,6 +76,8 @@ private:
 
     // helicopter rotate
     COpenAssetImportMesh *m_pHelicopter;
+    glm::vec3 m_helicoptePosition;
+    glm::vec3 m_helicopteVelocity;
     GLfloat m_helicopteRotorRotation;
     GLint m_helicopteRotor;
 

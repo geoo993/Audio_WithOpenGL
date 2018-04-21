@@ -262,6 +262,8 @@
 				C73BC3FA208A9A0A00DE5457 /* OcclusionDSP.h */,
 				C73BC3FE208AAF8E00DE5457 /* FIRConvolutionDSP.cpp */,
 				C73BC3FF208AAF8E00DE5457 /* FIRConvolutionDSP.h */,
+				C77A66C620837DB0003D3BE2 /* CircularBuffer.cpp */,
+				C77A66C720837DB0003D3BE2 /* CircularBuffer.h */,
 			);
 			path = DSP;
 			sourceTree = "<group>";
@@ -315,8 +317,6 @@
 				C71D168C2045EBAC002E2A43 /* GameManager.h */,
 				C71D16872045C9BF002E2A43 /* HighResolutionTimer.cpp */,
 				C71D16862045C9BF002E2A43 /* HighResolutionTimer.h */,
-				C77A66C620837DB0003D3BE2 /* CircularBuffer.cpp */,
-				C77A66C720837DB0003D3BE2 /* CircularBuffer.h */,
 				C7F6ED142045AC5D0038F48F /* Camera.cpp */,
 				C7F6ED0B2045AC5C0038F48F /* Camera.h */,
 				C7F6ED092045AC5C0038F48F /* Cubemap.cpp */,

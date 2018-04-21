@@ -12,6 +12,8 @@
 #pragma once
 #include "Common.h"
 #include "CircularBuffer.h"
+#include "Camera.h"
+#include "DSPHelper.h"
 
 class CFIRConvolutionDSP
 {
@@ -29,7 +31,7 @@ public:
     void IncreaseMusicVolume();
     void DecreaseMusicVolume();
 
-    void Update();
+    void Update(CCamera *camera);
 
 private:
 
@@ -47,6 +49,11 @@ private:
     FMOD::Sound *m_music;
     FMOD::Channel* m_musicChannel;
     GLfloat m_musicVolume;
+
+    // helicopter attributes
+    FMOD_VECTOR m_cameraPosition;     // the camera position in the world
+    FMOD_VECTOR m_helicopterPosition; // position or displacement of the helicopter
+    FMOD_VECTOR m_helicopterVelocity; // velocity of the moving helicopter
 
 };
 #endif /* FIRConvolutionDSP_h */
