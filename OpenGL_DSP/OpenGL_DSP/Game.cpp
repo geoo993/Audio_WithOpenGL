@@ -59,14 +59,22 @@ Game::Game()
     // helicopter
     m_pHelicopter = nullptr;
     m_helicoptePosition = glm::vec3(200.0f, 0.0f, 100.0f);
+    m_helicoptePreviousPosition = glm::vec3(0.0f);
+    m_helicopteOrientation = glm::mat4(1);
     m_helicopteVelocity = glm::vec3(0.1f, 0.1f, 0.1f);
     m_helicopteRotor = 0;
     m_helicopteRotorRotation = 0.0f;
+    m_helicopterPositionIndex = 0;
+    m_helicopterMoveSpeed = 0.04f;
+
+    // helicopter path
+    m_pPath = nullptr;
 
     // audio DSP
     m_pFIR = nullptr;
     m_pOscillator = nullptr;
     m_pFilter = nullptr;
+    m_pOcclusion = nullptr;
     m_audioFiles.reserve(6);
 }
 
@@ -82,6 +90,8 @@ Game::~Game()
 	delete m_pFIR;
     delete m_pOscillator;
     delete m_pFilter;
+    delete m_pOcclusion;
+    delete m_pPath;
 
 	if (m_pShaderPrograms != nullptr) {
 		for (unsigned int i = 0; i < m_pShaderPrograms->size(); i++)
@@ -103,9 +113,11 @@ void Game::Initialise()
 	m_pPlanarTerrain = new CPlane;
 	m_pFtFont = new CFreeTypeFont;
 	m_pHelicopter = new COpenAssetImportMesh;
+    m_pPath = new CCatmullRom;
 	m_pFIR = new CFIRConvolutionDSP;
     m_pOscillator = new COscillator;
     m_pFilter = new CFilterDSP;
+    m_pOcclusion = new COcclusion;
 
     // Set the orthographic and perspective projection matrices based on the image size
     m_pCamera = new CCamera(glm::vec3(0.0f, 60.0f, 0.0f),     // position
@@ -201,6 +213,10 @@ void Game::LoadFromResources(const std::string &path)
 
     m_pHelicopter->Load(path+"/models/Mi-28N_Havoc_BF3/havoc.obj");
 
+    //create catmullrom
+    m_pPath->CreateCentreline(200.0f, true);
+    m_pPath->CreateSpline(path+"/textures/", "tiles41a");
+
 }
 
 void Game::LoadDSPFromResources(const std::string &path) {
@@ -213,10 +229,10 @@ void Game::LoadDSPFromResources(const std::string &path) {
     m_audioFiles.push_back("Helicopter.wav");
 
     //// Initialise audio and play background music
-    m_pFIR->Initialise();
-    m_pFIR->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str());
-    m_pFIR->LoadMusicStream((path+"/audio/"+m_audioFiles[0]).c_str());
-    m_pFIR->PlayMusicStream();
+    //m_pFIR->Initialise();
+    //m_pFIR->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str());
+    //m_pFIR->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
+    //m_pFIR->PlayMusicStream();
 
     //m_pOscillator->Initialise();
     //m_pOscillator->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
@@ -226,6 +242,18 @@ void Game::LoadDSPFromResources(const std::string &path) {
     //m_pFilter->LoadEventSound((path+"/audio/"+m_audioFiles[3]).c_str());
     //m_pFilter->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
     //m_pFilter->PlayMusicStream();
+
+
+    glm::vec3 wallPos = glm::vec3(300, 50, 20);
+    GLfloat width = 150;
+    GLfloat height = 50;
+    GLfloat doppler = 2.0f;
+    GLfloat distFactor = 50.0f;
+    GLfloat rollOff = 1.0f;
+    m_pOcclusion->Initialise(doppler, distFactor, rollOff);
+    m_pOcclusion->LoadEventSound((path+"/audio/"+m_audioFiles[5]).c_str());
+    m_pOcclusion->PlayEventSound();
+    m_pOcclusion->CreateWall(wallPos, width, height);
 }
 
 void Game::DisplayFrameRate() {
@@ -335,20 +363,46 @@ void Game::Render()
                              (terrainModel));
     m_pPlanarTerrain->Render();
 
-
 	// Turn on diffuse + specular materials
 	pMainProgram->SetUniform("material1.Ma", glm::vec3(0.5f));	// Ambient material reflectance
 	pMainProgram->SetUniform("material1.Md", glm::vec3(0.5f));	// Diffuse material reflectance
 	pMainProgram->SetUniform("material1.Ms", glm::vec3(1.0f));	// Specular material reflectance	
 
+
+
+    // Render the helicopter
     m_helicopteRotorRotation += 30.0f;
     if (m_helicopteRotorRotation > 360 ) {
         m_helicopteRotorRotation = 0.0f;
     }
-    // Render the helicopter
-    m_pHelicopter->transform.SetIdentity();
-    m_pHelicopter->transform.Translate(m_helicoptePosition);
-    m_pHelicopter->Render(pMainProgram, m_pCamera, m_helicopteRotorRotation, m_helicopteRotor);
+
+    m_helicoptePreviousPosition = m_helicoptePosition;
+
+    m_helicopterPositionIndex +=  m_deltaTime * m_helicopterMoveSpeed;
+    //m_helicopterPositionIndex = 1;
+
+    m_helicoptePosition = m_pPath->GetCentralLinePositionAtIndex(m_helicopterPositionIndex);
+    glm::vec3 T = glm::normalize(m_pPath->GetCentralLinePositionAtIndex(m_helicopterPositionIndex + 1) - m_helicoptePosition);//forward fector
+    glm::vec3 N = glm::cross(T, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::vec3 B = glm::cross(N, T);
+    m_helicopteOrientation = glm::mat4(glm::mat3(T, B, N));
+    
+    m_helicopteVelocity = (m_helicoptePosition - m_helicoptePreviousPosition) / (float)(m_deltaTime / 1000);
+
+    //m_pHelicopter->transform.SetIdentity();
+    //m_pHelicopter->transform.Translate(m_helicoptePosition);
+    //m_pHelicopter->transform.ApplyMatrix(m_helicopteOrientation);
+
+    //glm::mat4 helicopterModel = m_pHelicopter->transform.GetModel();
+    //pMainProgram->SetUniform("matrices.modelMatrix", helicopterModel);
+    //pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix
+    //                         (helicopterModel));
+    m_pHelicopter->Render(
+                          pMainProgram,
+                          m_pCamera,
+                          m_helicopteRotorRotation,
+                          m_helicoptePosition,
+                          m_helicopteRotor);
 
     m_gameWindow.SetViewport();
 
@@ -368,13 +422,16 @@ void Game::Update()
     m_pCamera->Update(m_gameWindow.Window(), m_deltaTime, keyPressedCode, true, m_enableMouseMovement);
     MouseControls(mouseButton, mouseAction);
     KeyBoardControls(keyPressedCode, keyReleasedCode, keyPressedAction);
+}
 
-	m_pFIR->Update(m_pCamera);
+void Game::Audio () {
+
+    //m_pFIR->Update(m_pCamera);
     //m_pOscillator->Update();
     //m_pFilter->Update(m_pCamera, m_helicoptePosition, m_helicopteVelocity);
 
+    m_pOcclusion->Update(m_pCamera, m_helicoptePosition, m_helicopteVelocity);
 }
-
 
 // The game loop runs repeatedly until game over
 void Game::GameLoop()
@@ -395,6 +452,7 @@ void Game::GameLoop()
 	m_pGameTimer->Start();
 	Update();
 	Render();
+    Audio();
 	m_deltaTime = m_pGameTimer->Elapsed();
 
 }
@@ -485,7 +543,6 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
 
         m_keyPressTime += 0.06;
 
-        //m_lastKeyPress == keyPressedCode ||
         if ((int)m_lastKeyPressTime  == (int)m_keyPressTime && m_isKeyPressRestriction == true)
         {
             return;

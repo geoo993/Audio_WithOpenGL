@@ -214,11 +214,16 @@ void CCamera::Advance(double direction)
     m_position = m_position + view * speed;
 
     UpdateCameraVectors();
+
+    m_velocity = glm::normalize(m_front) * speed;
 }
 
 // Update the camera to respond to mouse motion for rotations and keyboard for translation
 void CCamera::Update(GLFWwindow *window, const double &dt, const int &key, const bool &moveCamera, const bool &enableMouse)
 {
+    m_previousPosition = m_position;
+    m_velocity = glm::vec3(0.0f);
+
     glm::vec3 vector = glm::cross(m_view - m_position, m_up);
     m_strafeVector = glm::normalize(vector);
 
@@ -226,6 +231,7 @@ void CCamera::Update(GLFWwindow *window, const double &dt, const int &key, const
         SetViewByMouse(window, enableMouse);
         TranslateByKeyboard(dt, key);
     }
+
 }
 
 // Update the camera to respond to key presses for translation
@@ -365,5 +371,30 @@ glm::vec3 CCamera::GetBackward()
     return m_back;
 }
 
+// Return the camera velocity vector
+glm::vec3 CCamera::GetVelocity()
+{
+    return m_velocity;
+}
+
+glm::vec3 CCamera::GetPathViewPoint(const glm::vec3 &p, const glm::vec3 &pNext, const float &offSet){
+
+    m_T = normalize(pNext - p);
+    m_N = cross(m_T, glm::vec3(0.0f, 1.0f, 0.0f));
+    m_B = cross(m_N, m_T);
+
+    return p + offSet * m_T;
+}
+
+glm::vec3 CCamera::GetPathLeftPoints(const glm::vec3 &p, const float &pathWidth, const float &rotation){
+
+    glm::vec3 leftP = p - ( pathWidth / 2.0f ) * m_N;
+    return glm::vec3(leftP.x, leftP.y + rotation, leftP.z);
+}
+
+glm::vec3 CCamera::GetPathRightPoints(const glm::vec3 &p, const float &pathWidth, const float &rotation){
+    glm::vec3 rightP = p + ( pathWidth / 2.0f ) * m_N;
+    return glm::vec3(rightP.x, rightP.y - rotation, rightP.z);
+}
 
 

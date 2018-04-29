@@ -34,6 +34,7 @@ public:
     glm::vec3 GetDown();                               // Gets the camera down vector
     glm::vec3 GetForward();                            // Gets the camera forward vector
     glm::vec3 GetBackward();                           // Gets the camera backward vector
+    glm::vec3 GetVelocity();                           // Gets the camera velocity vector
 
     // re-computer all the vector
     void UpdateCameraVectors( );
@@ -74,6 +75,14 @@ public:
 
 	glm::mat3 ComputeNormalMatrix(const glm::mat4 &modelViewMatrix);
 
+    glm::vec3 GetPathViewPoint(const glm::vec3 &p, const glm::vec3 &pNext, const float &offSet);
+    glm::vec3 GetPathLeftPoints(const glm::vec3 &p, const float &pathWidth, const float &rotation);
+    glm::vec3 GetPathRightPoints(const glm::vec3 &p, const float &pathWidth, const float &rotation);
+
+    glm::vec3 GetPathT() const { return m_T; };
+    glm::vec3 GetPathN() const { return m_N; };
+    glm::vec3 GetPathB() const { return m_B; };
+
 private:
     //view and projection matrix
     glm::mat4 m_perspectiveProjectionMatrix;        // Perspective projection matrix
@@ -82,6 +91,7 @@ private:
 
     // Camera Attributes
     glm::vec3 m_position;            // The position of the camera's centre of projection
+    glm::vec3 m_previousPosition;    // The previous position of the camera's centre of projection
     glm::vec3 m_view;                // The camera's viewpoint (point where the camera is looking)
 
     glm::vec3 m_strafeVector;        // The camera's strafe vector
@@ -92,8 +102,9 @@ private:
     glm::vec3 m_right;               // The camera's right vector
     glm::vec3 m_up;                  // The camera's up vector
     glm::vec3 m_down;                // The camera's down vector
+    glm::vec3 m_velocity;            // The camera's velocity vector
 
-    glm::vec3 m_worldUp;;            // The worlds up vector, the original position of the world
+    glm::vec3 m_worldUp;             // The worlds up vector, the original position of the world
 
     // Eular Angles
     GLfloat m_fieldOfView;           // The view from the camera
@@ -114,4 +125,10 @@ private:
 
     // Mouse
     GLboolean m_firstMouse = true;
+
+    // Spline
+    glm::vec3 m_T;                   // tangent on the spline
+    glm::vec3 m_N;                   // normal on the spline
+    glm::vec3 m_B;                   // bitangent on the spline
+
 };

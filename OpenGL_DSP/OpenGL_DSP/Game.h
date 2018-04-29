@@ -13,7 +13,9 @@
 #include "FreeTypeFont.h"
 #include "Sphere.h"
 #include "OpenAssetImportMesh.h"
+#include "CatmullRom.h"
 #include "OscillatorDSP.h"
+#include "OcclusionDSP.h"
 #include "FilterDSP.h"
 #include "FIRConvolutionDSP.h"
 
@@ -32,14 +34,17 @@ class COpenAssetImportMesh;
 class COscillator;
 class CFilterDSP;
 class CFIRConvolutionDSP;
+class COcclusion;
+class CCatmullRom;
 
 class Game {
 private:
 	// Three main methods used in the game.  Initialise runs once, while Update and Render run repeatedly in the game loop.
 	void Initialise();
-	void Update();
+    void Update();
+    void Render();
+    void Audio();
     void GameLoop();
-	void Render();
     void LoadFromResources(const std::string &path);
     void CreateShaderPrograms(const std::string &path);
     void KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction);
@@ -77,9 +82,16 @@ private:
     // helicopter rotate
     COpenAssetImportMesh *m_pHelicopter;
     glm::vec3 m_helicoptePosition;
+    glm::vec3 m_helicoptePreviousPosition;
+    glm::mat4 m_helicopteOrientation;
     glm::vec3 m_helicopteVelocity;
     GLfloat m_helicopteRotorRotation;
     GLint m_helicopteRotor;
+    GLfloat m_helicopterMoveSpeed;
+    GLint m_helicopterPositionIndex;
+
+    // helicoper path
+    CCatmullRom *m_pPath;
 
     // audio DSP
     void LoadDSPFromResources(const std::string &path);
@@ -87,6 +99,7 @@ private:
     CFIRConvolutionDSP *m_pFIR;
     COscillator *m_pOscillator;
     CFilterDSP *m_pFilter;
+    COcclusion *m_pOcclusion;
 
 
 public:

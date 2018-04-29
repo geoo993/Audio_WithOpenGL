@@ -376,8 +376,11 @@ std::vector<glm::mat4> COpenAssetImportMesh::GetModelMatrixInstancesData(){
     return m;
 }
 
-void COpenAssetImportMesh::Render(CShaderProgram *pProgram, CCamera *pCamera,
-                                  GLfloat rotation, GLint helicopterRotor)
+void COpenAssetImportMesh::Render(CShaderProgram *pProgram,
+                                  CCamera *pCamera,
+                                  GLfloat helicopterRotationSpeed,
+                                  glm::vec3 helicopterPosition,
+                                  GLint helicopterRotor)
 {
 
 
@@ -440,14 +443,13 @@ void COpenAssetImportMesh::Render(CShaderProgram *pProgram, CCamera *pCamera,
         if (pCamera != nullptr && pProgram != nullptr) {
             CTransform transform;
             transform.SetIdentity();
-            transform.Translate(glm::vec3(0.0f, 20.0f, 0.0f));
+            transform.Translate(helicopterPosition);
 
             if (i == 3){
-                transform.Rotate(glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(rotation));
+                transform.Rotate(glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(helicopterRotationSpeed));
             }
 
             transform.Scale(0.5f);
-
             glm::mat4 helicopterPart = transform.GetModel();
             pProgram->SetUniform("matrices.modelMatrix", helicopterPart);
             pProgram->SetUniform("matrices.normalMatrix", pCamera->ComputeNormalMatrix

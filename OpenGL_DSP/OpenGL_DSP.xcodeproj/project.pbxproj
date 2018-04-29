@@ -47,6 +47,7 @@
 		C73BC3FB208A9A0A00DE5457 /* OcclusionDSP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3F9208A9A0A00DE5457 /* OcclusionDSP.cpp */; };
 		C73BC3FD208A9AF000DE5457 /* DSPHelper.h in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3FC208A9AF000DE5457 /* DSPHelper.h */; };
 		C73BC400208AAF8E00DE5457 /* FIRConvolutionDSP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3FE208AAF8E00DE5457 /* FIRConvolutionDSP.cpp */; };
+		C73BCC212095F2700078CFFA /* CatmullRom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BCC202095F2700078CFFA /* CatmullRom.cpp */; };
 		C73EE4442069AF4C003CD8EC /* Horse.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4422069AF4B003CD8EC /* Horse.wav */; };
 		C73EE4492069C349003CD8EC /* cw_amen12_137.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4462069C348003CD8EC /* cw_amen12_137.wav */; };
 		C73EE44A2069C349003CD8EC /* drone.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4472069C348003CD8EC /* drone.wav */; };
@@ -137,6 +138,8 @@
 		C73BC3FC208A9AF000DE5457 /* DSPHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DSPHelper.h; sourceTree = "<group>"; };
 		C73BC3FE208AAF8E00DE5457 /* FIRConvolutionDSP.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FIRConvolutionDSP.cpp; sourceTree = "<group>"; };
 		C73BC3FF208AAF8E00DE5457 /* FIRConvolutionDSP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FIRConvolutionDSP.h; sourceTree = "<group>"; };
+		C73BCC1F2095F26F0078CFFA /* CatmullRom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatmullRom.h; sourceTree = "<group>"; };
+		C73BCC202095F2700078CFFA /* CatmullRom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CatmullRom.cpp; sourceTree = "<group>"; };
 		C73EE4422069AF4B003CD8EC /* Horse.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Horse.wav; sourceTree = "<group>"; };
 		C73EE4462069C348003CD8EC /* cw_amen12_137.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cw_amen12_137.wav; sourceTree = "<group>"; };
 		C73EE4472069C348003CD8EC /* drone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = drone.wav; sourceTree = "<group>"; };
@@ -309,6 +312,8 @@
 		C77CCE5B2045A03800F3C942 /* OpenGL_DSP */ = {
 			isa = PBXGroup;
 			children = (
+				C73BCC202095F2700078CFFA /* CatmullRom.cpp */,
+				C73BCC1F2095F26F0078CFFA /* CatmullRom.h */,
 				C73BC3F2208A98CB00DE5457 /* DSP */,
 				C73EE44C2069CCF3003CD8EC /* Extensions.h */,
 				C705B090204622CD00F0E13D /* Transform.cpp */,
@@ -530,6 +535,7 @@
 				C73BC3F8208A99DD00DE5457 /* FilterDSP.cpp in Sources */,
 				C71D168A2045CE9E002E2A43 /* Game.cpp in Sources */,
 				C73BC3FD208A9AF000DE5457 /* DSPHelper.h in Sources */,
+				C73BCC212095F2700078CFFA /* CatmullRom.cpp in Sources */,
 				C73BC3F5208A992500DE5457 /* OscillatorDSP.cpp in Sources */,
 				C77367862045A7A700230B98 /* Common.h in Sources */,
 				C7F6ED462045AC5E0038F48F /* VertexBufferObject.cpp in Sources */,
