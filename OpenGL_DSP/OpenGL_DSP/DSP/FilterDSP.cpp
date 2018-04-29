@@ -11,9 +11,6 @@
 CFilterDSP::CFilterDSP()
 {
     m_musicVolume = 0.2f;
-    m_doppler = 1.0f;
-    m_distFactor = 1.0f;
-    m_distRolloff = 1.0f;
 }
 
 CFilterDSP::~CFilterDSP()
@@ -54,7 +51,7 @@ bool CFilterDSP::Initialise()
         return false;
 
     // 3) Set the FMOD 3D settings to some sensible values.
-    m_result = m_FmodSystem->set3DSettings(m_doppler, m_distFactor, m_distRolloff);
+    m_result = m_FmodSystem->set3DSettings(1, 1, 1);
     FmodErrorCheck(m_result);
     if (m_result != FMOD_OK)
         return false;
@@ -85,8 +82,7 @@ bool CFilterDSP::PlayEventSound()
     m_eventChannel->setMode(FMOD_3D);
 
     // 6) set the position to be the helicopter position
-    //m_result = m_eventChannel->set3DAttributes(0, 0, 0);
-    m_result = m_eventChannel->set3DAttributes(&m_helicopterPosition, &m_helicopterVelocity);
+    m_result = m_eventChannel->set3DAttributes(0, 0, 0);
 
     FmodErrorCheck(m_result);
     if (m_result != FMOD_OK)
@@ -159,12 +155,8 @@ bool CFilterDSP::PlayMusicStream()
     return true;
 }
 
-void CFilterDSP::Update(CCamera *camera, glm::vec3 &helicopterPosition, glm::vec3 &helicopterVelocity)
+void CFilterDSP::Update(CCamera *camera)
 {
-    DSPHelper::ToFMODVector(helicopterPosition, &m_helicopterPosition);
-    DSPHelper::ToFMODVector(helicopterVelocity, &m_helicopterVelocity);
-    m_result = m_eventChannel->set3DAttributes(&m_helicopterPosition, &m_helicopterVelocity);
-
     // 5) update the listener's position with the camera position
     glm::vec3 position = camera->GetPosition();
     DSPHelper::ToFMODVector(position, &m_cameraPosition);

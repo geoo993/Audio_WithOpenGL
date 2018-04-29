@@ -32,12 +32,11 @@ public:
 
     void ToggleMusicFilter();
 
-    void Update(CCamera *camera, glm::vec3 &helicopterPosition, glm::vec3 &helicopterVelocity);
+    void Update(CCamera *camera);
 
 private:
 
     void FmodErrorCheck(FMOD_RESULT result);
-    void ToFMODVector(glm::vec3 &glVec3, FMOD_VECTOR *fmodVec);
 
     FMOD_RESULT m_result;
     FMOD::System *m_FmodSystem;    // the global variable for talking to FMOD
@@ -55,14 +54,8 @@ private:
     FMOD::DSP *m_musicDSPHead;
     FMOD::DSP *m_musicDSPHeadInput;
 
-    // 3D settings
-    GLfloat m_doppler, m_distFactor, m_distRolloff;
-
     // helicopter attributes
     FMOD_VECTOR m_cameraPosition;     // the camera position in the world
-    FMOD_VECTOR m_helicopterPosition; // position or displacement of the helicopter
-    FMOD_VECTOR m_helicopterVelocity; // velocity of the moving helicopter
-
 
 };
 #endif /* FilterDSP_hpp */

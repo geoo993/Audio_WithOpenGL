@@ -238,12 +238,12 @@ void Game::LoadDSPFromResources(const std::string &path) {
     //m_pOscillator->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
     //m_pOscillator->PlayMusicStream();
 
-    //m_pFilter->Initialise();
-    //m_pFilter->LoadEventSound((path+"/audio/"+m_audioFiles[3]).c_str());
-    //m_pFilter->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
-    //m_pFilter->PlayMusicStream();
+    m_pFilter->Initialise();
+    m_pFilter->LoadEventSound((path+"/audio/"+m_audioFiles[3]).c_str());
+    m_pFilter->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
+    m_pFilter->PlayMusicStream();
 
-
+    /*
     glm::vec3 wallPos = glm::vec3(300, 50, 20);
     GLfloat width = 150;
     GLfloat height = 50;
@@ -254,6 +254,7 @@ void Game::LoadDSPFromResources(const std::string &path) {
     m_pOcclusion->LoadEventSound((path+"/audio/"+m_audioFiles[5]).c_str());
     m_pOcclusion->PlayEventSound();
     m_pOcclusion->CreateWall(wallPos, width, height);
+     */
 }
 
 void Game::DisplayFrameRate() {
@@ -428,9 +429,9 @@ void Game::Audio () {
 
     //m_pFIR->Update(m_pCamera);
     //m_pOscillator->Update();
-    //m_pFilter->Update(m_pCamera, m_helicoptePosition, m_helicopteVelocity);
+    m_pFilter->Update(m_pCamera);
 
-    m_pOcclusion->Update(m_pCamera, m_helicoptePosition, m_helicopteVelocity);
+    //m_pOcclusion->Update(m_pCamera, m_helicoptePosition, m_helicopteVelocity);
 }
 
 // The game loop runs repeatedly until game over
@@ -554,13 +555,13 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_SPACE:
                 break;
             case GLFW_KEY_F1:
-                //m_pFilter->PlayEventSound();
+                m_pFilter->PlayEventSound();
                 break;
             case GLFW_KEY_1 :
-                //m_pFilter->PlayEventSound();
+                m_pFilter->PlayEventSound();
                 break;
             case GLFW_KEY_2:
-                //m_pFilter->ToggleMusicFilter();
+                m_pFilter->ToggleMusicFilter();
                 break;
             case GLFW_KEY_3:
                 break;
