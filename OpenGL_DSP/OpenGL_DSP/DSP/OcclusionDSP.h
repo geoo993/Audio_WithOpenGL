@@ -13,6 +13,15 @@
 #include "Common.h"
 #include "Camera.h"
 #include "DSPHelper.h"
+#include "CircularBuffer.h"
+
+static CCircularBuffer * circularBuffer;
+
+static int sampleCount = 0;
+static GLfloat coefficient[] = { 0.25f, 0.25f, 0.25f, 0.25f };
+static float *buffer = nullptr;
+static const int bufferSize = 1024;
+static const int delay = 512;
 
 class COcclusion
 {
@@ -22,7 +31,7 @@ public:
     bool Initialise(GLfloat &doppler, GLfloat &distFactor, GLfloat &distRolloff);
 
     bool LoadEventSound(const char *filename1, const char *filename2);
-    bool PlayEventSound();
+    bool PlayEventSound(glm::vec3 &position1, glm::vec3 &position2, glm::vec3 &velocity);
 
     bool LoadMusicStream(const char *filename);
     bool PlayMusicStream();
@@ -33,7 +42,8 @@ public:
     void ToggleMusicFilter();
 
     void Update(CCamera *camera, glm::vec3 &position1, glm::vec3 &position2, glm::vec3 &velocity);
-    void CreateWall(glm::vec3 &position, float &width, float &height);
+    void CreateTerrain(glm::vec3 &position, const float &size);
+    void AddCube(glm::vec3 &position, GLfloat &width,  GLfloat &height, GLfloat &depth);
 
 private:
 
@@ -42,6 +52,9 @@ private:
 
     FMOD_RESULT m_result;
     FMOD::System *m_FmodSystem;    // the global variable for talking to FMOD
+
+    GLfloat m_distanceFactor;
+    FMOD::DSP *m_dsp;
 
     FMOD::Sound *m_eventSound1;
     FMOD::Channel *m_eventChannel1;
@@ -69,7 +82,6 @@ private:
     FMOD_VECTOR m_helicopterVelocity; // velocity of the moving helicopter
 
     FMOD_VECTOR m_racingCarPosition; // position of the racing car
-    FMOD_VECTOR m_racingCarVelocity; // velocity of the racing car
 
 };
 

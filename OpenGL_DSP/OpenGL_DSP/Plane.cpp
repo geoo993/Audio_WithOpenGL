@@ -13,11 +13,10 @@ CPlane::~CPlane()
 
 
 // Create the plane, including its geometry, texture mapping, normal, and colour
-void CPlane::Create(string directory, string filename, float width, float height, float textureRepeat)
+void CPlane::Create(string directory, string filename, float size, float textureRepeat)
 {
 	
-	m_width = width;
-	m_height = height;
+	m_size = size;
 
 	// Load the texture
 	m_texture.Load(directory+filename, true);
@@ -40,16 +39,15 @@ void CPlane::Create(string directory, string filename, float width, float height
 	m_vbo.Create();
 	m_vbo.Bind();
 
-	float halfWidth = m_width / 2.0f;
-	float halfHeight = m_height / 2.0f;
+	float halfSize = m_size/ 2.0f;
 
 	// Vertex positions
 	glm::vec3 planeVertices[4] = 
 	{
-		glm::vec3(-halfWidth, 0.0f, -halfHeight), 
-		glm::vec3(-halfWidth, 0.0f, halfHeight), 
-		glm::vec3(halfWidth, 0.0f, -halfHeight), 
-		glm::vec3(halfWidth, 0.0f, halfHeight), 
+		glm::vec3(-halfSize, 0.0f, -halfSize),  // left back
+		glm::vec3(-halfSize, 0.0f, halfSize),   // left front
+		glm::vec3(halfSize, 0.0f, -halfSize),   // right back
+		glm::vec3(halfSize, 0.0f, halfSize),    // right front
 	};
 
 	// Texture coordinates

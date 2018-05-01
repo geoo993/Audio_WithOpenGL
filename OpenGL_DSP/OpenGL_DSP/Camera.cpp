@@ -56,6 +56,7 @@ void CCamera::UpdateCameraVectors( )
                                      m_view, // // what position you want the camera to be  looking at in World Space, meaning look at what(using vec3) ?  // meaning the camera view point
                                      m_up  //which direction is up, you can set to (0,-1,0) to look upside-down
                                      );
+
 }
  
 // Set the camera at a specific position, looking at the view point, with a given up vector
@@ -197,7 +198,7 @@ glm::vec3 CCamera::PositionInFrontOfCamera( const GLfloat &distance){
 // Strafe the camera (side to side motion) (Left - Right Motion)
 void CCamera::Strafe(double direction)
 {
-    float speed = (float) (m_speedRatio * direction);
+    GLfloat speed = (float) (m_speedRatio * direction);
 
     m_position.x = m_position.x + m_strafeVector.x * speed;
     m_position.z = m_position.z + m_strafeVector.z * speed;
@@ -208,21 +209,24 @@ void CCamera::Strafe(double direction)
 // Advance the camera (forward / backward motion)
 void CCamera::Advance(double direction)
 {
-    float speed = (float) (m_speedRatio * direction);
+    GLfloat speed = (float) (m_speedRatio * direction);
 
     glm::vec3 view = glm::normalize(m_view - m_position);
     m_position = m_position + view * speed;
 
     UpdateCameraVectors();
 
-    m_velocity = glm::normalize(m_front) * speed;
 }
 
 // Update the camera to respond to mouse motion for rotations and keyboard for translation
-void CCamera::Update(GLFWwindow *window, const double &dt, const int &key, const bool &moveCamera, const bool &enableMouse)
+void CCamera::Update(GLFWwindow *window,
+                     const double &t,
+                     const double &dt,
+                     const int &key,
+                     const bool &moveCamera,
+                     const bool &enableMouse)
 {
     m_previousPosition = m_position;
-    m_velocity = glm::vec3(0.0f);
 
     glm::vec3 vector = glm::cross(m_view - m_position, m_up);
     m_strafeVector = glm::normalize(vector);
@@ -231,6 +235,11 @@ void CCamera::Update(GLFWwindow *window, const double &dt, const int &key, const
         SetViewByMouse(window, enableMouse);
         TranslateByKeyboard(dt, key);
     }
+
+    glm::vec3 displacement = m_position - m_previousPosition;         // calculate the displacement
+    GLfloat distance = glm::distance(m_previousPosition, m_position); // calculate the distance moved
+    GLfloat speed = distance / t; // the speed is measured in metres per second (m/s) and not meters per frame.
+    m_velocity = displacement * (speed / distance);                 // calculate the velocity vector
 
 }
 

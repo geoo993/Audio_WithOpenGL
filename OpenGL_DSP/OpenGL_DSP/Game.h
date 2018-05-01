@@ -59,12 +59,11 @@ private:
 	CSkybox *m_pSkybox;
 	CCamera *m_pCamera;
 	vector <CShaderProgram *> *m_pShaderPrograms;
-	CPlane *m_pPlanarTerrain;
     CHighResolutionTimer *m_pGameTimer;
     CFreeTypeFont *m_pFtFont;
 
     // game timers
-    GLfloat m_timeSeconds, m_timeMilliSeconds;
+    GLfloat m_timeInSeconds, m_timeInMilliSeconds;
     GLdouble m_deltaTime, m_elapsedTime;
     GLint m_framesPerSecond, m_frameCount;
 
@@ -79,6 +78,16 @@ private:
     double m_lastKeyPressTime;
     int m_lastKeyPress;
     GLboolean m_isKeyPressRestriction;
+
+    // terrain
+    CPlane *m_pPlanarTerrain;
+    glm::vec3 m_terrainPosition;
+    GLfloat m_terrainSize;
+
+    // pent house
+    COpenAssetImportMesh *m_pPenthouse;
+    glm::vec3 m_penthousePosition;
+    void RenderPenthouse(CShaderProgram * shaderProgram);
 
     // car
     COpenAssetImportMesh *m_pRacingCar;

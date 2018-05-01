@@ -27,8 +27,9 @@ MeshEntry::MeshEntry()
     vbo = INVALID_OGL_VALUE;
     mbo = INVALID_OGL_VALUE;
     ibo = INVALID_OGL_VALUE;
-    m_NumIndices  = 0;
-    m_MaterialIndex = INVALID_MATERIAL;
+    m_numIndices  = 0;
+    m_vertices.clear();
+    m_materialIndex = INVALID_MATERIAL;
 };
 
 MeshEntry::~MeshEntry()
@@ -44,12 +45,12 @@ MeshEntry::~MeshEntry()
 
 }
 
-void MeshEntry::Init(
-                                           const std::vector<Vertex>& Vertices,
-                                           const std::vector<GLuint>& Indices,
-                                           const std::vector<glm::mat4> &mMatrices)
+void MeshEntry::Init(const std::vector<Vertex>& Vertices,
+                     const std::vector<GLuint>& Indices,
+                     const std::vector<glm::mat4> &mMatrices)
 {
-    m_NumIndices = Indices.size();
+    m_numIndices = Indices.size();
+    m_vertices = Vertices;
 
     /* https://learnopengl.com/#!Advanced-OpenGL/Advanced-Data
      A buffer in OpenGL is only an object that manages a certain piece of memory and nothing more. We give a meaning to a buffer when binding it to a specific buffer target. A buffer is only a vertex array buffer when we bind it to GL_ARRAY_BUFFER, but we could just as easily bind it to GL_ELEMENT_ARRAY_BUFFER. OpenGL internally stores a buffer per target and based on the target, processes the buffers differently.
@@ -71,7 +72,7 @@ void MeshEntry::Init(
 
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * m_NumIndices, &Indices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * m_numIndices, &Indices[0], GL_STATIC_DRAW);
 
 }
 
@@ -88,7 +89,6 @@ COpenAssetImportMesh::~COpenAssetImportMesh()
 {
     Clear();
 }
-
 
 void COpenAssetImportMesh::Clear()
 {
@@ -182,7 +182,7 @@ bool COpenAssetImportMesh::InitFromScene(const aiScene* pScene, const std::strin
 
 void COpenAssetImportMesh::InitMesh(GLuint Index, const aiMesh* paiMesh)
 {
-    m_Meshes[Index].m_MaterialIndex = paiMesh->mMaterialIndex;
+    m_Meshes[Index].m_materialIndex = paiMesh->mMaterialIndex;
 
     std::vector<Vertex> Vertices;
     std::vector<GLuint> Indices;
@@ -252,6 +252,7 @@ void COpenAssetImportMesh::InitMesh(GLuint Index, const aiMesh* paiMesh)
         Indices.push_back(Face.mIndices[2]);
     }
 
+    m_Meshes[Index].m_numFaces = paiMesh->mNumFaces;
     m_Meshes[Index].Init(Vertices, Indices, m_ModelMatrixInstances);
 }
 
@@ -483,16 +484,16 @@ void COpenAssetImportMesh::Render(CShaderProgram *pProgram,
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Meshes[i].ibo);
 
-        const unsigned int MaterialIndex = m_Meshes[i].m_MaterialIndex;
+        const unsigned int MaterialIndex = m_Meshes[i].m_materialIndex;
 
         if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex]) {
             m_Textures[MaterialIndex]->BindTexture2D(0);
         }
 
         if ( m_UseInstances ) {
-            glDrawElementsInstanced(GL_TRIANGLES, m_Meshes[i].m_NumIndices, GL_UNSIGNED_INT, 0, m_InstanceCount);
+            glDrawElementsInstanced(GL_TRIANGLES, m_Meshes[i].m_numIndices, GL_UNSIGNED_INT, 0, m_InstanceCount);
         }else{
-            glDrawElements(GL_TRIANGLES, m_Meshes[i].m_NumIndices, GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, m_Meshes[i].m_numIndices, GL_UNSIGNED_INT, 0);
         }
 
         // need to unbind because we are binding attributes every frame

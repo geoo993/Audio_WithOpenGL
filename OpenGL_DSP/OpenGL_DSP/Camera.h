@@ -65,7 +65,7 @@ public:
 	void Advance(double direction);
 
 	// Update the camera
-	void Update(GLFWwindow *window, const double &dt, const int &key, const bool &moveCamera, const bool &enableMouse);
+	void Update(GLFWwindow *window, const double &t, const double &dt, const int &key, const bool &moveCamera, const bool &enableMouse);
 
 	// Set the projection matrices
     void SetPerspectiveProjectionMatrix(const GLfloat &fieldOfView, const GLfloat &aspectRatio, const GLfloat &nearClippingPlane, const GLfloat &farClippingPlane);
@@ -102,7 +102,6 @@ private:
     glm::vec3 m_right;               // The camera's right vector
     glm::vec3 m_up;                  // The camera's up vector
     glm::vec3 m_down;                // The camera's down vector
-    glm::vec3 m_velocity;            // The camera's velocity vector
 
     glm::vec3 m_worldUp;             // The worlds up vector, the original position of the world
 
@@ -117,6 +116,7 @@ private:
     GLfloat m_movementSpeed;         // How fast the camera moves
     GLfloat m_speedRatio;            // How much the speed increases
     GLfloat m_mouseSensitivity;      // How sensitive mouse is
+    glm::vec3 m_velocity;            // The camera's velocity vector
 
     // Screen
     GLfloat m_screenWidth;           // the width size of the screen window

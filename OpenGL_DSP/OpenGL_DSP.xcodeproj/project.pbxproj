@@ -159,6 +159,8 @@
 		C77A66C720837DB0003D3BE2 /* CircularBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
 		C77CCE592045A03800F3C942 /* OpenGL_DSP */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGL_DSP; sourceTree = BUILT_PRODUCTS_DIR; };
 		C77CCE5C2045A03800F3C942 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		C788E3BE20988F6700748B0D /* Vertex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vertex.h; sourceTree = "<group>"; };
+		C788E3BF2098AE2C00748B0D /* MeshEntry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeshEntry.h; sourceTree = "<group>"; };
 		C79B915D2046392200648C5F /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		C7B218372097EDC100CC8FE5 /* drag_car.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = drag_car.wav; sourceTree = "<group>"; };
 		C7B218392097F02500CC8FE5 /* marlonhj_engine.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = marlonhj_engine.wav; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 				C73BCC1F2095F26F0078CFFA /* CatmullRom.h */,
 				C73BC3F2208A98CB00DE5457 /* DSP */,
 				C73EE44C2069CCF3003CD8EC /* Extensions.h */,
+				C788E3BE20988F6700748B0D /* Vertex.h */,
 				C705B090204622CD00F0E13D /* Transform.cpp */,
 				C705B0712045FC4200F0E13D /* Transform.h */,
 				C71D168B2045EBAC002E2A43 /* GameManager.cpp */,
@@ -330,6 +333,7 @@
 				C7F6ED002045AC5B0038F48F /* GameWindow.h */,
 				C7F6ED022045AC5B0038F48F /* OpenAssetImportMesh.cpp */,
 				C7F6ED132045AC5D0038F48F /* OpenAssetImportMesh.h */,
+				C788E3BF2098AE2C00748B0D /* MeshEntry.h */,
 				C7F6ED042045AC5B0038F48F /* Plane.cpp */,
 				C7F6ED072045AC5B0038F48F /* Plane.h */,
 				C7F6ED152045AC5D0038F48F /* resources */,
