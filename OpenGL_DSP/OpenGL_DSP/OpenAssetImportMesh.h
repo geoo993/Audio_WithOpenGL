@@ -81,6 +81,7 @@ public:
                 CCamera *pCamera = nullptr,
                 GLfloat helicopterRotationSpeed = 0,
                 glm::vec3 helicopterPosition = glm::vec3(0.0f),
+                glm::mat4 helicopterOrientation = glm::mat4(1.0f),
                 GLint helicopterRotor = 0);
     
     CTransform transform;

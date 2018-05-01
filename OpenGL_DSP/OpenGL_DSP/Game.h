@@ -4,6 +4,7 @@
 #include "HighResolutionTimer.h"
 #include "GameWindow.h"
 #include "GameManager.h"
+#include "Extensions.h"
 
 // Game includes
 #include "Camera.h"
@@ -63,9 +64,9 @@ private:
     CFreeTypeFont *m_pFtFont;
 
     // game timers
-    float m_time;
-    double m_deltaTime, m_elapsedTime;
-    int m_framesPerSecond, m_frameCount;
+    GLfloat m_timeSeconds, m_timeMilliSeconds;
+    GLdouble m_deltaTime, m_elapsedTime;
+    GLint m_framesPerSecond, m_frameCount;
 
     // inputs
     GLboolean m_mouseButtonDown;
@@ -79,16 +80,20 @@ private:
     int m_lastKeyPress;
     GLboolean m_isKeyPressRestriction;
 
-    // helicopter rotate
+    // car
+    COpenAssetImportMesh *m_pRacingCar;
+    glm::vec3 m_racingCarPosition;
+    void RenderRacingCar(CShaderProgram * shaderProgram);
+
+    // helicopter
     COpenAssetImportMesh *m_pHelicopter;
     glm::vec3 m_helicoptePosition;
-    glm::vec3 m_helicoptePreviousPosition;
     glm::mat4 m_helicopteOrientation;
     glm::vec3 m_helicopteVelocity;
     GLfloat m_helicopteRotorRotation;
     GLint m_helicopteRotor;
-    GLfloat m_helicopterMoveSpeed;
-    GLint m_helicopterPositionIndex;
+    GLfloat m_helicopterTimeScalar;
+    void RenderHelicopter(CShaderProgram * shaderProgram);
 
     // helicoper path
     CCatmullRom *m_pPath;

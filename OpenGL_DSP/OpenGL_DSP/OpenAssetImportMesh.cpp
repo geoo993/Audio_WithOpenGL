@@ -380,6 +380,7 @@ void COpenAssetImportMesh::Render(CShaderProgram *pProgram,
                                   CCamera *pCamera,
                                   GLfloat helicopterRotationSpeed,
                                   glm::vec3 helicopterPosition,
+                                  glm::mat4 helicopterOrientation,
                                   GLint helicopterRotor)
 {
 
@@ -444,8 +445,10 @@ void COpenAssetImportMesh::Render(CShaderProgram *pProgram,
             CTransform transform;
             transform.SetIdentity();
             transform.Translate(helicopterPosition);
+            transform.ApplyMatrix(helicopterOrientation);
 
-            if (i == 3){
+
+            if (i == helicopterRotor){
                 transform.Rotate(glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(helicopterRotationSpeed));
             }
 

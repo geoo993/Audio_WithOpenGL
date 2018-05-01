@@ -21,6 +21,18 @@ glm::tmat4x4<T> tmat4_from_t(const T *arr) {
     return glm::tmat4x4<T>(tvec4_from_t(arr), tvec4_from_t(arr + 4), tvec4_from_t(arr + 8), tvec4_from_t(arr + 12));
 }
 
+typedef struct {
+    double r;       // a fraction between 0 and 1
+    double g;       // a fraction between 0 and 1
+    double b;       // a fraction between 0 and 1
+} rgb;
+
+typedef struct {
+    double h;       // angle in degrees
+    double s;       // a fraction between 0 and 1
+    double v;       // a fraction between 0 and 1
+} hsv;
+
 /*  example  GLfloat biasMatrixf[16] 
  //glm::mat4 biasMatrix = glm::make_mat4(biasMatrixf); // or //tmat4_from_t(biasMatrixf);
 */     
@@ -191,7 +203,8 @@ public:
             r <<= 1;
         return r;
     }
-    
+
+    /*
     std::string readTextFromFile(const std::string &filename) {
         std::ifstream fin(filename.c_str(), std::ios::binary);
         fin.seekg(0, std::ios::end);
@@ -205,6 +218,7 @@ public:
         delete [] buffer;
         return str;
     }
+     */
     
     static float uniformRandomInRange(float min, float max) {
         assert(min < max);
@@ -233,7 +247,7 @@ public:
         return (1.0f - alpha) * a + alpha * b;
     }
     
-    static glm::vec3 interpolateColor(const glm::vec3 &startColor, const glm::vec3 &endColor, const float &progress) {
+    static glm::vec3 interpolate(const glm::vec3 &startColor, const glm::vec3 &endColor, const float &progress) {
         
         return glm::vec3(
                          interpolate(startColor.x, endColor.x, progress),
@@ -264,7 +278,7 @@ public:
             colorSwitch = "goingDown";
         }
         
-        return interpolateColor(startColor, endColor, colorProgress);
+        return interpolate(startColor, endColor, colorProgress);
     }
     
     static float randFloat(){

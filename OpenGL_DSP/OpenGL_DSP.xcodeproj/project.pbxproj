@@ -48,9 +48,6 @@
 		C73BC3FD208A9AF000DE5457 /* DSPHelper.h in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3FC208A9AF000DE5457 /* DSPHelper.h */; };
 		C73BC400208AAF8E00DE5457 /* FIRConvolutionDSP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3FE208AAF8E00DE5457 /* FIRConvolutionDSP.cpp */; };
 		C73BCC212095F2700078CFFA /* CatmullRom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BCC202095F2700078CFFA /* CatmullRom.cpp */; };
-		C73EE4442069AF4C003CD8EC /* Horse.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4422069AF4B003CD8EC /* Horse.wav */; };
-		C73EE4492069C349003CD8EC /* cw_amen12_137.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4462069C348003CD8EC /* cw_amen12_137.wav */; };
-		C73EE44A2069C349003CD8EC /* drone.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4472069C348003CD8EC /* drone.wav */; };
 		C73EE44B2069C349003CD8EC /* Helicopter.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4482069C349003CD8EC /* Helicopter.wav */; };
 		C77367782045A39000230B98 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C77367762045A39000230B98 /* OpenGL.framework */; };
 		C773677F2045A72B00230B98 /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C77367792045A72B00230B98 /* libGLEW.2.1.0.dylib */; };
@@ -68,6 +65,8 @@
 		C77A66C820837DB0003D3BE2 /* CircularBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C77A66C620837DB0003D3BE2 /* CircularBuffer.cpp */; };
 		C77CCE5D2045A03800F3C942 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C77CCE5C2045A03800F3C942 /* main.cpp */; };
 		C79B915E2046392200648C5F /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C79B915D2046392200648C5F /* GLUT.framework */; };
+		C7B218382097EDC200CC8FE5 /* drag_car.wav in Resources */ = {isa = PBXBuildFile; fileRef = C7B218372097EDC100CC8FE5 /* drag_car.wav */; };
+		C7B2183A2097F02500CC8FE5 /* marlonhj_engine.wav in Resources */ = {isa = PBXBuildFile; fileRef = C7B218392097F02500CC8FE5 /* marlonhj_engine.wav */; };
 		C7F6ED3F2045AC5E0038F48F /* Shaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED012045AC5B0038F48F /* Shaders.cpp */; };
 		C7F6ED402045AC5E0038F48F /* OpenAssetImportMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED022045AC5B0038F48F /* OpenAssetImportMesh.cpp */; };
 		C7F6ED412045AC5E0038F48F /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F6ED032045AC5B0038F48F /* Texture.cpp */; };
@@ -140,9 +139,6 @@
 		C73BC3FF208AAF8E00DE5457 /* FIRConvolutionDSP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FIRConvolutionDSP.h; sourceTree = "<group>"; };
 		C73BCC1F2095F26F0078CFFA /* CatmullRom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatmullRom.h; sourceTree = "<group>"; };
 		C73BCC202095F2700078CFFA /* CatmullRom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CatmullRom.cpp; sourceTree = "<group>"; };
-		C73EE4422069AF4B003CD8EC /* Horse.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Horse.wav; sourceTree = "<group>"; };
-		C73EE4462069C348003CD8EC /* cw_amen12_137.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cw_amen12_137.wav; sourceTree = "<group>"; };
-		C73EE4472069C348003CD8EC /* drone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = drone.wav; sourceTree = "<group>"; };
 		C73EE4482069C349003CD8EC /* Helicopter.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Helicopter.wav; sourceTree = "<group>"; };
 		C73EE44C2069CCF3003CD8EC /* Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Extensions.h; sourceTree = "<group>"; };
 		C77367752045A39000230B98 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -164,6 +160,8 @@
 		C77CCE592045A03800F3C942 /* OpenGL_DSP */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGL_DSP; sourceTree = BUILT_PRODUCTS_DIR; };
 		C77CCE5C2045A03800F3C942 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		C79B915D2046392200648C5F /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		C7B218372097EDC100CC8FE5 /* drag_car.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = drag_car.wav; sourceTree = "<group>"; };
+		C7B218392097F02500CC8FE5 /* marlonhj_engine.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = marlonhj_engine.wav; sourceTree = "<group>"; };
 		C7F6ECFB2045AC5B0038F48F /* Cubemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cubemap.h; sourceTree = "<group>"; };
 		C7F6ECFC2045AC5B0038F48F /* Skybox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skybox.h; sourceTree = "<group>"; };
 		C7F6ECFE2045AC5B0038F48F /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
@@ -190,8 +188,6 @@
 		C7F6ED172045AC5D0038F48F /* dirtpile01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dirtpile01.jpg; sourceTree = "<group>"; };
 		C7F6ED182045AC5D0038F48F /* Tile41a.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Tile41a.jpg; sourceTree = "<group>"; };
 		C7F6ED192045AC5D0038F48F /* grassfloor01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = grassfloor01.jpg; sourceTree = "<group>"; };
-		C7F6ED242045AC5D0038F48F /* Boing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Boing.wav; sourceTree = "<group>"; };
-		C7F6ED252045AC5D0038F48F /* DST-Garote.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "DST-Garote.mp3"; sourceTree = "<group>"; };
 		C7F6ED272045AC5D0038F48F /* textShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = textShader.frag; sourceTree = "<group>"; };
 		C7F6ED282045AC5D0038F48F /* mainShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = mainShader.frag; sourceTree = "<group>"; };
 		C7F6ED292045AC5D0038F48F /* mainShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = mainShader.vert; sourceTree = "<group>"; };
@@ -388,12 +384,9 @@
 		C7F6ED232045AC5D0038F48F /* audio */ = {
 			isa = PBXGroup;
 			children = (
-				C73EE4462069C348003CD8EC /* cw_amen12_137.wav */,
-				C73EE4472069C348003CD8EC /* drone.wav */,
+				C7B218392097F02500CC8FE5 /* marlonhj_engine.wav */,
+				C7B218372097EDC100CC8FE5 /* drag_car.wav */,
 				C73EE4482069C349003CD8EC /* Helicopter.wav */,
-				C73EE4422069AF4B003CD8EC /* Horse.wav */,
-				C7F6ED242045AC5D0038F48F /* Boing.wav */,
-				C7F6ED252045AC5D0038F48F /* DST-Garote.mp3 */,
 			);
 			path = audio;
 			sourceTree = "<group>";
@@ -489,19 +482,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				C71466122046BC6E008BBBAA /* Candy Script.ttf in Resources */,
+				C7B2183A2097F02500CC8FE5 /* marlonhj_engine.wav in Resources */,
 				C705B08720460E1700F0E13D /* _bk.jpg in Resources */,
 				C705B08420460E1700F0E13D /* _ft.jpg in Resources */,
 				C705B09320462E5000F0E13D /* Arial.ttf in Resources */,
 				C705B08F20460E1700F0E13D /* _up.jpg in Resources */,
-				C73EE4442069AF4C003CD8EC /* Horse.wav in Resources */,
 				C71466162046D694008BBBAA /* fontShader.frag in Resources */,
-				C73EE4492069C349003CD8EC /* cw_amen12_137.wav in Resources */,
 				C705B0742045FD9D00F0E13D /* SkyBoxShader.frag in Resources */,
 				C705B08A20460E1700F0E13D /* _rt.jpg in Resources */,
-				C73EE44A2069C349003CD8EC /* drone.wav in Resources */,
 				C705B08820460E1700F0E13D /* _ft.jpg in Resources */,
 				C705B08620460E1700F0E13D /* _rt.jpg in Resources */,
 				C705B08D20460E1700F0E13D /* _up.jpg in Resources */,
+				C7B218382097EDC200CC8FE5 /* drag_car.wav in Resources */,
 				C705B0752045FD9D00F0E13D /* SkyBoxShader.vert in Resources */,
 				C705B08520460E1700F0E13D /* _dn.jpg in Resources */,
 				C705B08B20460E1700F0E13D /* _bk.jpg in Resources */,

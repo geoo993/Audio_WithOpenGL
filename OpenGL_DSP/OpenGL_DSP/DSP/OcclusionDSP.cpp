@@ -16,9 +16,16 @@ COcclusion::COcclusion()
 
 COcclusion::~COcclusion()
 {
+    m_result = m_eventSound1->release();
+    m_result = m_eventSound2->release();
+    m_result = m_FmodSystem->close();
+    m_result = m_FmodSystem->release();
+
     delete m_FmodSystem;
-    delete m_eventSound;
-    delete m_eventChannel;
+    delete m_eventSound1;
+    delete m_eventSound2;
+    delete m_eventChannel1;
+    delete m_eventChannel2;
     delete m_music;
     delete m_musicChannel;
 
@@ -32,20 +39,20 @@ void COcclusion::FmodErrorCheck(FMOD_RESULT result)
 {
     if (m_result != FMOD_OK) {
         const char *errorString = FMOD_ErrorString(result);
-        // MessageBox(NULL, errorString, "FMOD Error", MB_OK);
+        //MessageBox(NULL, errorString, "FMOD Error", MB_OK);
         // Warning: error message commented out -- if headphones not plugged into computer in lab, error occurs
     }
 }
 
 bool COcclusion::Initialise(GLfloat &doppler, GLfloat &distFactor, GLfloat &distRolloff)
 {
-    // Create an FMOD system
+    // 1) Create an FMOD system
     m_result = FMOD::System_Create(&m_FmodSystem);
     FmodErrorCheck(m_result);
     if (m_result != FMOD_OK)
         return false;
 
-    // Initialise the system
+    // 2) Initialise the system
     // dopple inntesity
     // dist factor chnages the boundary between the sound and camera
     // roll off scales the sound from high when very low, and low when it is very high
@@ -69,9 +76,15 @@ bool COcclusion::Initialise(GLfloat &doppler, GLfloat &distFactor, GLfloat &dist
 }
 
 // Play an event sound
-bool COcclusion::LoadEventSound(const char *filename)
+bool COcclusion::LoadEventSound(const char *filename1, const char *filename2)
 {
-    m_result = m_FmodSystem->createSound(filename, FMOD_LOOP_NORMAL, 0, &m_eventSound);
+    //4) Load event sound2
+    m_result = m_FmodSystem->createSound(filename1, FMOD_LOOP_NORMAL, 0, &m_eventSound1);
+    FmodErrorCheck(m_result);
+    if (m_result != FMOD_OK)
+        return false;
+
+    m_result = m_FmodSystem->createSound(filename2, FMOD_LOOP_NORMAL, 0, &m_eventSound2);
     FmodErrorCheck(m_result);
     if (m_result != FMOD_OK)
         return false;
@@ -82,20 +95,24 @@ bool COcclusion::LoadEventSound(const char *filename)
 // Play an event sound
 bool COcclusion::PlayEventSound()
 {
-    m_result = m_FmodSystem->playSound(m_eventSound, NULL, false, &m_eventChannel);
-    //FmodErrorCheck(m_result);
-    if (m_result != FMOD_OK)
+    //5) Load event sound
+    m_result = m_FmodSystem->playSound(m_eventSound1, 0, false, &m_eventChannel1);
+    FmodErrorCheck(m_result);
+
+    m_result = m_FmodSystem->playSound(m_eventSound2, 0, false, &m_eventChannel2);
+    FmodErrorCheck(m_result);
+
+    if (m_result != FMOD_OK) {
         return false;
+    }
 
-    //4) Refactor the “event sound” (triggered with '1') to play through a 3D channel.
-    m_eventChannel->setMode(FMOD_3D);
+    //6) Refactor the “event sound” (triggered with '1') to play through a 3D channel.
+    m_eventChannel1->setMode(FMOD_3D);
+    m_eventChannel2->setMode(FMOD_3D);
 
-    // Set the volume
-    m_result = m_musicChannel->setVolume(m_musicVolume);
-    //FmodErrorCheck(m_result);
-
-    if (m_result != FMOD_OK)
+    if (m_result != FMOD_OK) {
         return false;
+    }
 
     return true;
 }
@@ -114,7 +131,7 @@ bool COcclusion::LoadMusicStream(const char *filename)
 
     // Set the volume
     m_result = m_musicChannel->setVolume(m_musicVolume);
-    //FmodErrorCheck(m_result);
+    FmodErrorCheck(m_result);
 
     if (m_result != FMOD_OK)
         return false;
@@ -169,14 +186,22 @@ bool COcclusion::PlayMusicStream()
     return true;
 }
 
-void COcclusion::Update(CCamera *camera, glm::vec3 &position, glm::vec3 &velocity)
+void COcclusion::Update(CCamera *camera, glm::vec3 &position1, glm::vec3 &position2, glm::vec3 &velocity)
 {
-    // 5) update the listener's position with the helicopter position
-    ToFMODVector(position, &m_helicopterPosition);
-
+    // 7) update the helicopter position using 3d attributes
+    ToFMODVector(position1, &m_helicopterPosition);
     ToFMODVector(velocity, &m_helicopterVelocity);
+    ToFMODVector(position2, &m_racingCarPosition);
 
-    // 6) update the listener's position with the camera position
+    m_result = m_eventChannel1->set3DAttributes(&m_helicopterPosition, &m_helicopterVelocity);
+    m_result = m_eventChannel2->set3DAttributes(&m_racingCarPosition, &m_racingCarVelocity);
+
+    FmodErrorCheck(m_result);
+    if (m_result != FMOD_OK) {
+        return;
+    }
+
+    // 8) update the camera position using the 3d listener for the occlusion
     glm::vec3 cameraForward = camera->GetForward();
     ToFMODVector(cameraForward, &m_cameraForward);
 
@@ -197,10 +222,13 @@ void COcclusion::Update(CCamera *camera, glm::vec3 &position, glm::vec3 &velocit
     cout << "cam forward: " << cameraForward.x << ", " << cameraForward.y << ", " << cameraForward.z << endl;
     cout << "cam up: " << cameraUp.x << ", " << cameraUp.y << ", " << cameraUp.z << endl << endl;
     */
-
-    m_result = m_eventChannel->set3DAttributes(&m_helicopterPosition, &m_helicopterVelocity);
-    m_result = m_FmodSystem->set3DListenerAttributes(0, &m_cameraPosition, &m_cameraVelocity, &m_cameraForward, &m_cameraUp);
-    //    FmodErrorCheck(m_result);
+    m_result = m_FmodSystem->set3DListenerAttributes(0,
+                                                     &m_cameraPosition,
+                                                     &m_cameraVelocity,
+                                                     &m_cameraForward,
+                                                     &m_cameraUp);
+    
+    FmodErrorCheck(m_result);
     if (m_result != FMOD_OK) {
         return;
     }

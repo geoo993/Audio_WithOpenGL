@@ -42,7 +42,8 @@ Game::Game()
     m_frameCount = 0;
     m_elapsedTime = 0.0f;
     m_deltaTime = 0.5f;
-    m_time = 0.0f;
+    m_timeSeconds = 0.0f;
+    m_timeMilliSeconds = 0.0f;
 
     // inputs
     m_mouseButtonDown = false;
@@ -56,16 +57,18 @@ Game::Game()
     m_lastKeyPress = -1;
     m_isKeyPressRestriction = true;
 
+    // Racing Car
+    m_pRacingCar = nullptr;
+    m_racingCarPosition = glm::vec3(200.0f, 0.0f, 100.0f);
+
     // helicopter
     m_pHelicopter = nullptr;
-    m_helicoptePosition = glm::vec3(200.0f, 0.0f, 100.0f);
-    m_helicoptePreviousPosition = glm::vec3(0.0f);
+    m_helicoptePosition = glm::vec3(0.0f, 0.0f, 0.0f);
     m_helicopteOrientation = glm::mat4(1);
     m_helicopteVelocity = glm::vec3(0.1f, 0.1f, 0.1f);
-    m_helicopteRotor = 0;
+    m_helicopteRotor = 6;
     m_helicopteRotorRotation = 0.0f;
-    m_helicopterPositionIndex = 0;
-    m_helicopterMoveSpeed = 0.04f;
+    m_helicopterTimeScalar = 1.0f;
 
     // helicopter path
     m_pPath = nullptr;
@@ -86,6 +89,7 @@ Game::~Game()
 	delete m_pSkybox;
 	delete m_pPlanarTerrain;
 	delete m_pFtFont;
+    delete m_pRacingCar;
     delete m_pHelicopter;
 	delete m_pFIR;
     delete m_pOscillator;
@@ -113,6 +117,7 @@ void Game::Initialise()
 	m_pPlanarTerrain = new CPlane;
 	m_pFtFont = new CFreeTypeFont;
 	m_pHelicopter = new COpenAssetImportMesh;
+    m_pRacingCar = new COpenAssetImportMesh;
     m_pPath = new CCatmullRom;
 	m_pFIR = new CFIRConvolutionDSP;
     m_pOscillator = new COscillator;
@@ -211,6 +216,7 @@ void Game::LoadFromResources(const std::string &path)
     //m_pFtFont->LoadSystemFont(path+"/fonts/Candy Script.ttf", 48);
     m_pFtFont->LoadFont(path+"/fonts/Candy Script.ttf", 48);
 
+    m_pRacingCar->Load(path+"/models/Racing_Car/free_car_1.obj");
     m_pHelicopter->Load(path+"/models/Mi-28N_Havoc_BF3/havoc.obj");
 
     //create catmullrom
@@ -221,40 +227,34 @@ void Game::LoadFromResources(const std::string &path)
 
 void Game::LoadDSPFromResources(const std::string &path) {
 
-    m_audioFiles.push_back("cw_amen12_137.wav");
-    m_audioFiles.push_back("Boing.wav"); // Royalty free sound from //freesound.org // Custom DSP
-    m_audioFiles.push_back("DST-Garote.mp3"); // Royalty free music from http://www.nosoapradio.us/
-    m_audioFiles.push_back("Horse.wav"); // 3D Audio
-    m_audioFiles.push_back("drone.wav");
+    m_audioFiles.push_back("drag_car.wav");
     m_audioFiles.push_back("Helicopter.wav");
 
     //// Initialise audio and play background music
     //m_pFIR->Initialise();
-    //m_pFIR->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str());
-    //m_pFIR->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
-    //m_pFIR->PlayMusicStream();
+    //m_pFIR->LoadEventSound((path+"/audio/"+m_audioFiles[0]).c_str());
+    //m_pFIR->LoadMusicStream((path+"/audio/"+m_audioFiles[1]).c_str());
 
+    // Oscilator demo
     //m_pOscillator->Initialise();
-    //m_pOscillator->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
-    //m_pOscillator->PlayMusicStream();
+    //m_pOscillator->LoadMusicStream((path+"/audio/"+m_audioFiles[1]).c_str());
 
-    m_pFilter->Initialise();
-    m_pFilter->LoadEventSound((path+"/audio/"+m_audioFiles[3]).c_str());
-    m_pFilter->LoadMusicStream((path+"/audio/"+m_audioFiles[5]).c_str());
-    m_pFilter->PlayMusicStream();
+    // FIR convolution filtering demo
+    //m_pFilter->Initialise();
+    //m_pFilter->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str());
 
-    /*
+    // doppler and occlusion demo
     glm::vec3 wallPos = glm::vec3(300, 50, 20);
     GLfloat width = 150;
     GLfloat height = 50;
-    GLfloat doppler = 2.0f;
-    GLfloat distFactor = 50.0f;
+    GLfloat doppler = 1.0f;
+    GLfloat distFactor = 20.0f;
     GLfloat rollOff = 1.0f;
     m_pOcclusion->Initialise(doppler, distFactor, rollOff);
-    m_pOcclusion->LoadEventSound((path+"/audio/"+m_audioFiles[5]).c_str());
+    m_pOcclusion->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str(), (path+"/audio/"+m_audioFiles[0]).c_str());
     m_pOcclusion->PlayEventSound();
     m_pOcclusion->CreateWall(wallPos, width, height);
-     */
+
 }
 
 void Game::DisplayFrameRate() {
@@ -268,7 +268,8 @@ void Game::DisplayFrameRate() {
     m_elapsedTime += m_deltaTime;
     ++m_frameCount;
 
-    m_time += (float) (0.01f * m_deltaTime);
+    m_timeSeconds += (float) (0.001f * m_deltaTime);
+    m_timeMilliSeconds += (float) (m_deltaTime);
 
     // Now we want to subtract the current time by the last time that was stored
     // to see if the time elapsed has been over a second, which means we found our FPS.
@@ -287,7 +288,8 @@ void Game::DisplayFrameRate() {
     std::cout << "height: " <<height << std::endl;
      std::cout << "deltatime: " <<m_deltaTime << std::endl;
      std::cout << "elapsedTime: " << m_elapsedTime<< std::endl;
-     std::cout << "time: " << m_time << std::endl;
+     std::cout << "time: " << m_timeSeconds << std::endl;
+     std::cout << "time milli seconds: " << m_timeMilliSeconds << std::endl;
      std::cout << "glfw getTime: " << glfwGetTime() << std::endl;
 
      float time = (float)m_elapsedTime / 1000.0f * 2.0f * 3.14159f * 0.75f;
@@ -301,7 +303,7 @@ void Game::DisplayFrameRate() {
         pFontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
         pFontProgram->SetUniform("textColor", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
         m_pFtFont->Render(pFontProgram, 20, height - 40, 20, "FPS: %d", m_framesPerSecond);
-        //m_pFtFont->Render(pFontProgram, "FPS: " + std::to_string(m_framesPerSecond), 20, height - 40, 0.5f);
+        m_pFtFont->Render(pFontProgram, 20, height - 70, 20, "time scalar: %f" , m_helicopterTimeScalar);
 
         glEnable(GL_DEPTH_TEST);
     }
@@ -367,43 +369,10 @@ void Game::Render()
 	// Turn on diffuse + specular materials
 	pMainProgram->SetUniform("material1.Ma", glm::vec3(0.5f));	// Ambient material reflectance
 	pMainProgram->SetUniform("material1.Md", glm::vec3(0.5f));	// Diffuse material reflectance
-	pMainProgram->SetUniform("material1.Ms", glm::vec3(1.0f));	// Specular material reflectance	
+	pMainProgram->SetUniform("material1.Ms", glm::vec3(1.0f));	// Specular material reflectance
 
-
-
-    // Render the helicopter
-    m_helicopteRotorRotation += 30.0f;
-    if (m_helicopteRotorRotation > 360 ) {
-        m_helicopteRotorRotation = 0.0f;
-    }
-
-    m_helicoptePreviousPosition = m_helicoptePosition;
-
-    m_helicopterPositionIndex +=  m_deltaTime * m_helicopterMoveSpeed;
-    //m_helicopterPositionIndex = 1;
-
-    m_helicoptePosition = m_pPath->GetCentralLinePositionAtIndex(m_helicopterPositionIndex);
-    glm::vec3 T = glm::normalize(m_pPath->GetCentralLinePositionAtIndex(m_helicopterPositionIndex + 1) - m_helicoptePosition);//forward fector
-    glm::vec3 N = glm::cross(T, glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::vec3 B = glm::cross(N, T);
-    m_helicopteOrientation = glm::mat4(glm::mat3(T, B, N));
-    
-    m_helicopteVelocity = (m_helicoptePosition - m_helicoptePreviousPosition) / (float)(m_deltaTime / 1000);
-
-    //m_pHelicopter->transform.SetIdentity();
-    //m_pHelicopter->transform.Translate(m_helicoptePosition);
-    //m_pHelicopter->transform.ApplyMatrix(m_helicopteOrientation);
-
-    //glm::mat4 helicopterModel = m_pHelicopter->transform.GetModel();
-    //pMainProgram->SetUniform("matrices.modelMatrix", helicopterModel);
-    //pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix
-    //                         (helicopterModel));
-    m_pHelicopter->Render(
-                          pMainProgram,
-                          m_pCamera,
-                          m_helicopteRotorRotation,
-                          m_helicoptePosition,
-                          m_helicopteRotor);
+    RenderHelicopter(pMainProgram);
+    RenderRacingCar(pMainProgram);
 
     m_gameWindow.SetViewport();
 
@@ -413,6 +382,60 @@ void Game::Render()
 	// Swap buffers to show the rendered image
 	m_gameWindow.SwapBuffers();
 
+}
+
+void Game::RenderRacingCar(CShaderProgram * shaderProgram){
+
+    m_pRacingCar->transform.SetIdentity();
+    m_pRacingCar->transform.Translate(m_racingCarPosition);
+    m_pRacingCar->transform.Scale(15.0f);
+    glm::mat4 racingModel = m_pRacingCar->transform.GetModel();
+    shaderProgram->SetUniform("matrices.modelMatrix", racingModel);
+    shaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix
+                             (racingModel));
+    m_pRacingCar->Render();
+}
+
+void Game::RenderHelicopter(CShaderProgram * shaderProgram) {
+
+    /*
+     in this section we calculate the position of the helicopter on the spline.
+     the spline is the pathway or route of the helicoper.
+     then when we have the position of the helicopter on the spline we can then use then calculate the speed,
+     and velocity of the helicopter using the game elapsed seconds count.
+
+     */
+    // Render the helicopter
+    m_helicopteRotorRotation += 30.0f;
+    if (m_helicopteRotorRotation > 360 ) {
+        m_helicopteRotorRotation = 0.0f;
+    }
+
+    m_helicopterTimeScalar = glm::clamp(m_helicopterTimeScalar, 0.0f, 5.0f);
+    GLfloat time = m_timeSeconds * m_helicopterTimeScalar;
+
+    glm::vec3 currentPosition = m_pPath->GetCentralLinePositionAtIndex(time); // the current position
+    glm::vec3 nextPosition = m_pPath->GetCentralLinePositionAtIndex(time + 1); // the next position on the spline
+    glm::vec3 interpolatedPosition = Extensions::interpolate(currentPosition, nextPosition, time - glm::floor(time));
+
+    glm::vec3 displacement = nextPosition - currentPosition;
+    glm::vec3 front = glm::normalize(displacement); // this is the front vector of the helicopter
+    glm::vec3 up = glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f)); // this is the up vector of the helicopter
+    glm::vec3 left = glm::cross(up, front); // this is the left unit vector of the helicopter
+    GLfloat distance = glm::distance(currentPosition, nextPosition); // calculate the distance moved
+    GLfloat speed = distance / time; // calculate the speed. the speed is measured in metres per second, m/s
+    glm::vec3 velocity = displacement * (speed / distance); // calculate the velocity
+
+    m_helicoptePosition = interpolatedPosition;
+    m_helicopteOrientation = glm::mat4(glm::mat3(front, left, up));
+    m_helicopteVelocity = velocity;
+    m_pHelicopter->Render(
+                          shaderProgram,
+                          m_pCamera,
+                          m_helicopteRotorRotation,
+                          m_helicoptePosition,
+                          m_helicopteOrientation,
+                          m_helicopteRotor);
 }
 
 // Update method runs repeatedly with the Render method
@@ -429,9 +452,9 @@ void Game::Audio () {
 
     //m_pFIR->Update(m_pCamera);
     //m_pOscillator->Update();
-    m_pFilter->Update(m_pCamera);
+    //m_pFilter->Update(m_pCamera);
 
-    //m_pOcclusion->Update(m_pCamera, m_helicoptePosition, m_helicopteVelocity);
+    m_pOcclusion->Update(m_pCamera, m_helicoptePosition, m_racingCarPosition, m_helicopteVelocity);
 }
 
 // The game loop runs repeatedly until game over
@@ -614,8 +637,10 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_U:
                 break;
             case GLFW_KEY_O:
+                m_helicopterTimeScalar -= 0.05f;
                 break;
             case GLFW_KEY_P:
+                m_helicopterTimeScalar += 0.05f;
                 break;
             case GLFW_KEY_I:
                 break;
