@@ -238,7 +238,8 @@ void CCamera::Update(GLFWwindow *window,
 
     glm::vec3 displacement = m_position - m_previousPosition;         // calculate the displacement
     GLfloat distance = glm::distance(m_previousPosition, m_position); // calculate the distance moved
-    GLfloat speed = distance / t; // the speed is measured in metres per second (m/s) and not meters per frame.
+    GLfloat timePerSecond = (float)(0.001f * t); // this is the elapsed time during a second
+    GLfloat speed = distance / timePerSecond; // the speed is measured in metres per second (m/s) and not meters per frame.
     m_velocity = displacement * (speed / distance);                 // calculate the velocity vector
 
 }

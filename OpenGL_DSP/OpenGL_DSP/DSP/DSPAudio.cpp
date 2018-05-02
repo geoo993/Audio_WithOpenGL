@@ -10,6 +10,19 @@
 
 // from http://t-filter.engineerjs.com/
 
+/*
+ 3D Sound: Place a sound source in a 3D world where it can be moved around using the mouse and/or
+ keyboard. Make sure that the sound in the 3D world is adapted with distance roll-off including filtering,
+ and Doppler effect. (40%)
+
+
+ 3D Sound: Place a sound source in a 3D world where it can be moved around using the mouse and/or
+ keyboard. Make sure that the sound in the 3D world is adapted with distance roll-off including filtering,
+ and Doppler effect. (30%)
+ Implement dynamic filter control for an object of your choice, e.g. for the engine of a car, to sound
+ differently based on the speed. (20%)
+ */
+
 #define FILTER_NUM 25
 // averaging
 static double averaging_filter[FILTER_NUM] = {
@@ -171,9 +184,12 @@ DSPAudio::DSPAudio()
 {
     m_musicVolume = 0.8f;
     m_bypass = false;
+    m_dopplerLevel = 1.0f;
+    m_distanceFactor = 1.0f;
     m_pauseChannels = false;
     m_musicFilterActive = false;
     m_switchFrequency = false;
+    m_changeChannelFrequency = true;
 }
 
 DSPAudio::~DSPAudio()
@@ -308,9 +324,10 @@ bool DSPAudio::Initialise(GLfloat &doppler, GLfloat &distFactor, GLfloat &distRo
 //    }
 
     // 3) Set the FMOD 3D settings to some sensible values.
-    // dopple inntesity
-    // dist factor chnages the boundary between the sound and camera
+    // doppler inntesity
+    // dist factor changes the boundary between the sound and camera
     // roll off scales the sound from high when very low, and low when it is very high
+    m_dopplerLevel = doppler;
     m_distanceFactor = distFactor;
     m_result = m_FmodSystem->set3DSettings(doppler, distFactor, distRolloff);
 //    FmodErrorCheck(m_result);
@@ -373,11 +390,9 @@ bool DSPAudio::PlayEventSound(glm::vec3 &position1, glm::vec3 &position2, glm::v
 {
     //5) Load event sound
     m_result = m_FmodSystem->playSound(m_eventSound1, 0, false, &m_eventChannel1);
-    m_result = m_eventChannel1->set3DMinMaxDistance(0.5f * m_distanceFactor, 1000.0f * m_distanceFactor);
     //FmodErrorCheck(m_result);
 
     m_result = m_FmodSystem->playSound(m_eventSound2, 0, false, &m_eventChannel2);
-    m_result = m_eventChannel2->set3DMinMaxDistance(0.5f * m_distanceFactor, 1000.0f * m_distanceFactor);
 
 //    FmodErrorCheck(m_result);
 //    if (m_result != FMOD_OK) {
@@ -474,7 +489,7 @@ bool DSPAudio::PlayMusicStream()
     return true;
 }
 
-void DSPAudio::Update(CCamera *camera, glm::vec3 &position1, glm::vec3 &position2, glm::vec3 &velocity)
+void DSPAudio::Update(CCamera *camera, glm::vec3 &position1, glm::vec3 &position2, glm::vec3 &velocity, GLfloat &speed)
 {
     // 7) update the helicopter position using 3d attributes
     ToFMODVector(position1, &m_helicopterPosition);
@@ -483,6 +498,10 @@ void DSPAudio::Update(CCamera *camera, glm::vec3 &position1, glm::vec3 &position
 
     m_result = m_eventChannel1->set3DAttributes(&m_helicopterPosition, &m_helicopterVelocity);
     m_result = m_eventChannel1->setPaused(m_pauseChannels);
+
+    // 44100 is the original frequency of the sound
+    float frequency = m_changeChannelFrequency ? glm::clamp(254 * speed, 11000.0f, 88000.0f) : 44100;
+    m_result = m_eventChannel1->setFrequency(frequency);
 
     m_result = m_eventChannel2->set3DAttributes(&m_racingCarPosition, 0, 0);
     m_result = m_eventChannel2->setPaused(m_pauseChannels);
@@ -596,6 +615,10 @@ void DSPAudio::ToggleMusicFilter() {
     m_musicFilter->setActive(m_musicFilterActive);
 }
 
+void DSPAudio::ToggleChannelFrequency() {
+    m_changeChannelFrequency = !m_changeChannelFrequency;
+}
+
 void DSPAudio::ToFMODVector(glm::vec3 &glVec3, FMOD_VECTOR *fmodVec)
 {
     fmodVec->x = glVec3.x;
@@ -693,6 +716,12 @@ GLboolean DSPAudio::MusicFilterFrequency() const {
 
 GLboolean DSPAudio::ByPassFIRFilters() const {
     return  m_bypass;
+}
+
+GLfloat DSPAudio::ChannelFrequency() const {
+    float frequency;
+    m_eventChannel1->getFrequency(&frequency);
+    return frequency;
 }
 
 const char * DSPAudio::FIRFilter() const {

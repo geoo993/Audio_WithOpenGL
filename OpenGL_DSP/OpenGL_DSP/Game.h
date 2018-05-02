@@ -57,7 +57,7 @@ private:
     CFreeTypeFont *m_pFtFont;
 
     // game timers
-    GLfloat m_timeInSeconds, m_timeInMilliSeconds;
+    GLfloat m_timeInSeconds, m_timeInMilliSeconds, m_timePerSecond;
     GLdouble m_deltaTime, m_elapsedTime;
     GLint m_framesPerSecond, m_frameCount;
 
@@ -90,11 +90,11 @@ private:
 
     // helicopter
     COpenAssetImportMesh *m_pHelicopter;
-    glm::vec3 m_helicoptePosition;
-    glm::mat4 m_helicopteOrientation;
-    glm::vec3 m_helicopteVelocity;
-    GLfloat m_helicopteRotorRotation;
-    GLint m_helicopteRotor;
+    glm::vec3 m_helicopterPosition, m_helicopterPreviousPosition;
+    glm::mat4 m_helicopterOrientation;
+    glm::vec3 m_helicopterVelocity;
+    GLfloat m_helicopterSpeed, m_helicopterSpeedScalar, m_helicopterRotorRotation;
+    GLint m_helicopterRotor;
     void RenderHelicopter(CShaderProgram * shaderProgram);
 
     // helicoper path

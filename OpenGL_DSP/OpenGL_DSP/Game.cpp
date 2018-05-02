@@ -43,6 +43,7 @@ Game::Game()
     m_deltaTime = 0.5f;
     m_timeInSeconds = 0.0f;
     m_timeInMilliSeconds = 0.0f;
+    m_timePerSecond = 0.0f;
 
     // inputs
     m_mouseButtonDown = false;
@@ -71,11 +72,13 @@ Game::Game()
 
     // helicopter
     m_pHelicopter = nullptr;
-    m_helicoptePosition = glm::vec3(0.0f, 1.0f, 0.0f);
-    m_helicopteOrientation = glm::mat4(1);
-    m_helicopteVelocity = glm::vec3(0.01f, 0.01f, 0.01f);
-    m_helicopteRotor = 6;
-    m_helicopteRotorRotation = 0.0f;
+    m_helicopterPosition = glm::vec3(0.0f, 1.0f, 0.0f);
+    m_helicopterOrientation = glm::mat4(1);
+    m_helicopterVelocity = glm::vec3(0.01f, 0.01f, 0.01f);
+    m_helicopterSpeed = 0.0f;
+    m_helicopterRotor = 6;
+    m_helicopterRotorRotation = 0.0f;
+    m_helicopterSpeedScalar = 1.0f;
 
     // helicopter path
     m_pPath = nullptr;
@@ -239,7 +242,7 @@ void Game::LoadDSPFromResources(const std::string &path) {
     GLfloat rollOff = 1.0f;
     m_pDSP->Initialise(doppler, distFactor, rollOff);
     m_pDSP->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str(), (path+"/audio/"+m_audioFiles[0]).c_str());
-    m_pDSP->PlayEventSound(m_helicoptePosition, m_terrainPosition, m_helicopteVelocity);
+    m_pDSP->PlayEventSound(m_helicopterPosition, m_terrainPosition, m_helicopterVelocity);
     m_pDSP->LoadMusicStream((path+"/audio/"+m_audioFiles[2]).c_str());
     m_pDSP->PlayMusicStream();
     m_pDSP->CreateTerrain(m_terrainPosition, m_terrainSize);
@@ -258,7 +261,8 @@ void Game::DisplayFrameRate() {
     m_elapsedTime += m_deltaTime;
     ++m_frameCount;
 
-    m_timeInSeconds += (float) (0.001f * m_deltaTime);
+    m_timePerSecond = (float)(0.001f * m_deltaTime);
+    m_timeInSeconds += m_timePerSecond;
     m_timeInMilliSeconds += (float) (m_deltaTime);
 
     // Now we want to subtract the current time by the last time that was stored
@@ -281,12 +285,14 @@ void Game::DisplayFrameRate() {
         pFontProgram->SetUniform("textColor", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
         m_pFtFont->Render(pFontProgram, 20, height - 40, 20, "FPS: %d", m_framesPerSecond);
         m_pFtFont->Render(pFontProgram, 20, height - 60, 20, "Press - or +        Volume: %f" , m_pDSP->Volume());
-        m_pFtFont->Render(pFontProgram, 20, height - 80, 20, "Press 4               Pause Event Channels: %s" , BoolToString(m_pDSP->PauseChannels()));
-        m_pFtFont->Render(pFontProgram, 20, height - 100, 20, "Press 5               Switch Music Filter Frequency: %s" , BoolToString(m_pDSP->MusicFilterFrequency()));
-        m_pFtFont->Render(pFontProgram, 20, height - 120, 20, "Press 6               Music Filter Active: %s" , BoolToString(m_pDSP->MusicFilterActive()));
-        m_pFtFont->Render(pFontProgram, 20, height - 140, 20, "Press 7               Switch FIR Filter: %s" , m_pDSP->FIRFilter());
-        m_pFtFont->Render(pFontProgram, 20, height - 160, 20, "Press 8               Bypass FIR Filtering: %s" , BoolToString(m_pDSP->ByPassFIRFilters()));
-        m_pFtFont->Render(pFontProgram, 20, height - 180, 20, "Press 9 or 0        FIR Filter Coefficients Mulitplier : %f" , m_pDSP->FIRFilterMultiplier());
+        m_pFtFont->Render(pFontProgram, 20, height - 80, 20, "Press 1 or 2       Helicopter Speed: %f" , m_helicopterSpeed);
+        m_pFtFont->Render(pFontProgram, 20, height - 100, 20, "Press 3               Reset Helicopter Frequency: %f" , m_pDSP->ChannelFrequency());
+        m_pFtFont->Render(pFontProgram, 20, height - 120, 20, "Press 4               Pause Event Channels: %s" , BoolToString(m_pDSP->PauseChannels()));
+        m_pFtFont->Render(pFontProgram, 20, height - 140, 20, "Press 5               Switch Music Filter Frequency: %s" , BoolToString(m_pDSP->MusicFilterFrequency()));
+        m_pFtFont->Render(pFontProgram, 20, height - 160, 20, "Press 6               Music Filter Active: %s" , BoolToString(m_pDSP->MusicFilterActive()));
+        m_pFtFont->Render(pFontProgram, 20, height - 180, 20, "Press 7               Switch FIR Filter: %s" , m_pDSP->FIRFilter());
+        m_pFtFont->Render(pFontProgram, 20, height - 200, 20, "Press 8               Bypass FIR Filtering: %s" , BoolToString(m_pDSP->ByPassFIRFilters()));
+        m_pFtFont->Render(pFontProgram, 20, height - 220, 20, "Press 9 or 0       FIR Filter Coefficients Mulitplier : %f" , m_pDSP->FIRFilterMultiplier());
 
         //MusicFilterActive
         //ToggleMusicFilterValue
@@ -404,35 +410,35 @@ void Game::RenderHelicopter(CShaderProgram * shaderProgram) {
 
      */
     // Render the helicopter
-    m_helicopteRotorRotation += 30.0f;
-    if (m_helicopteRotorRotation > 360 ) {
-        m_helicopteRotorRotation = 0.0f;
+    m_helicopterPreviousPosition = m_helicopterPosition;
+    m_helicopterRotorRotation += 30.0f;
+    if (m_helicopterRotorRotation > 360 ) {
+        m_helicopterRotorRotation = 0.0f;
     }
 
-    GLfloat time = m_timeInSeconds;
+    GLfloat time = m_timeInSeconds * m_helicopterSpeedScalar;
 
     glm::vec3 currentPosition = m_pPath->GetCentralLinePositionAtIndex(time); // the current position
     glm::vec3 nextPosition = m_pPath->GetCentralLinePositionAtIndex(time + 1); // the next position on the spline
     glm::vec3 interpolatedPosition = Extensions::interpolate(currentPosition, nextPosition, time - glm::floor(time));
 
-    glm::vec3 displacement = nextPosition - currentPosition;
+
+    glm::vec3 displacement = interpolatedPosition - m_helicopterPreviousPosition;
     glm::vec3 front = glm::normalize(displacement); // this is the front vector of the helicopter
     glm::vec3 right = glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f)); // this is the right vector of the helicopter
     glm::vec3 up = glm::cross(right, front); // this is the up unit vector of the helicopter
-    GLfloat distance = glm::distance(currentPosition, nextPosition); // calculate the distance moved
-    GLfloat speed = distance / time; // the speed is measured in metres per second (m/s) and not meters per frame.
-    glm::vec3 velocity = displacement * (speed / distance); // calculate the velocity same as (displacement / time)
-
-    m_helicoptePosition = interpolatedPosition;
-    m_helicopteOrientation = glm::mat4(glm::mat3(front, up, right));
-    m_helicopteVelocity = velocity;
+    GLfloat distance = glm::distance(m_helicopterPreviousPosition, interpolatedPosition); // calculate the distance moved
+    m_helicopterSpeed = distance / m_timePerSecond; // the speed is measured in metres per second (m/s) and not meters per frame.
+    m_helicopterVelocity = displacement * (m_helicopterSpeed / distance); // calculate the velocity same as (displacement / time)
+    m_helicopterPosition = interpolatedPosition;
+    m_helicopterOrientation = glm::mat4(glm::mat3(front, up, right));
     m_pHelicopter->Render(
                           shaderProgram,
                           m_pCamera,
-                          m_helicopteRotorRotation,
-                          m_helicoptePosition,
-                          m_helicopteOrientation,
-                          m_helicopteRotor);
+                          m_helicopterRotorRotation,
+                          m_helicopterPosition,
+                          m_helicopterOrientation,
+                          m_helicopterRotor);
 }
 
 // Update method runs repeatedly with the Render method
@@ -447,24 +453,13 @@ void Game::Update()
 
 void Game::Audio () {
 
-    m_pDSP->Update(m_pCamera, m_helicoptePosition, m_racingCarPosition, m_helicopteVelocity);
+    m_pDSP->Update(m_pCamera, m_helicopterPosition, m_racingCarPosition, m_helicopterVelocity, m_helicopterSpeed);
 }
 
 // The game loop runs repeatedly until game over
 void Game::GameLoop()
 {
 
-     /*
-     // Fixed timer (updating based on system frame rate )
-     m_deltaTime = m_pGameTimer->Elapsed();
-     if (m_deltaTime > 1.0 / (double) Game::FPS) {
-     m_pGameTimer->Start();
-     Update();
-     Render();
-     }
-     */
-
-	
 	// Variable timer
 	m_pGameTimer->Start();
 	Update();
@@ -567,16 +562,18 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
 
         switch (keyPressed)
         {
-
             case GLFW_KEY_SPACE:
                 break;
             case GLFW_KEY_F1:
                 break;
             case GLFW_KEY_1 :
+                m_helicopterSpeedScalar -= 0.2f;
                 break;
             case GLFW_KEY_2:
+                m_helicopterSpeedScalar += 0.2f;
                 break;
             case GLFW_KEY_3:
+                m_pDSP->ToggleChannelFrequency();
                 break;
             case GLFW_KEY_4:
                 m_pDSP->TogglePauseChannels();

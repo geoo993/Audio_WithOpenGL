@@ -37,8 +37,10 @@ public:
     void TogglePauseChannels();
     void ToggleMusicFilter();
     void ToggleMusicFilterFrequency();
+    void ToggleChannelFrequency();
+    void SetDoppler(float &doppler);
 
-    void Update(CCamera *camera, glm::vec3 &position1, glm::vec3 &position2, glm::vec3 &velocity);
+    void Update(CCamera *camera, glm::vec3 &position1, glm::vec3 &position2, glm::vec3 &velocity, GLfloat &speed);
     void CreateTerrain(glm::vec3 &position, const float &size);
     void AddCube(glm::vec3 &position, GLfloat &width,  GLfloat &height, GLfloat &depth);
 
@@ -48,6 +50,7 @@ public:
     GLboolean MusicFilterFrequency() const;
     GLboolean ByPassFIRFilters() const;
     GLfloat FIRFilterMultiplier() const;
+    GLfloat ChannelFrequency() const;
     const char * FIRFilter() const;
 
 private:
@@ -76,10 +79,12 @@ private:
     FMOD::DSP *m_musicDSPHeadInput;
 
     // custom properties
+    GLfloat m_dopplerLevel;
     GLfloat m_distanceFactor;
     FMOD::DSP *m_dsp;
     GLboolean m_bypass;
     GLboolean m_pauseChannels;
+    GLboolean m_changeChannelFrequency;
 
     // helicopter attributes
     FMOD_VECTOR m_cameraPosition;     // the camera position in the world
