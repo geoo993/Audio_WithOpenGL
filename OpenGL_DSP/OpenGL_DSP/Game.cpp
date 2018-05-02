@@ -76,16 +76,12 @@ Game::Game()
     m_helicopteVelocity = glm::vec3(0.01f, 0.01f, 0.01f);
     m_helicopteRotor = 6;
     m_helicopteRotorRotation = 0.0f;
-    m_helicopterTimeScalar = 1.0f;
 
     // helicopter path
     m_pPath = nullptr;
 
     // audio DSP
-    m_pFIR = nullptr;
-    m_pOscillator = nullptr;
-    m_pFilter = nullptr;
-    m_pOcclusion = nullptr;
+    m_pDSP = nullptr;
     m_audioFiles.reserve(6);
 }
 
@@ -100,10 +96,7 @@ Game::~Game()
     delete m_pPenthouse;
     delete m_pRacingCar;
     delete m_pHelicopter;
-	delete m_pFIR;
-    delete m_pOscillator;
-    delete m_pFilter;
-    delete m_pOcclusion;
+	delete m_pDSP;
     delete m_pPath;
 
 	if (m_pShaderPrograms != nullptr) {
@@ -129,10 +122,7 @@ void Game::Initialise()
     m_pRacingCar = new COpenAssetImportMesh;
     m_pPenthouse = new COpenAssetImportMesh;
     m_pPath = new CCatmullRom;
-	m_pFIR = new CFIRConvolutionDSP;
-    m_pOscillator = new COscillator;
-    m_pFilter = new CFilterDSP;
-    m_pOcclusion = new COcclusion;
+    m_pDSP = new DSPAudio;
 
     // Set the orthographic and perspective projection matrices based on the image size
     m_pCamera = new CCamera(glm::vec3(0.0f, 60.0f, 0.0f),     // position
@@ -223,8 +213,7 @@ void Game::LoadFromResources(const std::string &path)
 	// Create the planar terrain
 	m_pPlanarTerrain->Create(path+"/textures/", "grassfloor01.jpg", m_terrainSize, 50.0f); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
 
-    //m_pFtFont->LoadSystemFont(path+"/fonts/Candy Script.ttf", 48);
-    m_pFtFont->LoadFont(path+"/fonts/Candy Script.ttf", 48);
+    m_pFtFont->LoadFont(path+"/fonts/Arial.ttf", 48);
 
     m_pPenthouse->Load(path+"/models/Penthouse/fantasthouse 9.obj"); // https://www.turbosquid.com/FullPreview/Index.cfm/ID/1043651
     m_pRacingCar->Load(path+"/models/Racing_Car/free_car_1.obj"); // https://www.turbosquid.com/3d-models/free-car-3d-model/930099
@@ -240,30 +229,21 @@ void Game::LoadDSPFromResources(const std::string &path) {
 
     m_audioFiles.push_back("drag_car.wav");   // https://freesound.org/people/lonemonk/sounds/156634/
     m_audioFiles.push_back("Helicopter.wav"); // https://freesound.org/people/Akc1231/sounds/340802/
-
+    m_audioFiles.push_back("03 Brooks.mp3");
     //// Initialise audio and play background music
-    //m_pFIR->Initialise();
-    //m_pFIR->LoadEventSound((path+"/audio/"+m_audioFiles[0]).c_str());
-    //m_pFIR->LoadMusicStream((path+"/audio/"+m_audioFiles[1]).c_str());
-
-    // Oscilator demo
-    //m_pOscillator->Initialise();
-    //m_pOscillator->LoadMusicStream((path+"/audio/"+m_audioFiles[1]).c_str());
-
-    // FIR convolution filtering demo
-    //m_pFilter->Initialise();
-    //m_pFilter->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str());
 
     // doppler and occlusion demo
     glm::vec3 penthouse = glm::vec3(170.0f, 109, 206 ); // pent house properties technology
     GLfloat doppler = 1.0f;
-    GLfloat distFactor = 20.0f;
+    GLfloat distFactor = 40.0f;
     GLfloat rollOff = 1.0f;
-    m_pOcclusion->Initialise(doppler, distFactor, rollOff);
-    m_pOcclusion->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str(), (path+"/audio/"+m_audioFiles[0]).c_str());
-    m_pOcclusion->PlayEventSound(m_helicoptePosition, m_terrainPosition, m_helicopteVelocity);
-    m_pOcclusion->CreateTerrain(m_terrainPosition, m_terrainSize);
-    m_pOcclusion->AddCube(m_terrainPosition, penthouse.x, penthouse.y, penthouse.z);
+    m_pDSP->Initialise(doppler, distFactor, rollOff);
+    m_pDSP->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str(), (path+"/audio/"+m_audioFiles[0]).c_str());
+    m_pDSP->PlayEventSound(m_helicoptePosition, m_terrainPosition, m_helicopteVelocity);
+    m_pDSP->LoadMusicStream((path+"/audio/"+m_audioFiles[2]).c_str());
+    m_pDSP->PlayMusicStream();
+    m_pDSP->CreateTerrain(m_terrainPosition, m_terrainSize);
+    m_pDSP->AddCube(m_terrainPosition, penthouse.x, penthouse.y, penthouse.z);
 
 }
 
@@ -292,19 +272,6 @@ void Game::DisplayFrameRate() {
         m_frameCount = 0;
     }
 
-    /*
-     std::cout << std::endl;
-    std::cout << "width: " <<width << std::endl;
-    std::cout << "height: " <<height << std::endl;
-     std::cout << "deltatime: " <<m_deltaTime << std::endl;
-     std::cout << "elapsedTime: " << m_elapsedTime<< std::endl;
-     std::cout << "time: " << m_timeInSeconds << std::endl;
-     std::cout << "time milli seconds: " << m_timeInMilliSeconds << std::endl;
-     std::cout << "glfw getTime: " << glfwGetTime() << std::endl;
-
-     float time = (float)m_elapsedTime / 1000.0f * 2.0f * 3.14159f * 0.75f;
-     std::cout << "timeFromElapsed: " << time << std::endl;
-     */
 
     if (m_framesPerSecond > 0) {
         // Use the font shader program and render the text
@@ -313,7 +280,16 @@ void Game::DisplayFrameRate() {
         pFontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
         pFontProgram->SetUniform("textColor", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
         m_pFtFont->Render(pFontProgram, 20, height - 40, 20, "FPS: %d", m_framesPerSecond);
-        m_pFtFont->Render(pFontProgram, 20, height - 70, 20, "time scalar: %f" , m_helicopterTimeScalar);
+        m_pFtFont->Render(pFontProgram, 20, height - 60, 20, "Press - or +        Volume: %f" , m_pDSP->Volume());
+        m_pFtFont->Render(pFontProgram, 20, height - 80, 20, "Press 4               Pause Event Channels: %s" , BoolToString(m_pDSP->PauseChannels()));
+        m_pFtFont->Render(pFontProgram, 20, height - 100, 20, "Press 5               Switch Music Filter Frequency: %s" , BoolToString(m_pDSP->MusicFilterFrequency()));
+        m_pFtFont->Render(pFontProgram, 20, height - 120, 20, "Press 6               Music Filter Active: %s" , BoolToString(m_pDSP->MusicFilterActive()));
+        m_pFtFont->Render(pFontProgram, 20, height - 140, 20, "Press 7               Switch FIR Filter: %s" , m_pDSP->FIRFilter());
+        m_pFtFont->Render(pFontProgram, 20, height - 160, 20, "Press 8               Bypass FIR Filtering: %s" , BoolToString(m_pDSP->ByPassFIRFilters()));
+        m_pFtFont->Render(pFontProgram, 20, height - 180, 20, "Press 9 or 0        FIR Filter Coefficients Mulitplier : %f" , m_pDSP->FIRFilterMultiplier());
+
+        //MusicFilterActive
+        //ToggleMusicFilterValue
 
         glEnable(GL_DEPTH_TEST);
     }
@@ -433,7 +409,7 @@ void Game::RenderHelicopter(CShaderProgram * shaderProgram) {
         m_helicopteRotorRotation = 0.0f;
     }
 
-    GLfloat time = m_timeInSeconds;// * m_helicopterTimeScalar;
+    GLfloat time = m_timeInSeconds;
 
     glm::vec3 currentPosition = m_pPath->GetCentralLinePositionAtIndex(time); // the current position
     glm::vec3 nextPosition = m_pPath->GetCentralLinePositionAtIndex(time + 1); // the next position on the spline
@@ -471,11 +447,7 @@ void Game::Update()
 
 void Game::Audio () {
 
-    //m_pFIR->Update(m_pCamera);
-    //m_pOscillator->Update();
-    //m_pFilter->Update(m_pCamera);
-
-    m_pOcclusion->Update(m_pCamera, m_helicoptePosition, m_racingCarPosition, m_helicopteVelocity);
+    m_pDSP->Update(m_pCamera, m_helicoptePosition, m_racingCarPosition, m_helicopteVelocity);
 }
 
 // The game loop runs repeatedly until game over
@@ -599,39 +571,43 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_SPACE:
                 break;
             case GLFW_KEY_F1:
-                m_pFilter->PlayEventSound();
                 break;
             case GLFW_KEY_1 :
-                m_pFilter->PlayEventSound();
                 break;
             case GLFW_KEY_2:
-                m_pFilter->ToggleMusicFilter();
                 break;
             case GLFW_KEY_3:
                 break;
             case GLFW_KEY_4:
+                m_pDSP->TogglePauseChannels();
                 break;
             case GLFW_KEY_5:
+                m_pDSP->ToggleMusicFilterFrequency();
                 break;
             case GLFW_KEY_6:
+                m_pDSP->ToggleMusicFilter();
                 break;
             case GLFW_KEY_7:
+                m_pDSP->ToggleFilter();
                 break;
             case GLFW_KEY_8:
+                m_pDSP->ToggleByPass();
                 break;
             case GLFW_KEY_9:
+                m_pDSP->DecreaseCoefficients();
                 break;
             case GLFW_KEY_0:
+                m_pDSP->IncreaseCoefficients();
                 break;
             case GLFW_KEY_COMMA:
                 break;
             case GLFW_KEY_PERIOD:
                 break;
             case GLFW_KEY_MINUS:
-                //m_pFilter->DecreaseMusicVolume();
+                m_pDSP->DecreaseMusicVolume();
                 break;
             case GLFW_KEY_EQUAL:
-                //m_pFilter->IncreaseMusicVolume();
+                m_pDSP->IncreaseMusicVolume();
                 break;
             case GLFW_KEY_GRAVE_ACCENT:
                 break;
@@ -658,10 +634,8 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_U:
                 break;
             case GLFW_KEY_O:
-                m_helicopterTimeScalar -= 0.05f;
                 break;
             case GLFW_KEY_P:
-                m_helicopterTimeScalar += 0.05f;
                 break;
             case GLFW_KEY_I:
                 break;

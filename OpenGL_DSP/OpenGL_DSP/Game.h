@@ -15,10 +15,7 @@
 #include "Sphere.h"
 #include "OpenAssetImportMesh.h"
 #include "CatmullRom.h"
-#include "OscillatorDSP.h"
-#include "OcclusionDSP.h"
-#include "FilterDSP.h"
-#include "FIRConvolutionDSP.h"
+#include "DSPAudio.h"
 
 // Classes used in game.  For a new class, declare it here and provide a pointer to an object of this class below.  Then, in Game.cpp, 
 // include the header.  In the Game constructor, set the pointer to NULL and in Game::Initialise, create a new object.  Don't forget to 
@@ -32,10 +29,7 @@ class CFreeTypeFont;
 class CHighResolutionTimer;
 class CSphere;
 class COpenAssetImportMesh;
-class COscillator;
-class CFilterDSP;
-class CFIRConvolutionDSP;
-class COcclusion;
+class DSPAudio;
 class CCatmullRom;
 
 class Game {
@@ -101,7 +95,6 @@ private:
     glm::vec3 m_helicopteVelocity;
     GLfloat m_helicopteRotorRotation;
     GLint m_helicopteRotor;
-    GLfloat m_helicopterTimeScalar;
     void RenderHelicopter(CShaderProgram * shaderProgram);
 
     // helicoper path
@@ -110,10 +103,7 @@ private:
     // audio DSP
     void LoadDSPFromResources(const std::string &path);
     vector <string> m_audioFiles;
-    CFIRConvolutionDSP *m_pFIR;
-    COscillator *m_pOscillator;
-    CFilterDSP *m_pFilter;
-    COcclusion *m_pOcclusion;
+    DSPAudio *m_pDSP;
 
 
 public:
@@ -124,6 +114,5 @@ public:
     ~Game();
 
     void Execute(const std::string &filepath);
-
-    void SetUniformBufferObject();
+    inline const char * const BoolToString(bool b){ return b ? "true" : "false"; }
 };

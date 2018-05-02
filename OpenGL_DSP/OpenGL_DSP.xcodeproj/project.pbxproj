@@ -42,11 +42,7 @@
 		C71D16962045F554002E2A43 /* libfreetype.6.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677B2045A72B00230B98 /* libfreetype.6.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C71D16972045F554002E2A43 /* libGLEW.2.1.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C77367792045A72B00230B98 /* libGLEW.2.1.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C71D16982045F554002E2A43 /* libglfw.3.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C773677E2045A72B00230B98 /* libglfw.3.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		C73BC3F5208A992500DE5457 /* OscillatorDSP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3F3208A992500DE5457 /* OscillatorDSP.cpp */; };
-		C73BC3F8208A99DD00DE5457 /* FilterDSP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3F6208A99DD00DE5457 /* FilterDSP.cpp */; };
-		C73BC3FB208A9A0A00DE5457 /* OcclusionDSP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3F9208A9A0A00DE5457 /* OcclusionDSP.cpp */; };
-		C73BC3FD208A9AF000DE5457 /* DSPHelper.h in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3FC208A9AF000DE5457 /* DSPHelper.h */; };
-		C73BC400208AAF8E00DE5457 /* FIRConvolutionDSP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3FE208AAF8E00DE5457 /* FIRConvolutionDSP.cpp */; };
+		C73BC3FB208A9A0A00DE5457 /* DSPAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BC3F9208A9A0A00DE5457 /* DSPAudio.cpp */; };
 		C73BCC212095F2700078CFFA /* CatmullRom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C73BCC202095F2700078CFFA /* CatmullRom.cpp */; };
 		C73EE44B2069C349003CD8EC /* Helicopter.wav in Resources */ = {isa = PBXBuildFile; fileRef = C73EE4482069C349003CD8EC /* Helicopter.wav */; };
 		C77367782045A39000230B98 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C77367762045A39000230B98 /* OpenGL.framework */; };
@@ -128,15 +124,8 @@
 		C71D16872045C9BF002E2A43 /* HighResolutionTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HighResolutionTimer.cpp; sourceTree = "<group>"; };
 		C71D168B2045EBAC002E2A43 /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameManager.cpp; sourceTree = "<group>"; };
 		C71D168C2045EBAC002E2A43 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
-		C73BC3F3208A992500DE5457 /* OscillatorDSP.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OscillatorDSP.cpp; sourceTree = "<group>"; };
-		C73BC3F4208A992500DE5457 /* OscillatorDSP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OscillatorDSP.h; sourceTree = "<group>"; };
-		C73BC3F6208A99DD00DE5457 /* FilterDSP.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FilterDSP.cpp; sourceTree = "<group>"; };
-		C73BC3F7208A99DD00DE5457 /* FilterDSP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FilterDSP.h; sourceTree = "<group>"; };
-		C73BC3F9208A9A0A00DE5457 /* OcclusionDSP.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OcclusionDSP.cpp; sourceTree = "<group>"; };
-		C73BC3FA208A9A0A00DE5457 /* OcclusionDSP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OcclusionDSP.h; sourceTree = "<group>"; };
-		C73BC3FC208A9AF000DE5457 /* DSPHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DSPHelper.h; sourceTree = "<group>"; };
-		C73BC3FE208AAF8E00DE5457 /* FIRConvolutionDSP.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FIRConvolutionDSP.cpp; sourceTree = "<group>"; };
-		C73BC3FF208AAF8E00DE5457 /* FIRConvolutionDSP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FIRConvolutionDSP.h; sourceTree = "<group>"; };
+		C73BC3F9208A9A0A00DE5457 /* DSPAudio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DSPAudio.cpp; sourceTree = "<group>"; };
+		C73BC3FA208A9A0A00DE5457 /* DSPAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DSPAudio.h; sourceTree = "<group>"; };
 		C73BCC1F2095F26F0078CFFA /* CatmullRom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatmullRom.h; sourceTree = "<group>"; };
 		C73BCC202095F2700078CFFA /* CatmullRom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CatmullRom.cpp; sourceTree = "<group>"; };
 		C73EE4482069C349003CD8EC /* Helicopter.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Helicopter.wav; sourceTree = "<group>"; };
@@ -254,15 +243,8 @@
 		C73BC3F2208A98CB00DE5457 /* DSP */ = {
 			isa = PBXGroup;
 			children = (
-				C73BC3FC208A9AF000DE5457 /* DSPHelper.h */,
-				C73BC3F3208A992500DE5457 /* OscillatorDSP.cpp */,
-				C73BC3F4208A992500DE5457 /* OscillatorDSP.h */,
-				C73BC3F6208A99DD00DE5457 /* FilterDSP.cpp */,
-				C73BC3F7208A99DD00DE5457 /* FilterDSP.h */,
-				C73BC3F9208A9A0A00DE5457 /* OcclusionDSP.cpp */,
-				C73BC3FA208A9A0A00DE5457 /* OcclusionDSP.h */,
-				C73BC3FE208AAF8E00DE5457 /* FIRConvolutionDSP.cpp */,
-				C73BC3FF208AAF8E00DE5457 /* FIRConvolutionDSP.h */,
+				C73BC3F9208A9A0A00DE5457 /* DSPAudio.cpp */,
+				C73BC3FA208A9A0A00DE5457 /* DSPAudio.h */,
 				C77A66C620837DB0003D3BE2 /* CircularBuffer.cpp */,
 				C77A66C720837DB0003D3BE2 /* CircularBuffer.h */,
 			);
@@ -525,14 +507,10 @@
 				C77A66C820837DB0003D3BE2 /* CircularBuffer.cpp in Sources */,
 				C7F6ED452045AC5E0038F48F /* Cubemap.cpp in Sources */,
 				C71D16892045CE48002E2A43 /* GameWindow.cpp in Sources */,
-				C73BC400208AAF8E00DE5457 /* FIRConvolutionDSP.cpp in Sources */,
 				C705B091204622CD00F0E13D /* Transform.cpp in Sources */,
 				C7F6ED4D2045AC5E0038F48F /* Sphere.cpp in Sources */,
-				C73BC3F8208A99DD00DE5457 /* FilterDSP.cpp in Sources */,
 				C71D168A2045CE9E002E2A43 /* Game.cpp in Sources */,
-				C73BC3FD208A9AF000DE5457 /* DSPHelper.h in Sources */,
 				C73BCC212095F2700078CFFA /* CatmullRom.cpp in Sources */,
-				C73BC3F5208A992500DE5457 /* OscillatorDSP.cpp in Sources */,
 				C77367862045A7A700230B98 /* Common.h in Sources */,
 				C7F6ED462045AC5E0038F48F /* VertexBufferObject.cpp in Sources */,
 				C7F6ED432045AC5E0038F48F /* FreeTypeFont.cpp in Sources */,
@@ -540,7 +518,7 @@
 				C7F6ED472045AC5E0038F48F /* VertexBufferObjectIndexed.cpp in Sources */,
 				C77CCE5D2045A03800F3C942 /* main.cpp in Sources */,
 				C71D168D2045EBAC002E2A43 /* GameManager.cpp in Sources */,
-				C73BC3FB208A9A0A00DE5457 /* OcclusionDSP.cpp in Sources */,
+				C73BC3FB208A9A0A00DE5457 /* DSPAudio.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

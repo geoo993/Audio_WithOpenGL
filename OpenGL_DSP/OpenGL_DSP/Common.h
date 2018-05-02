@@ -70,8 +70,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#define SCREEN_WIDTH 1020
-#define SCREEN_HEIGHT 720
+#define SCREEN_WIDTH 1240
+#define SCREEN_HEIGHT 760
 #define FPS 60
 
 // Settings
