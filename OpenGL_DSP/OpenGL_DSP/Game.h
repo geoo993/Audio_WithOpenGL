@@ -38,7 +38,6 @@ private:
 	void Initialise();
     void Update();
     void Render();
-    void Audio();
     void GameLoop();
     void LoadFromResources(const std::string &path);
     void CreateShaderPrograms(const std::string &path);
@@ -101,8 +100,8 @@ private:
     CCatmullRom *m_pPath;
 
     // audio DSP
-    void LoadDSPFromResources(const std::string &path);
-    vector <string> m_audioFiles;
+    void InitialiseAudioDSP(const std::string &path);
+    void UpdateAudioDSP();
     DSPAudio *m_pDSP;
 
 

@@ -1,10 +1,3 @@
-//
-//  DSPAudio.h
-//  OpenGL_DSP
-//
-//  Created by GEORGE QUENTIN on 20/04/2018.
-//  Copyright © 2018 Geo Games. All rights reserved.
-//
 
 #ifndef DSPAudio_h
 #define DSPAudio_h
@@ -26,6 +19,11 @@ public:
     bool LoadMusicStream(const char *filename);
     bool PlayMusicStream();
 
+    void Update(CCamera *camera, glm::vec3 &position1, glm::vec3 &position2, glm::vec3 &velocity, GLfloat &speed);
+    void CreateTerrain(glm::vec3 &position, const float &size);
+    void AddCube(glm::vec3 &position, GLfloat &width,  GLfloat &height, GLfloat &depth);
+
+    //  functions called when keyboard is pressed
     void IncreaseMusicVolume();
     void DecreaseMusicVolume();
 
@@ -33,17 +31,14 @@ public:
     void DecreaseCoefficients();
 
     void ToggleByPass();
-    void ToggleFilter();
+    void ToggleFilterCoefficients();
     void TogglePauseChannels();
     void ToggleMusicFilter();
     void ToggleMusicFilterFrequency();
     void ToggleChannelFrequency();
     void SetDoppler(float &doppler);
 
-    void Update(CCamera *camera, glm::vec3 &position1, glm::vec3 &position2, glm::vec3 &velocity, GLfloat &speed);
-    void CreateTerrain(glm::vec3 &position, const float &size);
-    void AddCube(glm::vec3 &position, GLfloat &width,  GLfloat &height, GLfloat &depth);
-
+    //  functions called foe Heads Up Display
     GLfloat Volume() const;
     GLboolean PauseChannels() const;
     GLboolean MusicFilterActive() const;
@@ -58,6 +53,7 @@ private:
     void FmodErrorCheck(FMOD_RESULT result);
     void ToFMODVector(glm::vec3 &glVec3, FMOD_VECTOR *fmodVec);
 
+    // FMOD properties
     FMOD_RESULT m_result;
     FMOD::System *m_FmodSystem;    // the global variable for talking to FMOD
 
@@ -69,16 +65,16 @@ private:
 
     FMOD::Sound *m_music;
     FMOD::Channel* m_musicChannel;
-    GLfloat m_musicVolume;
 
     FMOD::DSP *m_musicFilter;
-    bool m_musicFilterActive;
-    bool m_switchFrequency;
 
     FMOD::DSP *m_musicDSPHead;
     FMOD::DSP *m_musicDSPHeadInput;
 
     // custom properties
+    GLfloat m_musicVolume;
+    GLboolean m_musicFilterActive;
+    GLboolean m_switchFrequency;
     GLfloat m_dopplerLevel;
     GLfloat m_distanceFactor;
     FMOD::DSP *m_dsp;
@@ -86,7 +82,7 @@ private:
     GLboolean m_pauseChannels;
     GLboolean m_changeChannelFrequency;
 
-    // helicopter attributes
+    // helicopter, car and camera properties
     FMOD_VECTOR m_cameraPosition;     // the camera position in the world
     FMOD_VECTOR m_cameraForward;      // the camera local forward vector
     FMOD_VECTOR m_cameraUp;           // the camera local up vector in the world
@@ -95,7 +91,7 @@ private:
     FMOD_VECTOR m_helicopterPosition; // position of the helicopter
     FMOD_VECTOR m_helicopterVelocity; // velocity of the moving helicopter
 
-    FMOD_VECTOR m_racingCarPosition; // position of the racing car
+    FMOD_VECTOR m_racingCarPosition;  // position of the racing car
 
 };
 

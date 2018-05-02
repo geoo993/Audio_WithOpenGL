@@ -1,21 +1,3 @@
-/* 
-OpenGL Template for INM376 / IN3005
-City University London, School of Mathematics, Computer Science and Engineering
-Source code drawn from a number of sources and examples, including contributions from
- - Ben Humphrey (gametutorials.com), Michal Bubner (mbsoftworks.sk), Christophe Riccio (glm.g-truc.net)
- - Christy Quinn, Sam Kellett and others
-
- For educational use by Department of Computer Science, City University London UK.
-
- This template contains a skybox, simple terrain, camera, lighting, shaders, texturing
-
- Potential ways to modify the code:  Add new geometry types, shaders, change the terrain, load new meshes, change the lighting, 
- different camera controls, different shaders, etc.
- 
- Template version 5.0a 29/01/2017
- Dr Greg Slabaugh (gregory.slabaugh.1@city.ac.uk) 
-*/
-
 
 #include "Game.h"
 
@@ -26,7 +8,7 @@ static int keyPressedAction = -1;
 static int mouseButton = -1;
 static int mouseAction = -1;
 
-// Constructor
+// Constructor, to set values of properties
 Game::Game()
 {
     m_pGameTimer = nullptr;
@@ -85,7 +67,6 @@ Game::Game()
 
     // audio DSP
     m_pDSP = nullptr;
-    m_audioFiles.reserve(6);
 }
 
 // Destructor
@@ -144,6 +125,7 @@ void Game::Initialise()
 
 }
 
+// Load and Create every shader program file from resources
 void Game::CreateShaderPrograms(const std::string &path) {
 
 	// Load shaders
@@ -204,7 +186,7 @@ void Game::CreateShaderPrograms(const std::string &path) {
 
 }
 
-
+// Load every object from resources
 void Game::LoadFromResources(const std::string &path)
 {
 	// You can follow this pattern to load additional shaders
@@ -228,28 +210,33 @@ void Game::LoadFromResources(const std::string &path)
 
 }
 
-void Game::LoadDSPFromResources(const std::string &path) {
+// Load and Initialise audio from resources and set he DSP properties
+void Game::InitialiseAudioDSP(const std::string &path) {
+    // "drag_car.wav"  from https://freesound.org/people/lonemonk/sounds/156634/
+    // "Helicopter.wav" from https://freesound.org/people/Akc1231/sounds/340802/
 
-    m_audioFiles.push_back("drag_car.wav");   // https://freesound.org/people/lonemonk/sounds/156634/
-    m_audioFiles.push_back("Helicopter.wav"); // https://freesound.org/people/Akc1231/sounds/340802/
-    m_audioFiles.push_back("03 Brooks.mp3");
-    //// Initialise audio and play background music
-
-    // doppler and occlusion demo
+    // doppler, occlusion and FIR filter demo
     glm::vec3 penthouse = glm::vec3(170.0f, 109, 206 ); // pent house properties technology
     GLfloat doppler = 1.0f;
     GLfloat distFactor = 40.0f;
     GLfloat rollOff = 1.0f;
+
     m_pDSP->Initialise(doppler, distFactor, rollOff);
-    m_pDSP->LoadEventSound((path+"/audio/"+m_audioFiles[1]).c_str(), (path+"/audio/"+m_audioFiles[0]).c_str());
+    m_pDSP->LoadEventSound((path+"/audio/Helicopter.wav").c_str(), (path+"/audio/drag_car.wav").c_str());
     m_pDSP->PlayEventSound(m_helicopterPosition, m_terrainPosition, m_helicopterVelocity);
-    m_pDSP->LoadMusicStream((path+"/audio/"+m_audioFiles[2]).c_str());
+    m_pDSP->LoadMusicStream((path+"/audio/03 Brooks.mp3").c_str());
     m_pDSP->PlayMusicStream();
     m_pDSP->CreateTerrain(m_terrainPosition, m_terrainSize);
     m_pDSP->AddCube(m_terrainPosition, penthouse.x, penthouse.y, penthouse.z);
 
 }
 
+// Update dsp audio and passing through the position, speed and velocity og the car and helicopter
+void Game::UpdateAudioDSP() {
+    m_pDSP->Update(m_pCamera, m_helicopterPosition, m_racingCarPosition, m_helicopterVelocity, m_helicopterSpeed);
+}
+
+// shows the Heads Up Display with the frame rate and dsp properties
 void Game::DisplayFrameRate() {
 
     CShaderProgram *pFontProgram = (*m_pShaderPrograms)[1];
@@ -261,7 +248,7 @@ void Game::DisplayFrameRate() {
     m_elapsedTime += m_deltaTime;
     ++m_frameCount;
 
-    m_timePerSecond = (float)(0.001f * m_deltaTime);
+    m_timePerSecond = (float)(m_deltaTime / 1000.0f);
     m_timeInSeconds += m_timePerSecond;
     m_timeInMilliSeconds += (float) (m_deltaTime);
 
@@ -278,7 +265,7 @@ void Game::DisplayFrameRate() {
 
 
     if (m_framesPerSecond > 0) {
-        // Use the font shader program and render the text
+        // Use the font shader program and render the text on screen
         glDisable(GL_DEPTH_TEST);
         pFontProgram->UseProgram();
         pFontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
@@ -293,9 +280,6 @@ void Game::DisplayFrameRate() {
         m_pFtFont->Render(pFontProgram, 20, height - 180, 20, "Press 7               Switch FIR Filter: %s" , m_pDSP->FIRFilter());
         m_pFtFont->Render(pFontProgram, 20, height - 200, 20, "Press 8               Bypass FIR Filtering: %s" , BoolToString(m_pDSP->ByPassFIRFilters()));
         m_pFtFont->Render(pFontProgram, 20, height - 220, 20, "Press 9 or 0       FIR Filter Coefficients Mulitplier : %f" , m_pDSP->FIRFilterMultiplier());
-
-        //MusicFilterActive
-        //ToggleMusicFilterValue
 
         glEnable(GL_DEPTH_TEST);
     }
@@ -377,6 +361,7 @@ void Game::Render()
 
 }
 
+// render the pent house at the center of the scene
 void Game::RenderPenthouse(CShaderProgram * shaderProgram){
     m_pPenthouse->transform.SetIdentity();
     m_pPenthouse->transform.Translate(m_penthousePosition);
@@ -388,6 +373,7 @@ void Game::RenderPenthouse(CShaderProgram * shaderProgram){
 
 }
 
+// render the racing car
 void Game::RenderRacingCar(CShaderProgram * shaderProgram){
 
     m_pRacingCar->transform.SetIdentity();
@@ -400,38 +386,49 @@ void Game::RenderRacingCar(CShaderProgram * shaderProgram){
     m_pRacingCar->Render();
 }
 
+// render the helicopter and calculating its speed, velocity, and position on the catmullrom spline
 void Game::RenderHelicopter(CShaderProgram * shaderProgram) {
 
     /*
      in this section we calculate the position of the helicopter on the spline.
      the spline is the pathway or route of the helicoper.
      then when we have the position of the helicopter on the spline we can then use then calculate the speed,
-     and velocity of the helicopter using the game elapsed seconds count.
+     and velocity of the helicopter using the game timer counter.
 
      */
-    // Render the helicopter
+
+    // update the helicopter previous position
     m_helicopterPreviousPosition = m_helicopterPosition;
+
+    // rotate the helicopter in a 360 degree motion
     m_helicopterRotorRotation += 30.0f;
     if (m_helicopterRotorRotation > 360 ) {
         m_helicopterRotorRotation = 0.0f;
     }
 
+    // increase or slow down the helicopter using a scalar value
     GLfloat time = m_timeInSeconds * m_helicopterSpeedScalar;
 
+    // calculate the next position of the helicopter
     glm::vec3 currentPosition = m_pPath->GetCentralLinePositionAtIndex(time); // the current position
     glm::vec3 nextPosition = m_pPath->GetCentralLinePositionAtIndex(time + 1); // the next position on the spline
     glm::vec3 interpolatedPosition = Extensions::interpolate(currentPosition, nextPosition, time - glm::floor(time));
 
-
-    glm::vec3 displacement = interpolatedPosition - m_helicopterPreviousPosition;
-    glm::vec3 front = glm::normalize(displacement); // this is the front vector of the helicopter
-    glm::vec3 right = glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f)); // this is the right vector of the helicopter
-    glm::vec3 up = glm::cross(right, front); // this is the up unit vector of the helicopter
+    // calculate the speed and velocity of the helicopter
+    glm::vec3 displacement = interpolatedPosition - m_helicopterPreviousPosition; // how much the helicopter has moved
+    glm::vec3 front = glm::normalize(displacement); // this is the front vector of the helicopter in the scene
+    glm::vec3 right = glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f)); // the right vector of the helicopter in scene
+    glm::vec3 up = glm::cross(right, front); // the up unit vector of the helicopter
     GLfloat distance = glm::distance(m_helicopterPreviousPosition, interpolatedPosition); // calculate the distance moved
+
     m_helicopterSpeed = distance / m_timePerSecond; // the speed is measured in metres per second (m/s) and not meters per frame.
-    m_helicopterVelocity = displacement * (m_helicopterSpeed / distance); // calculate the velocity same as (displacement / time)
+    m_helicopterVelocity = displacement * (m_helicopterSpeed / distance); // calculate the velocity, which is the same as (displacement / time)
+
+    // set the position and orientation of the helicopter
     m_helicopterPosition = interpolatedPosition;
     m_helicopterOrientation = glm::mat4(glm::mat3(front, up, right));
+
+    // render the helicopter
     m_pHelicopter->Render(
                           shaderProgram,
                           m_pCamera,
@@ -446,14 +443,9 @@ void Game::Update()
 {
 
     // Update the camera using the amount of time that has elapsed to avoid framerate dependent motion
-    m_pCamera->Update(m_gameWindow.Window(), m_timeInSeconds, m_deltaTime, keyPressedCode, true, m_enableMouseMovement);
+    m_pCamera->Update(m_gameWindow.Window(), m_deltaTime, keyPressedCode, true, m_enableMouseMovement);
     MouseControls(mouseButton, mouseAction);
     KeyBoardControls(keyPressedCode, keyReleasedCode, keyPressedAction);
-}
-
-void Game::Audio () {
-
-    m_pDSP->Update(m_pCamera, m_helicopterPosition, m_racingCarPosition, m_helicopterVelocity, m_helicopterSpeed);
 }
 
 // The game loop runs repeatedly until game over
@@ -464,11 +456,12 @@ void Game::GameLoop()
 	m_pGameTimer->Start();
 	Update();
 	Render();
-    Audio();
+    UpdateAudioDSP();
 	m_deltaTime = m_pGameTimer->Elapsed();
 
 }
 
+// mouse events callback function
 static void OnMouseDown_callback(GLFWwindow* window, int button, int action, int mods){
 
     //std::cout << "Mouse Down with button: " << button << " and with action: " << action << std::endl;
@@ -476,6 +469,7 @@ static void OnMouseDown_callback(GLFWwindow* window, int button, int action, int
     mouseAction = action;
 }
 
+// keyboard events callback function
 static void OnKeyDown_callback( GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     keyPressedAction = action;
@@ -496,7 +490,7 @@ static void OnKeyDown_callback( GLFWwindow* window, int key, int scancode, int a
     }
 }
 
-
+// mouse inputs controls
 void Game::MouseControls(const int &button, const int &action){
 
     // https://stackoverflow.com/questions/37194845/using-glfw-to-capture-mouse-dragging-c
@@ -539,6 +533,7 @@ void Game::MouseControls(const int &button, const int &action){
 
 }
 
+// keybaord inputs controls and updating the DSP values with keys from 1 to 0
 void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
 
     if (keyAction == GLFW_RELEASE){
@@ -585,7 +580,7 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
                 m_pDSP->ToggleMusicFilter();
                 break;
             case GLFW_KEY_7:
-                m_pDSP->ToggleFilter();
+                m_pDSP->ToggleFilterCoefficients();
                 break;
             case GLFW_KEY_8:
                 m_pDSP->ToggleByPass();
@@ -683,7 +678,8 @@ void Game::Execute(const std::string &filepath)
     Initialise();
     CreateShaderPrograms(filepath);
     LoadFromResources(filepath);
-    LoadDSPFromResources(filepath);
+
+    InitialiseAudioDSP(filepath); // dsp
 
     m_gameManager.SetLoaded(true); // everything has loaded
 

@@ -1,30 +1,11 @@
-//
-//  OcclusionDSP.cpp
-//  OpenGL_DSP
-//
-//  Created by GEORGE QUENTIN on 20/04/2018.
-//  Copyright © 2018 Geo Games. All rights reserved.
-//
-
 #include "DSPAudio.h"
 
-// from http://t-filter.engineerjs.com/
-
 /*
- 3D Sound: Place a sound source in a 3D world where it can be moved around using the mouse and/or
- keyboard. Make sure that the sound in the 3D world is adapted with distance roll-off including filtering,
- and Doppler effect. (40%)
-
-
- 3D Sound: Place a sound source in a 3D world where it can be moved around using the mouse and/or
- keyboard. Make sure that the sound in the 3D world is adapted with distance roll-off including filtering,
- and Doppler effect. (30%)
- Implement dynamic filter control for an object of your choice, e.g. for the engine of a car, to sound
- differently based on the speed. (20%)
+    list coefficients generated from http://t-filter.engineerjs.com/
  */
+#define FILTER_NUM 25 // maximum number of filter coefficients
 
-#define FILTER_NUM 25
-// averaging
+// averaging filter coefficients
 static double averaging_filter[FILTER_NUM] = {
     0.04,
     0.04,
@@ -53,6 +34,7 @@ static double averaging_filter[FILTER_NUM] = {
     0.04,
 };
 
+// low pass filter coefficients
 static double low_pass_filter[FILTER_NUM] = {
     -0.02010411882885732,
     -0.05842798004352509,
@@ -81,7 +63,7 @@ static double low_pass_filter[FILTER_NUM] = {
     -0.0003084204352509,
 };
 
-// high pass
+// high pass filter coefficients
 static double high_pass_filter[FILTER_NUM] = {
     0.02857983994169657,
     -0.07328836181028245,
@@ -110,7 +92,7 @@ static double high_pass_filter[FILTER_NUM] = {
     0.0084798399459,
 };
 
-// band pass
+// band pass filter coefficients
 static double band_pass_filter[FILTER_NUM] = {
     0.008315515510919604,
     0.013703008819203135,
@@ -141,7 +123,7 @@ static double band_pass_filter[FILTER_NUM] = {
     //    0.008315515510919604
 };
 
-// band stop
+// band stop filter coefficients
 static double band_stop_filter[FILTER_NUM] = {
     0.037391727827352596,
     -0.03299884552335979,
@@ -170,14 +152,13 @@ static double band_stop_filter[FILTER_NUM] = {
     0.037391727827352596
 };
 
-
-static float *buffer = nullptr;
-static const int bufferSize = 1024;
-static const int delay = 512;
-static float multiplier = 0.8f;
-static int sampleCount = 0;
-static unsigned int filter_type = 0;
-static const unsigned int number_of_filter = 5;
+static float *buffer = nullptr;         // circular buffer array
+static const int bufferSize = 1024;     // circular buffer filter size
+static const int delay = 512;           // filter delay
+static float multiplier = 0.8f;         // FIR filter miltiplier to change the coeficients
+static int sampleCount = 0;             // sample count for circular buffer
+static unsigned int filter_type = 0;    // FIR filter type, can be low_pass, high_pass, average, band_pass, band_stop
+static const unsigned int number_of_filter = 5; // number of FIR filter created
 
 
 DSPAudio::DSPAudio()
@@ -223,7 +204,7 @@ void DSPAudio::FmodErrorCheck(FMOD_RESULT result)
 }
 
 
-// DSP callback
+// DSP callback function for circular buffer
 FMOD_RESULT F_CALLBACK FIRConvolutionDSPCallback(FMOD_DSP_STATE *dsp_state,
                                                  float *inbuffer,
                                                  float *outbuffer,
@@ -233,14 +214,14 @@ FMOD_RESULT F_CALLBACK FIRConvolutionDSPCallback(FMOD_DSP_STATE *dsp_state,
 {
     FMOD::DSP *thisdsp = (FMOD::DSP *)dsp_state->instance;
 
-    // TODO: use circular buffer and refer to  vladamir code
+    //set circular buffer
     if (buffer == NULL) {
         buffer = (float*)malloc(bufferSize * sizeof(float) * inchannels);
     }
 
     unsigned int samp, chan;
 
-    // change the filter type
+    // change the current FIR Filter coeficients using filter_type to get different coefficients
     double *fir_filter;
     switch (filter_type) {
         case 0:
@@ -266,17 +247,14 @@ FMOD_RESULT F_CALLBACK FIRConvolutionDSPCallback(FMOD_DSP_STATE *dsp_state,
     {
         for (chan = 0; chan < *outchannels; chan++)
         {
-            //outbuffer[(samp * *outchannels) + chan] = inbuffer[(samp * inchannels) + chan] * scale;
 
-
-            // part 1
+            // type 1, using circualar buffer to apply an FIR filter
             buffer[(sampleCount * inchannels) % bufferSize + chan] = inbuffer[(samp * inchannels) + chan];
 
-            if (sampleCount < FILTER_NUM) // don't reach before the the start of the buffer with sample_count-3 below
+            if (sampleCount < FILTER_NUM) // wait for the buffer to have enough samples (FILTER_NUM)
                 outbuffer[(samp * inchannels) + chan] = 0;
             else {
-                // this is a simple averaging filter with 4 coefficients
-                // TODO: Implemnet delay with the delay variable
+                // applying filter after we have enough samples, this includes filter coeficients
                 float tmp = 0;
                 for (int i=0; i <FILTER_NUM; i++){
                     tmp += fir_filter[i] * buffer[(sampleCount * inchannels) % bufferSize + chan];
@@ -286,13 +264,13 @@ FMOD_RESULT F_CALLBACK FIRConvolutionDSPCallback(FMOD_DSP_STATE *dsp_state,
 
 
             /*
-             // part 2
+             // type 2,  using circualar buffer to apply an FIR filter
              buffer[((samp % FILTER_NUM) * *outchannels) +chan] = inbuffer[(samp * inchannels) + chan];
 
-             // convolution, where the filetring happens
+             // convolution, where the filtering happens
              float tmp = 0;
              for (int i=0; i <FILTER_NUM; i++){
-             tmp += buffer[(samp * FILTER_NUM) % FILTER_NUM + chan] * fir_filter[i];
+                tmp += buffer[(samp * FILTER_NUM) % FILTER_NUM + chan] * fir_filter[i];
              }
              // add the result together
              outbuffer[(samp * *outchannels) + chan] = multiplier * tmp;
@@ -306,42 +284,28 @@ FMOD_RESULT F_CALLBACK FIRConvolutionDSPCallback(FMOD_DSP_STATE *dsp_state,
     return FMOD_OK;
 }
 
-
+/*
+    Initialise the DSP object, passing in the doppler, distanceFactor and distanceRolloff values
+ */
 bool DSPAudio::Initialise(GLfloat &doppler, GLfloat &distFactor, GLfloat &distRolloff)
 {
     // 1) Create an FMOD system
     m_result = FMOD::System_Create(&m_FmodSystem);
-//    FmodErrorCheck(m_result);
-//    if (m_result != FMOD_OK) {
-//        return false;
-//    }
 
     // 2) Initialise the system
     m_result = m_FmodSystem->init(32, FMOD_INIT_3D_RIGHTHANDED, 0);
-//    FmodErrorCheck(m_result);
-//    if (m_result != FMOD_OK) {
-//        return false;
-//    }
 
-    // 3) Set the FMOD 3D settings to some sensible values.
+
+    // 3) Set the FMOD 3D settings using the given doppler, distFactor, distRolloff.
     // doppler inntesity
     // dist factor changes the boundary between the sound and camera
     // roll off scales the sound from high when very low, and low when it is very high
     m_dopplerLevel = doppler;
     m_distanceFactor = distFactor;
     m_result = m_FmodSystem->set3DSettings(doppler, distFactor, distRolloff);
-//    FmodErrorCheck(m_result);
-//    if (m_result != FMOD_OK) {
-//        return false;
-//    }
 
-    // Set geometry settings
-//    FmodErrorCheck(m_result);
-//    if (m_result != FMOD_OK) {
-//        return false;
-//    }
 
-    // Create the DSP effect
+    // 4) Create the DSP effect
     {
         FMOD_DSP_DESCRIPTION dspdesc;
         memset(&dspdesc, 0, sizeof(dspdesc));
@@ -349,91 +313,59 @@ bool DSPAudio::Initialise(GLfloat &doppler, GLfloat &distFactor, GLfloat &distRo
         strncpy(dspdesc.name, "My first DSP unit", sizeof(dspdesc.name));
         dspdesc.numinputbuffers = 1;
         dspdesc.numoutputbuffers = 1;
-        dspdesc.read = FIRConvolutionDSPCallback;
+        dspdesc.read = FIRConvolutionDSPCallback; // using the circular buffer callback function
 
         m_result = m_FmodSystem->createDSP(&dspdesc, &m_dsp);
-        //FmodErrorCheck(m_result);
-
-        //    if (m_result != FMOD_OK) {
-        //        return false;
-        //    }
         return false;
     }
 
 
     return true;
 }
+/*
 
-// Play an event sound
+*/
+// Load our event sounds for 3D sound
 bool DSPAudio::LoadEventSound(const char *filename1, const char *filename2)
 {
-    //4) Load event sound2
+    //5) Load event sound
     m_result = m_FmodSystem->createSound(filename1, FMOD_LOOP_NORMAL, 0, &m_eventSound1);
-    m_result = m_eventSound1->set3DMinMaxDistance(0.5f * m_distanceFactor, 1000.0f * m_distanceFactor);
-//    FmodErrorCheck(m_result);
-//    if (m_result != FMOD_OK) {
-//        return false;
-//    }
-
     m_result = m_FmodSystem->createSound(filename2, FMOD_LOOP_NORMAL, 0, &m_eventSound2);
-    m_result = m_eventSound2->set3DMinMaxDistance(0.5f * m_distanceFactor, 1000.0f * m_distanceFactor);
-//    FmodErrorCheck(m_result);
-//    if (m_result != FMOD_OK) {
-//        return false;
-//    }
 
     return true;
 }
 
-// Play an event sound
+/*
+    Play event sounds for 3D sound, pasing in the position of the helicopter and car, including the velocity vectors
+*/
 bool DSPAudio::PlayEventSound(glm::vec3 &position1, glm::vec3 &position2, glm::vec3 &velocity)
 {
     //5) Load event sound
     m_result = m_FmodSystem->playSound(m_eventSound1, 0, false, &m_eventChannel1);
-    //FmodErrorCheck(m_result);
-
     m_result = m_FmodSystem->playSound(m_eventSound2, 0, false, &m_eventChannel2);
 
-//    FmodErrorCheck(m_result);
-//    if (m_result != FMOD_OK) {
-//        return false;
-//    }
-
-    //6) Refactor the “event sound” (triggered with '1') to play through a 3D channel.
+    //6) play through a 3D channel.
     m_eventChannel1->setMode(FMOD_3D);
     m_eventChannel2->setMode(FMOD_3D);
 
 
-    // set the position of the car and the helicopter
+    //7) set the position of the car and the helicopter as well as the velocity of the helicopter
     ToFMODVector(position1, &m_helicopterPosition);
     ToFMODVector(velocity, &m_helicopterVelocity);
     ToFMODVector(position2, &m_racingCarPosition);
     m_result = m_eventChannel1->set3DAttributes(&m_helicopterPosition, &m_helicopterVelocity);
     m_result = m_eventChannel2->set3DAttributes(&m_racingCarPosition, 0, 0);
 
-//    FmodErrorCheck(result);
-//    if (m_result != FMOD_OK) {
-//        return false;
-//    }
-
     return true;
 }
 
-// Load a music stream
+// Load a music stream for custom dsp
 bool DSPAudio::LoadMusicStream(const char *filename)
 {
     m_result = m_FmodSystem->createStream(filename, NULL | FMOD_LOOP_NORMAL, 0, &m_music);
-    //FmodErrorCheck(m_result);
-
-    //if (m_result != FMOD_OK)
-    //    return false;
 
     // create a low-pass filter DSP object
     m_result = m_FmodSystem->createDSPByType(FMOD_DSP_TYPE_LOWPASS, &m_musicFilter);
-    //FmodErrorCheck(m_result);
-
-    //if (m_result != FMOD_OK)
-    //    return false;
 
     // you can start the DSP in an inactive state
     m_musicFilter->setActive(false);
@@ -441,22 +373,19 @@ bool DSPAudio::LoadMusicStream(const char *filename)
     return true;
 }
 
-// Play a music stream
+// Play a music stream for custom dsp
 bool DSPAudio::PlayMusicStream()
 {
     m_result = m_FmodSystem->playSound(m_music, NULL, false, &m_musicChannel);
-    FmodErrorCheck(m_result);
-
-    if (m_result != FMOD_OK)
-        return false;
 
     // Set the volume
     m_result = m_musicChannel->setVolume(m_musicVolume);
-    //FmodErrorCheck(m_result);
 
     // create dsp
     m_musicChannel->addDSP(0, m_dsp);
 
+    // enables or disable the bypass which the DSP unit so that it does or doesn't process the data coming into it.
+    // the sound continues to run regardless, but the effect on the sound is applied when the bypass is disable
     m_result = m_dsp->setBypass(m_bypass);
 
     // connecting the music filter to the music stream
@@ -467,17 +396,9 @@ bool DSPAudio::PlayMusicStream()
     m_musicDSPHead->disconnectFrom(m_musicDSPHeadInput);
     // 3) Add input to the music head from the filter
     m_result = m_musicDSPHead->addInput(m_musicFilter);
-    //FmodErrorCheck(m_result);
-
-    //if (m_result != FMOD_OK)
-    //    return false;
 
     // 4) Add input to the filter head music DSP head input
     m_result = m_musicFilter->addInput(m_musicDSPHeadInput);
-    //FmodErrorCheck(m_result);
-
-    //if (m_result != FMOD_OK)
-    //    return false;
 
     // set the DSP object to be active
     m_musicFilter->setActive(m_musicFilterActive);
@@ -489,27 +410,28 @@ bool DSPAudio::PlayMusicStream()
     return true;
 }
 
+/*
+    Update the position and veliocity of the helicopter, car and the camera
+ */
 void DSPAudio::Update(CCamera *camera, glm::vec3 &position1, glm::vec3 &position2, glm::vec3 &velocity, GLfloat &speed)
 {
-    // 7) update the helicopter position using 3d attributes
+    // 7) update the helicopter position and velocity using 3d attributes
     ToFMODVector(position1, &m_helicopterPosition);
     ToFMODVector(velocity, &m_helicopterVelocity);
-    ToFMODVector(position2, &m_racingCarPosition);
-
+    //m_result = m_eventSound1->set3DMinMaxDistance(0.5f * m_distanceFactor, 100.0f * m_distanceFactor);
     m_result = m_eventChannel1->set3DAttributes(&m_helicopterPosition, &m_helicopterVelocity);
     m_result = m_eventChannel1->setPaused(m_pauseChannels);
 
-    // 44100 is the original frequency of the sound
+    // 7) update the helicopter eventChannel, changign the frequency of the helicopter sound to a dynamic filter control effect.
+    // 44100 is the original frequency of the helicopter sound
     float frequency = m_changeChannelFrequency ? glm::clamp(254 * speed, 11000.0f, 88000.0f) : 44100;
     m_result = m_eventChannel1->setFrequency(frequency);
 
+    // 7) update the car position using 3d attributes
+    ToFMODVector(position2, &m_racingCarPosition);
+    //m_result = m_eventSound2->set3DMinMaxDistance(0.5f * m_distanceFactor, 100.0f * m_distanceFactor);
     m_result = m_eventChannel2->set3DAttributes(&m_racingCarPosition, 0, 0);
     m_result = m_eventChannel2->setPaused(m_pauseChannels);
-
-//    FmodErrorCheck(m_result);
-//    if (m_result != FMOD_OK) {
-//        return;
-//    }
 
     // 8) update the camera position using the 3d listener for the occlusion
     glm::vec3 cameraForward = camera->GetForward();
@@ -529,16 +451,14 @@ void DSPAudio::Update(CCamera *camera, glm::vec3 &position1, glm::vec3 &position
                                                      &m_cameraVelocity,
                                                      &m_cameraForward,
                                                      &m_cameraUp);
-    
-//    FmodErrorCheck(m_result);
-//    if (m_result != FMOD_OK) {
-//        return;
-//    }
 
     m_FmodSystem->update();
 
 }
 
+/*
+ Toggle the music Filter Frequency value
+ */
 void DSPAudio::ToggleMusicFilterFrequency()
 {
     // called externally from Game::ProcessEvents
@@ -555,9 +475,12 @@ void DSPAudio::ToggleMusicFilterFrequency()
     }
 }
 
+/*
+    increase the volume of the music channel
+*/
 void DSPAudio::IncreaseMusicVolume()
 {
-    // called externally from Game::ProcessEvents
+    // called externally from Game::KeyBoardControls
     // increment the volume
     m_musicVolume += 0.05f;
     if (m_musicVolume > 1)
@@ -566,9 +489,12 @@ void DSPAudio::IncreaseMusicVolume()
     m_musicChannel->setVolume(m_musicVolume);
 }
 
+/*
+ decrease the volume of the music channel
+*/
 void DSPAudio::DecreaseMusicVolume()
 {
-    // called externally from Game::ProcessEvents
+    // called externally from Game::KeyBoardControls
     // deccrement the volume
     m_musicVolume -= 0.05f;
     if (m_musicVolume < 0)
@@ -578,47 +504,71 @@ void DSPAudio::DecreaseMusicVolume()
 }
 
 
+/*
+    a scaler multiplier which increases the coeficient of the current FIR filter
+*/
 void DSPAudio::IncreaseCoefficients()
 {
-    // called externally from Game::ProcessEvents
-    // increment the volume
+    // called externally from Game::KeyBoardControls
+    // increment the filter coefficients by 0.05f
     multiplier += 0.05f;
     if (multiplier > 1.0f)
         multiplier = 1.0f;
 
 }
 
+/*
+ a scaler multiplier which decreases the coeficient of the current FIR filter
+*/
 void DSPAudio::DecreaseCoefficients()
 {
     // called externally from Game::ProcessEvents
-    // deccrement the volume
+    // deccrement the filter coefficients by 0.05f
     multiplier -= 0.05f;
     if (multiplier < 0)
         multiplier = 0.0f;
 }
 
+/*
+    toggle the byPass to enable or disable the filtering on the sound channel
+*/
 void DSPAudio::ToggleByPass() {
     m_bypass = !m_bypass;
     m_result = m_dsp->setBypass(m_bypass);
 }
 
-void DSPAudio::ToggleFilter() {
+/*
+    switch between the filter coeficients
+*/
+void DSPAudio::ToggleFilterCoefficients() {
     filter_type = (filter_type + 1) % number_of_filter;
 }
 
+/*
+    enable or disable the event sound from m_eventChannel1
+*/
 void DSPAudio::TogglePauseChannels() {
     m_pauseChannels = !m_pauseChannels;
 }
 
+/*
+    enable or disable the musicFilter which temporarily deactivates the music stream
+*/
 void DSPAudio::ToggleMusicFilter() {
     m_musicFilterActive = !m_musicFilterActive;
     m_musicFilter->setActive(m_musicFilterActive);
 }
 
+/*
+    switch between the musicFilter frequency value from 700 to 22000
+*/
 void DSPAudio::ToggleChannelFrequency() {
     m_changeChannelFrequency = !m_changeChannelFrequency;
 }
 
+/*
+    convert vector to FMOD_Vector
+*/
 void DSPAudio::ToFMODVector(glm::vec3 &glVec3, FMOD_VECTOR *fmodVec)
 {
     fmodVec->x = glVec3.x;
@@ -627,13 +577,13 @@ void DSPAudio::ToFMODVector(glm::vec3 &glVec3, FMOD_VECTOR *fmodVec)
 }
 
 /*
- This method creates the occlusion cube.
- */
+    creating a cube which with the bounds of the penthouse in the scene,
+    this is to create the occlusion effect for the penthouse when going in and out of the penthouse.
+*/
 void DSPAudio::AddCube(glm::vec3 &position, GLfloat &width,  GLfloat &height, GLfloat &depth)
 {
 
     FMOD::Geometry *geometry;
-    //
     m_result = m_FmodSystem->createGeometry(6, 8, &geometry);
 
     float halfWidth = width / 2.0f;
@@ -649,11 +599,6 @@ void DSPAudio::AddCube(glm::vec3 &position, GLfloat &width,  GLfloat &height, GL
     cubePoly[7] = { halfWidth, position.y + height, -halfDepth };    // top right front
     int polyIndex = 0;
 
-//    FmodErrorCheck(m_result);
-//    if (m_result != FMOD_OK) {
-//        return;
-//    }
-
     m_result = geometry->addPolygon(1.0f, 1.0f, true, 8, cubePoly, &polyIndex);
 
     FMOD_VECTOR cubePosition;
@@ -663,16 +608,15 @@ void DSPAudio::AddCube(glm::vec3 &position, GLfloat &width,  GLfloat &height, GL
 
 }
 
-// This method creates the occlusion terrain.
+/*
+    creating a terran or plane which with the bounds of the terrain in the scene,
+    this is to create the occlusion effect for the ground bellow the ground.
+ */
 void DSPAudio::CreateTerrain(glm::vec3 &position, const float &size)
 {
     FMOD::Geometry *geometry;
 
     m_result = m_FmodSystem->createGeometry(1, 4, &geometry);
-//    FmodErrorCheck(m_result);
-//    if (m_result != FMOD_OK) {
-//        return;
-//    }
 
     float halfSize = size / 2;
     FMOD_VECTOR groundPoly[4];
@@ -683,10 +627,6 @@ void DSPAudio::CreateTerrain(glm::vec3 &position, const float &size)
     int polyIndex = 0;
 
     m_result = geometry->addPolygon(1.0f, 1.0f, true, 4, groundPoly, &polyIndex);
-//    FmodErrorCheck(m_result);
-//    if (m_result != FMOD_OK) {
-//        return;
-//    }
 
     FMOD_VECTOR terrainPosition;
     ToFMODVector(position, &terrainPosition);
@@ -694,36 +634,60 @@ void DSPAudio::CreateTerrain(glm::vec3 &position, const float &size)
     geometry->setActive(true);
 }
 
+/*
+    get the value of the volume
+ */
 GLfloat DSPAudio::Volume() const {
     return  m_musicVolume;
 }
 
+/*
+    get the value of the FIR filter coefficient multiplier
+ */
 GLfloat DSPAudio::FIRFilterMultiplier() const {
     return multiplier;
 };
 
+/*
+    get the value that tells you whether the event sound is enabled or disabled
+*/
 GLboolean DSPAudio::PauseChannels() const {
     return  m_pauseChannels;
 }
 
+/*
+    get the value that tells you whether the music filter for music channel is enabled or disabled
+*/
 GLboolean DSPAudio::MusicFilterActive() const {
     return  m_musicFilterActive;
 }
 
+/*
+    get the value that tells you what frequency the music filter has
+*/
 GLboolean DSPAudio::MusicFilterFrequency() const {
     return  m_switchFrequency;
 }
 
+/*
+    get the value that tells you whether the bypass for the FIR filter is enable or disable
+ */
 GLboolean DSPAudio::ByPassFIRFilters() const {
     return  m_bypass;
 }
 
+/*
+    get the frequency value the eventChannel1
+*/
 GLfloat DSPAudio::ChannelFrequency() const {
     float frequency;
     m_eventChannel1->getFrequency(&frequency);
     return frequency;
 }
 
+/*
+    get the type of FIR filter that is currently active
+*/
 const char * DSPAudio::FIRFilter() const {
     switch (filter_type) {
         case 0:

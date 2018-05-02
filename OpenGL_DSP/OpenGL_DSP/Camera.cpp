@@ -1,7 +1,6 @@
 #include "Camera.h"
 
 // Constructor for camera -- initialise with some default values
-
 CCamera::~CCamera()
 {}
 
@@ -36,7 +35,7 @@ CCamera::CCamera(const glm::vec3 &position,
     this->UpdateCameraVectors();
 }
 
-// Calculates the front vector from the Camera's (updated) Eular Angles
+// Calculate the front vector from the Camera's (updated) Eular Angles and then update the all camera vector
 void CCamera::UpdateCameraVectors( )
 {
     //this->m_front = glm::normalize( direction );
@@ -53,7 +52,7 @@ void CCamera::UpdateCameraVectors( )
     this->m_view = m_position + m_front;
     this->m_viewMatrix = glm::lookAt(
                                      m_position, // what position you want the camera to be at when looking at something in World Space
-                                     m_view, // // what position you want the camera to be  looking at in World Space, meaning look at what(using vec3) ?  // meaning the camera view point
+                                     m_view, // what position you want the camera to be looking at in World Space, meaning look at what(using vec3) ?  // meaning the camera view point
                                      m_up  //which direction is up, you can set to (0,-1,0) to look upside-down
                                      );
 
@@ -172,6 +171,7 @@ void CCamera::RotateViewPoint(float fAngle, glm::vec3 &vPoint)
     UpdateCameraVectors();
 }
 
+// Rotate the camera around a point
 void CCamera::RotateAroundPoint(const float &distance, const glm::vec3 &viewpoint, const float &angle, const float &y){
 
     // https://stackoverflow.com/questions/19990146/orbiting-object-around-orbiting-object
@@ -191,6 +191,7 @@ void CCamera::RotateAroundPoint(const float &distance, const glm::vec3 &viewpoin
 
 }
 
+// get a point in the camera forward angle
 glm::vec3 CCamera::PositionInFrontOfCamera( const GLfloat &distance){
     return GetPosition() + (GetForward() * distance);
 }
@@ -218,9 +219,17 @@ void CCamera::Advance(double direction)
 
 }
 
+// Set the camera velocity
+void  CCamera::SetVelocity(int deltaTime) {
+    glm::vec3 displacement = m_position - m_previousPosition;         // calculate the displacement
+    GLfloat distance = glm::distance(m_previousPosition, m_position); // calculate the distance moved
+    GLfloat timePerSecond = (float)(deltaTime / 1000.0f); // this is the elapsed time during a second
+    GLfloat speed = distance / timePerSecond; // the speed is measured in metres per second (m/s) and not meters per frame.
+    m_velocity = displacement * (speed / distance);                 // calculate the velocity vector
+}
+
 // Update the camera to respond to mouse motion for rotations and keyboard for translation
 void CCamera::Update(GLFWwindow *window,
-                     const double &t,
                      const double &dt,
                      const int &key,
                      const bool &moveCamera,
@@ -236,12 +245,8 @@ void CCamera::Update(GLFWwindow *window,
         TranslateByKeyboard(dt, key);
     }
 
-    glm::vec3 displacement = m_position - m_previousPosition;         // calculate the displacement
-    GLfloat distance = glm::distance(m_previousPosition, m_position); // calculate the distance moved
-    GLfloat timePerSecond = (float)(0.001f * t); // this is the elapsed time during a second
-    GLfloat speed = distance / timePerSecond; // the speed is measured in metres per second (m/s) and not meters per frame.
-    m_velocity = displacement * (speed / distance);                 // calculate the velocity vector
-
+    // Update the velocity of the camera
+    SetVelocity(dt);
 }
 
 // Update the camera to respond to key presses for translation
@@ -387,21 +392,22 @@ glm::vec3 CCamera::GetVelocity()
     return m_velocity;
 }
 
+// Get a position on a catmullrom spline using a next and current position
 glm::vec3 CCamera::GetPathViewPoint(const glm::vec3 &p, const glm::vec3 &pNext, const float &offSet){
-
     m_T = normalize(pNext - p);
     m_N = cross(m_T, glm::vec3(0.0f, 1.0f, 0.0f));
     m_B = cross(m_N, m_T);
-
     return p + offSet * m_T;
 }
 
+// Get a left vector on in a catmullrom spline using a position and rotation of the spline
 glm::vec3 CCamera::GetPathLeftPoints(const glm::vec3 &p, const float &pathWidth, const float &rotation){
 
     glm::vec3 leftP = p - ( pathWidth / 2.0f ) * m_N;
     return glm::vec3(leftP.x, leftP.y + rotation, leftP.z);
 }
 
+// Get a right vector on in a catmullrom spline using a position and rotation of the spline
 glm::vec3 CCamera::GetPathRightPoints(const glm::vec3 &p, const float &pathWidth, const float &rotation){
     glm::vec3 rightP = p + ( pathWidth / 2.0f ) * m_N;
     return glm::vec3(rightP.x, rightP.y - rotation, rightP.z);

@@ -64,15 +64,18 @@ public:
 	// Advance the camera (move it forward or backward)
 	void Advance(double direction);
 
+    // Set the camera velocity
+    void SetVelocity(int deltaTime);
+
 	// Update the camera
-	void Update(GLFWwindow *window, const double &t, const double &dt, const int &key, const bool &moveCamera, const bool &enableMouse);
+	void Update(GLFWwindow *window, const double &dt, const int &key, const bool &moveCamera, const bool &enableMouse);
 
 	// Set the projection matrices
     void SetPerspectiveProjectionMatrix(const GLfloat &fieldOfView, const GLfloat &aspectRatio, const GLfloat &nearClippingPlane, const GLfloat &farClippingPlane);
     void SetOrthographicProjectionMatrix(const GLfloat &width, const GLfloat height, const GLfloat &zNear, const GLfloat &zFar);
     void SetOrthographicProjectionMatrix(float value , float zNear, float zFar);
     void SetOrthographicProjectionMatrix(int width, int height);
-
+    
 	glm::mat3 ComputeNormalMatrix(const glm::mat4 &modelViewMatrix);
 
     glm::vec3 GetPathViewPoint(const glm::vec3 &p, const glm::vec3 &pNext, const float &offSet);
