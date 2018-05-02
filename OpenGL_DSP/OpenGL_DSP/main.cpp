@@ -10,24 +10,24 @@
 
 int main(int argc, const char * argv[]) {
 
-    srand ( time(nullptr) );
-    //srand(glfwGetTime()); // initialize random seed
-
     // https://en.sfml-dev.org/forums/index.php?topic=1547.0
     // https://medium.com/@VIRAL/mac-xcode-and-c-file-handling-78ba999032df
-    char path[1024];
-    getcwd(path, sizeof(path) );
-    puts(path);
-    
+    //    char path[1024];
+    //    getcwd(path, sizeof(path) );
+    //    puts(path);
+
+    char * path = getcwd(NULL, 0); // Platform-dependent, see reference link below
+
     //path from project working direction, which is set in Edit Scheme -> Run -> Option -> Working Directory
     string filepath = string(path) + "/OpenGL_DSP/resources";
 
-    //std::cout << (filepath) << std::endl;
-    //std::cout << (path) << std::endl;
+    std::cout << "Current dir: " << (path) << std::endl;
+    std::cout << "full file path: " << (filepath) << std::endl;
 
     //start game
     Game game;
     game.Execute(filepath);
+
 
 
     return 0;
