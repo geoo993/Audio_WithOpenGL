@@ -69,7 +69,10 @@ bool CShader::LoadShader(string sFile, int iType)
 bool CShader::GetLinesFromFile(string sFile, bool bIncludePart, vector<string>* vResult)
 {
 	FILE* fp = fopen(sFile.c_str(), "rt");
-    if(!fp){ printf("Image could not be opened\n"); return false; }
+    if(!fp){
+        printf("Image could not be opened\n");
+        return false;
+    }
 
 	string sDirectory;
 	int slashIndex = -1;

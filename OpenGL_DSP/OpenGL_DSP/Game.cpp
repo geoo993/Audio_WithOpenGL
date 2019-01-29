@@ -310,7 +310,7 @@ void Game::Render()
     m_pSkybox->Render(CUBEMAPTEXTUREUNIT);
     glDepthFunc(GL_LESS);
 
-
+/*
 	// Use the main shader program
 	CShaderProgram *pMainProgram = (*m_pShaderPrograms)[0];
 	pMainProgram->UseProgram();
@@ -350,11 +350,11 @@ void Game::Render()
     RenderPenthouse(pMainProgram);
     RenderRacingCar(pMainProgram);
     RenderHelicopter(pMainProgram);
-
+*/
     m_gameWindow.SetViewport();
 
 	// Draw the 2D graphics after the 3D graphics
-	DisplayFrameRate();
+	//DisplayFrameRate();
 
 	// Swap buffers to show the rendered image
 	m_gameWindow.SwapBuffers();
